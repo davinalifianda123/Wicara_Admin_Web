@@ -2,13 +2,10 @@ Absen ya adik adik:
 - Ahmad: Hadirrr!!!!! KELAZZZZZZZ
 - Davin: Hadir!!!
 - Fajar: Cihuy!!
-- Khilda:
-<<<<<<< HEAD
+- Khilda: Yeehaw!!
 - Irma: hadirrrr xixixixixi
 - Reno:
-=======
 - Irma:
 - Reno: Hadir!!!
->>>>>>> 04cad81b1949b75d4ba74f5a7535b338f942c47d
 - Rian:
 - Syauqi:
