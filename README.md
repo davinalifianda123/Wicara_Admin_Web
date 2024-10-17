@@ -1,1 +1,1 @@
-<h1>Mohon Maaf masih Progress Navbar dan Sidebar</h1>
+<h1>Navbar dan Sidebar sudah ready</h1>
