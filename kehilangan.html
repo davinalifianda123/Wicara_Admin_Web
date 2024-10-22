@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif !important;
+      }
+
+      .color-linear {
+        background: rgb(6, 10, 71);
+        background: linear-gradient(135deg, rgba(6, 10, 71, 1) 0%, rgba(25, 48, 109, 1) 100%);
+      }
+
+      /* CSS untuk styling tab aktif */
+      .tab.active {
+        background-color: #ffd700;
+      }
+      /* CSS untuk modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 50;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 10px;
+      }
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR INII -->
+    <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+      <div class="h-full px-3 py-4 overflow-y-auto color-linear">
+        <a href="#" class="flex items-center ps-2.5 mb-4 text-gray-50">
+          <img src="assets/logo-polines.png" class="h-6 me-3 sm:h-7" alt="Polines Logo" />
+          <span class="text-2xl self-center font-bold whitespace-nowrap">WICARA</span>
+        </a>
+        <hr />
+        <ul class="space-y-2 font-medium">
+          <li>
+            <p class="ms-5 text-gray-50 font-semibold my-4">Menu</p>
+          </li>
+          <li>
+            <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+              <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="ms-3 group-hover:text-yellow-400">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-blue-900" aria-controls="dropdown-pengaduan" data-collapse-toggle="dropdown-pengaduan">
+              <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z"
+                  clip-rule="evenodd"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">Pengaduan</span>
+              <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+              </svg>
+            </button>
+            <ul id="dropdown-pengaduan" class="hidden py-2 space-y-2">
+              <li>
+                <a href="#" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Lihat Pengaduan</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Kategori Pengaduan</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+              <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm.5 5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm0 5c.47 0 .917-.092 1.326-.26l1.967 1.967a1 1 0 0 0 1.414-1.414l-1.817-1.818A3.5 3.5 0 1 0 11.5 17Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="ms-3 group-hover:text-yellow-400">Kehilangan</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+              <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
+                />
+              </svg>
+              <span class="ms-3 group-hover:text-yellow-400">Rating</span>
+            </a>
+          </li>
+          <li>
+            <p class="ms-5 text-gray-50 font-semibold my-4">Setting</p>
+          </li>
+          <li>
+            <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-blue-900" aria-controls="dropdown-user" data-collapse-toggle="dropdown-user">
+              <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">User</span>
+              <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
+              </svg>
+            </button>
+            <ul id="dropdown-user" class="hidden py-2 space-y-2">
+              <li>
+                <a href="#" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Mahasiswa</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Dosen/Tendik</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+              <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  fill-rule="evenodd"
+                  d="M12 2a7 7 0 0 0-7 7 3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V9a5 5 0 1 1 10 0v7.083A2.919 2.919 0 0 1 14.083 19H14a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 1.732-1h.351a4.917 4.917 0 0 0 4.83-4H19a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3 7 7 0 0 0-7-7Zm1.45 3.275a4 4 0 0 0-4.352.976 1 1 0 0 0 1.452 1.376 2.001 2.001 0 0 1 2.836-.067 1 1 0 1 0 1.386-1.442 4 4 0 0 0-1.321-.843Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="ms-3 group-hover:text-yellow-400">Unit Layanan</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- CONTENT INII -->
+    <div class="py-4 px-3 sm:ml-64">
+      <!-- NAVBAR INII -->
+      <nav class="w-full bg-white lg:px-0 pb-4">
+        <div class="flex flex-wrap justify-between items-center">
+          <div class="flex items-center">
+            <button
+              data-drawer-target="logo-sidebar"
+              data-drawer-toggle="logo-sidebar"
+              aria-controls="logo-sidebar"
+              type="button"
+              class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 hover:text-yellow-400"
+            >
+              <span class="sr-only">Open sidebar</span>
+              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  clip-rule="evenodd"
+                  fill-rule="evenodd"
+                  d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"
+                ></path>
+              </svg>
+            </button>
+            <p class="hidden sm:inline-block">Selamat Datang, <span class="font-semibold text-gray-900">Admin kyu👋</span></p>
+          </div>
+          <div class="flex items-center lg:order-2">
+            <!-- INII Notifications -->
+            <button type="button" data-dropdown-toggle="notification-dropdown" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+              <span class="sr-only">View notifications</span>
+              <!-- Bell icon -->
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
+                <path
+                  d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"
+                />
+              </svg>
+            </button>
+            <!-- Dropdown notifikasi -->
+            <div class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg" id="notification-dropdown">
+              <div class="block py-3 px-4 text-base font-medium text-center bg-gray-100">Notifications</div>
+              <div>
+                <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                  <div class="flex-shrink-0">
+                    <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Green avatar" />
+                    <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 rounded-full border border-white bg-primary-700">
+                      <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+                        <path
+                          d="M15.977.783A1 1 0 0 0 15 0H3a1 1 0 0 0-.977.783L.2 9h4.239a2.99 2.99 0 0 1 2.742 1.8 1.977 1.977 0 0 0 3.638 0A2.99 2.99 0 0 1 13.561 9H17.8L15.977.783ZM6 2h6a1 1 0 1 1 0 2H6a1 1 0 0 1 0-2Zm7 5H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Z"
+                        />
+                        <path d="M1 18h16a1 1 0 0 0 1-1v-6h-4.439a.99.99 0 0 0-.908.6 3.978 3.978 0 0 1-7.306 0 .99.99 0 0 0-.908-.6H0v6a1 1 0 0 0 1 1Z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="pl-3 w-full">
+                    <div class="text-gray-500 font-normal text-sm mb-1.5">New message from <span class="font-semibold text-gray-900">Bonnie Green</span>: "Hey, what's up? All set for the presentation?"</div>
+                    <div class="text-xs font-medium text-primary-700">a few moments ago</div>
+                  </div>
+                </a>
+                <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                  <div class="flex-shrink-0">
+                    <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="Jese Leos avatar" />
+                    <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-gray-900 rounded-full border border-white">
+                      <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                        <path
+                          d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="pl-3 w-full">
+                    <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Jese leos</span> and <span class="font-medium text-gray-900">5 others</span> started following you.</div>
+                    <div class="text-xs font-medium text-primary-700">10 minutes ago</div>
+                  </div>
+                </a>
+                <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                  <div class="flex-shrink-0">
+                    <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png" alt="Joseph McFall avatar" />
+                    <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-red-600 rounded-full border border-white dark:border-gray-700">
+                      <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                        <path
+                          d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="pl-3 w-full">
+                    <div class="text-gray-500 font-normal text-sm mb-1.5">
+                      <span class="font-semibold text-gray-900">Joseph Mcfall</span> and <span class="font-medium text-gray-900">141 others</span> love your story. See it and view more stories.
+                    </div>
+                    <div class="text-xs font-medium text-primary-700">44 minutes ago</div>
+                  </div>
+                </a>
+                <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                  <div class="flex-shrink-0">
+                    <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png" alt="Roberta Casas image" />
+                    <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-green-400 rounded-full border border-white">
+                      <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                        <path
+                          d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="pl-3 w-full">
+                    <div class="text-gray-500 font-normal text-sm mb-1.5">
+                      <span class="font-semibold text-gray-900">Leslie Livingston</span> mentioned you in a comment: <span class="font-medium text-primary-700">@bonnie.green</span> what do you say?
+                    </div>
+                    <div class="text-xs font-medium text-primary-700 dark:text-primary-400">1 hour ago</div>
+                  </div>
+                </a>
+              </div>
+              <a href="#" class="block py-2 text-base font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100">
+                <div class="inline-flex items-center">
+                  <svg aria-hidden="true" class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  View all
+                </div>
+              </a>
+            </div>
+            <!-- INII Profile -->
+            <button type="button" class="flex mx-3 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
+              <span class="sr-only">Open user menu</span>
+              <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+            </button>
+            <!-- Dropdown profile -->
+            <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow" id="dropdown">
+              <div class="py-3 px-4">
+                <span class="block text-sm font-semibold text-gray-900">Davin Alifianda</span>
+                <span class="block text-sm text-gray-500 truncate">admin@adm.polines.ac.id</span>
+              </div>
+              <ul class="py-1 text-gray-500" aria-labelledby="dropdown">
+                <li>
+                  <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100">My profile</a>
+                </li>
+                <li>
+                  <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100">Sign out</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- CONTENT INII REAL CUY -->
+
+      <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
+        <div class="grid">
+          <div class="container mx-auto p-4">
+            <!-- Search and Tabs -->
+            <div class="flex justify-between items-center mb-4">
+              <div class="flex space-x-4">
+                <!-- Tabs -->
+                <button class="tab py-2 px-4 rounded-lg focus:outline-none" data-tab="semua">Semua</button>
+                <button class="tab py-2 px-4 rounded-lg focus:outline-none" data-tab="belum-ditemukan">Belum Ditemukan</button>
+                <button class="tab py-2 px-4 rounded-lg focus:outline-none" data-tab="ditemukan">Ditemukan</button>
+                <button class="tab py-2 px-4 rounded-lg focus:outline-none" data-tab="hilang">Hilang</button>
+              </div>
+              <!-- Search -->
+              <div class="relative">
+                <input type="text" id="search" placeholder="Search..." class="border border-gray-300 rounded-lg p-2 pl-10 w-64 focus:ring-blue-500 focus:border-blue-500" />
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m-2.05-4.6a7 7 0 1 0-2.1 4.35A7 7 0 0 0 14.6 16.05z"></path>
+                  </svg>
+                </span>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm text-left">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3">No</th>
+                    <th class="px-6 py-3">ID Laporan</th>
+                    <th class="px-6 py-3">Judul Laporan</th>
+                    <th class="px-6 py-3">Tanggal</th>
+                    <th class="px-6 py-3">Jenis Barang</th>
+                    <th class="px-6 py-3">Deskripsi</th>
+                    <th class="px-6 py-3">Status</th>
+                    <th class="px-6 py-3">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="table-body" class="bg-white">
+                  <!-- Contoh data -->
+                  <tr class="border-b">
+                    <td class="px-6 py-3">1</td>
+                    <td class="px-6 py-3">A09876</td>
+                    <td class="px-6 py-3">Hape Hilang</td>
+                    <td class="px-6 py-3">14-09-2024</td>
+                    <td class="px-6 py-3">Samsung J2 Prime</td>
+                    <td class="px-6 py-3">Lorem Ipsum...</td>
+                    <td class="px-6 py-3">
+                      <span class="bg-red-200 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Hilang</span>
+                    </td>
+                    <td class="px-6 py-3">
+                      <button class="ellipsis-btn text-gray-500 focus:outline-none">&#8230;</button>
+                    </td>
+                  </tr>
+                  <!-- Tambahkan baris lainnya -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Modal -->
+          <div id="modal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Form Laporan Kehilangan</h2>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label>ID Laporan</label>
+                  <input type="text" value="09000647839" class="border border-gray-300 rounded-lg p-2 w-full" />
+                </div>
+                <div>
+                  <label>User</label>
+                  <input type="text" value="Miaauw@polines.ac.id" class="border border-gray-300 rounded-lg p-2 w-full" />
+                </div>
+                <div>
+                  <label>Judul Laporan</label>
+                  <input type="text" value="Hapeku Hilang" class="border border-gray-300 rounded-lg p-2 w-full" />
+                </div>
+                <div>
+                  <label>Jenis Barang</label>
+                  <input type="text" value="Samsung J2 Prime" class="border border-gray-300 rounded-lg p-2 w-full" />
+                </div>
+                <div>
+                  <label>Tanggal Laporan</label>
+                  <input type="text" value="01-09-2024" class="border border-gray-300 rounded-lg p-2 w-full" />
+                </div>
+                <div>
+                  <label>Status Laporan</label>
+                  <input type="text" value="Hilang" class="border border-gray-300 rounded-lg p-2 w-full" />
+                </div>
+                <div>
+                  <label>Lokasi</label>
+                  <input type="text" value="Polines" class="border border-gray-300 rounded-lg p-2 w-full" />
+                </div>
+                <div>
+                  <label>Deskripsi Laporan</label>
+                  <textarea class="border border-gray-300 rounded-lg p-2 w-full">Lorem ipsum ale ale ale</textarea>
+                </div>
+              </div>
+              <div class="flex justify-end mt-4">
+                <button class="bg-red-500 text-white px-4 py-2 rounded-lg focus:outline-none">Hapus</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script>
+      const tabs = document.querySelectorAll(".tab");
+      const tableBody = document.getElementById("table-body");
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+          // Hapus kelas active dari semua tab
+          tabs.forEach((t) => t.classList.remove("active"));
+
+          // Tambahkan kelas active ke tab yang diklik
+          this.classList.add("active");
+
+          // Filter data berdasarkan tab yang diklik
+          const tabType = this.getAttribute("data-tab");
+          filterTable(tabType);
+        });
+      });
+
+      function filterTable(type) {
+        const rows = tableBody.querySelectorAll("tr");
+        rows.forEach((row) => {
+          const status = row.querySelector("td:nth-child(7)").innerText.trim().toLowerCase();
+
+          if (type === "semua" || status === type.replace("-", " ")) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      }
+
+      const searchInput = document.getElementById("search");
+
+      searchInput.addEventListener("input", function () {
+        const filter = searchInput.value.toLowerCase();
+        const rows = tableBody.querySelectorAll("tr");
+
+        rows.forEach((row) => {
+          const text = row.innerText.toLowerCase();
+          if (text.includes(filter)) {
+            row.style.display = "";
+          } else {
+            row.style.display = "none";
+          }
+        });
+      });
+
+      // Modal handling
+      const modal = document.getElementById("modal");
+      const closeModal = document.querySelector(".modal .close");
+      const ellipsisButtons = document.querySelectorAll(".ellipsis-btn");
+
+      ellipsisButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          modal.style.display = "block";
+        });
+      });
+
+      closeModal.addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+      window.addEventListener("click", (event) => {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
