@@ -4,7 +4,7 @@ const getChartOptions = () => {
       series: [65, 40, 5],
       colors: ["#4270C3", "#DC7274", "#CD7014"],
       chart: {
-          height: 320,
+          height: "100%",
           width: "100%",
           type: "donut",
       },
@@ -18,14 +18,12 @@ const getChartOptions = () => {
                       show: true,
                       name: {
                           show: true,
-                          fontFamily: "Inter, sans-serif",
                           offsetY: 8,
                       },
                       total: {
                           showAlways: true,
                           show: true,
                           label: "WICARA",
-                          fontFamily: "Inter, sans-serif",
                           formatter: function () {
                               return ''
                           },
@@ -34,7 +32,7 @@ const getChartOptions = () => {
                           show: true,  // Disable the value display inside the donut
                       },
                   },
-                  size: "80%",
+                  size: "75%",
               },
           },
       },
@@ -49,13 +47,12 @@ const getChartOptions = () => {
       },
       legend: {
           position: "right",  // Move legend to the right
-          fontFamily: "Inter, sans-serif",
           markers: {
               width: 70,
               height: 10,
           },
           itemMargin: {
-              horizontal: 10,
+              horizontal: 5,
               vertical: 5,
           },
           formatter: function(seriesName, opts) {
