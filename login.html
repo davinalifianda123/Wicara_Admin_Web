@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <style>
+      body {
+          font-family: 'Poppins', sans-serif !important;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="w-dvw h-dvh">
+      <div class="grid grid-cols-1 md:grid-cols-2 size-full bg-[rgb(249,249,249)]">
+        <!-- Info -->
+        <div class="bg-[#070D59] rounded-b-[50px] md:rounded-r-[50px] md:rounded-b-none relative overflow-clip">
+          <img src="assets/Pattern.png" alt="" class="absolute size-full">
+          <div class="pt-12 pl-12 size-full">
+            <div class="bg-white w-44 h-12 rounded-full flex items-center justify-center">
+              <img src="assets/Polines.png" alt="" class="h-7 w-auto">
+            </div>
+            <div class="text-white mt-12">
+              <p class="text-4xl font-bold hidden md:block">WICARA</p>
+              <p class="italic mt-2 hidden md:block">Wadah Informasi Catatan Aspirasi & Rating Akademik.</p>  
+            </div>
+            <img src="assets/Orang.png" alt="" class="absolute mt-0 md:mt-7 -pt-1 max-h-[150%] md:max-h-full object-scale-down w-auto top-28 md:top-48">
+          </div> 
+        </div>
+        <!-- Form Login -->
+        <div class="bg-[#F9F9F9] md:pt-12 pl-12 relative overflow-clip">
+          <div class="mt-24">
+            <p class="text-blue-950 text-4xl font-bold">LOGIN</p>
+            <p class="text-black italic mt-2">Selamat Datang di Platform Aspirasi dan Rating Akademik!</p>  
+          </div>       
+            <form class="w-[80%] mt-7">
+              <div class="mb-5">
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
+                <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 p-2.5" placeholder="email@gmail.com" required />
+              </div>
+              <div class="mb-5">
+                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
+                <input type="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 p-2.5" placeholder="••••••••" />
+              </div>
+              <div class="flex items-start mb-5">
+                <div class="flex items-center h-5">
+                  <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-[#070D59] text-[#070D59]" required />
+                </div>
+                <label for="remember" class="ms-2 text-sm font-medium text-gray-900">Remember me</label>
+              </div>
+              <button type="submit" class="text-white bg-[#F7B633] hover:bg-[#070D59] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-full h-12 px-5 py-2.5 text-center">Login</button>
+            </form>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

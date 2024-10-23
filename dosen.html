@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Poppins', sans-serif !important;
+                background-image: url('assets/Pattern_1.png');
+                background-size: cover;
+                background-position: center;
+            }
+
+            .color-linear {
+                background: rgb(6,10,71);
+                background: linear-gradient(135deg, rgba(6,10,71,1) 0%, rgba(25,48,109,1) 100%);
+            }
+
+            .max-h-60 {
+                max-height: 240px; /* Set height according to your needs */
+            }
+
+            .even {
+                background-color: #f9f9f9; /* Warna latar untuk baris genap */
+            }
+
+            .odd {
+                background-color: #ffffff; /* Warna latar untuk baris ganjil */
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- SIDEBAR INII -->
+        <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+            <div class="h-full px-3 py-4 overflow-y-auto color-linear">
+                <a href="#" class="flex items-center ps-2.5 mb-4 text-gray-50">
+                    <img src="assets/logo-polines.png" class="h-6 me-3 sm:h-7" alt="Polines Logo" />
+                    <span class="text-2xl self-center font-bold whitespace-nowrap">WICARA</span>
+                </a>
+                <hr>
+                <ul class="space-y-2 font-medium">
+                    <li>
+                        <p class="ms-5 text-gray-50 font-semibold my-4">Menu</p>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
+                            </svg>
+                            <span class="ms-3 group-hover:text-yellow-400">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-blue-900" aria-controls="dropdown-pengaduan" data-collapse-toggle="dropdown-pengaduan">
+                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z" clip-rule="evenodd"/>
+                            </svg>  
+                            <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">Pengaduan</span>
+                            <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+                        <ul id="dropdown-pengaduan" class="hidden py-2 space-y-2">
+                            <li>
+                                <a href="#" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Lihat Pengaduan</a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Kategori Pengaduan</a>
+                            </li>
+                        </ul>  
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm.5 5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm0 5c.47 0 .917-.092 1.326-.26l1.967 1.967a1 1 0 0 0 1.414-1.414l-1.817-1.818A3.5 3.5 0 1 0 11.5 17Z" clip-rule="evenodd"/>
+                            </svg>                                
+                            <span class="ms-3 group-hover:text-yellow-400">Kehilangan</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"/>
+                            </svg>    
+                            <span class="ms-3 group-hover:text-yellow-400">Rating</span>
+                        </a>
+                    </li>
+                    <li>
+                        <p class="ms-5 text-gray-50 font-semibold my-4">Setting</p>
+                    </li>
+                    <li>
+                        <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-blue-900" aria-controls="dropdown-user" data-collapse-toggle="dropdown-user">
+                            <svg class="w-6 h-rounded-xl transition duration-75 group-hover:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
+                            </svg>    
+                            <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">User</span>
+                            <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                        </button>
+                        <!-- Mahasiswa - Dosen -->
+                        <ul id="dropdown-user" class="py-2 space-y-2">
+                            <li>
+                                <a href="mahasiswa.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Mahasiswa</a>
+                            </li>
+                            <li>
+                               <a href="dosen.html" class="flex items-center w-full p-2 text-yellow-500 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Dosen/Tendik</a>
+                            </li>
+                        </ul>
+                    </li>
+                        <a href="#" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7 3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V9a5 5 0 1 1 10 0v7.083A2.919 2.919 0 0 1 14.083 19H14a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 1.732-1h.351a4.917 4.917 0 0 0 4.83-4H19a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3 7 7 0 0 0-7-7Zm1.45 3.275a4 4 0 0 0-4.352.976 1 1 0 0 0 1.452 1.376 2.001 2.001 0 0 1 2.836-.067 1 1 0 1 0 1.386-1.442 4 4 0 0 0-1.321-.843Z" clip-rule="evenodd"/>
+                            </svg>                               
+                            <span class="ms-3 group-hover:text-yellow-400">Unit Layanan</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        
+        <!-- CONTENT INII -->
+        <div class="py-4 px-3 sm:ml-64">
+            <!-- NAVBAR INII -->
+            <nav class="w-full lg:px-0 pb-4">
+                <div class="flex flex-wrap justify-between items-center">
+                    <nav class="flex justify-center items-center" aria-label="Breadcrumb">
+                        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                            <li class="inline-flex items-center">
+                                <a href="#" class="inline-flex items-center text-sm font-semibold text-blue-950 hover:text-blue-600">
+                                    <svg class="w-6 h-6 mr-2 rounded-xl transition duration-75 group-hover:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    User
+                                </a>
+                            </li>
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="rtl:rotate-180 w-3 h-3 text-blue-950 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                    </svg>
+                                    <span class="ms-1 text-sm font-semibold text-blue-950 md:ms-2">Dosen/Tendik</span>
+                                </div>
+                            </li>
+                        </ol>
+                    </nav>   
+                    <div class="flex items-center lg:order-2">
+                        <!-- INII Notifications -->
+                        <button type="button" data-dropdown-toggle="notification-dropdown" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                            <span class="sr-only">View notifications</span>
+                            <!-- Bell icon -->
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>
+                        </button>
+                        <!-- Dropdown notifikasi -->
+                        <div class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg" id="notification-dropdown">
+                            <div class="block py-3 px-4 text-base font-medium text-center bg-gray-100">
+                                Notifications
+                            </div>
+                            <div>
+                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                                <div class="flex-shrink-0">
+                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Green avatar">
+                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 rounded-full border border-white bg-primary-700">
+                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18"><path d="M15.977.783A1 1 0 0 0 15 0H3a1 1 0 0 0-.977.783L.2 9h4.239a2.99 2.99 0 0 1 2.742 1.8 1.977 1.977 0 0 0 3.638 0A2.99 2.99 0 0 1 13.561 9H17.8L15.977.783ZM6 2h6a1 1 0 1 1 0 2H6a1 1 0 0 1 0-2Zm7 5H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Z"/><path d="M1 18h16a1 1 0 0 0 1-1v-6h-4.439a.99.99 0 0 0-.908.6 3.978 3.978 0 0 1-7.306 0 .99.99 0 0 0-.908-.6H0v6a1 1 0 0 0 1 1Z"/></svg>
+                                </div>
+                                </div>
+                                <div class="pl-3 w-full">
+                                    <div class="text-gray-500 font-normal text-sm mb-1.5">New message from <span class="font-semibold text-gray-900">Bonnie Green</span>: "Hey, what's up? All set for the presentation?"</div>
+                                    <div class="text-xs font-medium text-primary-700">a few moments ago</div>
+                                </div>
+                            </a>
+                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                                <div class="flex-shrink-0">
+                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="Jese Leos avatar">
+                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-gray-900 rounded-full border border-white">
+                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z"/></svg>
+                                </div>
+                                </div>
+                                <div class="pl-3 w-full">
+                                    <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Jese leos</span> and <span class="font-medium text-gray-900">5 others</span> started following you.</div>
+                                    <div class="text-xs font-medium text-primary-700">10 minutes ago</div>
+                                </div>
+                            </a>
+                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                                <div class="flex-shrink-0">
+                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png" alt="Joseph McFall avatar">
+                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-red-600 rounded-full border border-white dark:border-gray-700">
+                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"> <path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/> </svg>                      
+                                </div>
+                                </div>
+                                <div class="pl-3 w-full">
+                                    <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Joseph Mcfall</span> and <span class="font-medium text-gray-900">141 others</span> love your story. See it and view more stories.</div>
+                                    <div class="text-xs font-medium text-primary-700">44 minutes ago</div>
+                                </div>
+                            </a>
+                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
+                                <div class="flex-shrink-0">
+                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png" alt="Roberta Casas image">
+                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-green-400 rounded-full border border-white">
+                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z"/></svg>
+                                </div>
+                                </div>
+                                <div class="pl-3 w-full">
+                                    <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Leslie Livingston</span> mentioned you in a comment: <span class="font-medium text-primary-700">@bonnie.green</span> what do you say?</div>
+                                    <div class="text-xs font-medium text-primary-700 dark:text-primary-400">1 hour ago</div>
+                                </div>
+                            </a>
+                            </div>
+                            <a href="#" class="block py-2 text-base font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100">
+                                <div class="inline-flex items-center ">
+                                <svg aria-hidden="true" class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+                                View all
+                                </div>
+                            </a>
+                        </div>
+                        <!-- INII Profile -->
+                        <button type="button" class="flex mx-3 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
+                            <span class="sr-only">Open user menu</span>
+                            <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                        </button>
+                        <!-- Dropdown profile -->
+                        <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow" id="dropdown">
+                            <div class="py-3 px-4">
+                                <span class="block text-sm font-semibold text-gray-900 ">Davin Alifianda</span>
+                                <span class="block text-sm text-gray-500 truncate ">admin@adm.polines.ac.id</span>
+                            </div>
+                            <ul class="py-1 text-gray-500 " aria-labelledby="dropdown">
+                                <li>
+                                    <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100">My profile</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100">Sign out</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- CONTENT INII REAL CUY -->
+            <div class="flex justify-between">
+                <!-- Bagian yang tidak akan tergulir -->
+                <p class="p-2 text-gray-500" style="font-size: 10px;">Update terakhir: 1 September 2024 (20:00 WIB)</p>
+                <p class="p-2 text-gray-500" style="font-size: 10px;">Σ Jumlah: 2000 Mahasiswa</p>
+            </div>
+        
+            <div class="bg-white p-4 border-2 border-gray-200 border-dashed rounded-lg" style="height: 530px;">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="font-bold p-0 whitespace-nowrap">Data Mahasiswa</p>
+                        <p class="text-xs p-0 text-gray-500">Detail Mahasiswa</p>
+                    </div>
+                    <div class="ml-auto">
+                        <button class="text-sm text-gray-600 mr-4">+ Tambah</button>
+                    </div>
+                    <form class="flex-grow max-w-sm">
+                        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                </svg>
+                            </div>
+                            <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="nama, nim, jurusan, atau prodi.." required onkeyup="searchTable()" />
+                        </div>
+                    </form>
+                </div>
+        
+                <!-- Area yang bisa di-scroll -->
+                <div class="mt-4 overflow-y-auto" style="max-height: 450px;">
+                    <table id="student-table" class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <tbody>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Rahwa Arduinoto</div>
+                                        <div class="font-medium text-black">ID: 1992873</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <!-- Tambahkan baris lainnya... -->
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Ghifari Yanuar</div>
+                                        <div class="font-medium text-black">ID: 782091</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Maulana Fajar Rohmani</div>
+                                        <div class="font-medium text-black">ID: 43323017</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Irma Inayah</div>
+                                        <div class="font-medium text-black">ID: 433230024</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Khilda S.A.</div>
+                                        <div class="font-medium text-black">ID: 43323000</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function searchTable() {
+                 let input = document.getElementById('default-search').value.toLowerCase();
+                 let table = document.getElementById('student-table');
+                 let rows = table.getElementsByTagName('tr');
+                 let visibleRowIndex = 0;
+     
+                 for (let i = 0; i < rows.length; i++) {
+                     let row = rows[i];
+                     let text = row.innerText.toLowerCase();
+     
+                     // Jika teks sesuai dengan input, tampilkan baris; jika tidak, sembunyikan
+                     if (text.includes(input)) {
+                         row.style.display = '';  // Tampilkan baris
+                         // Bersihkan kelas lama
+                         row.classList.remove('even', 'odd');
+                         
+                         // Terapkan kelas 'odd' atau 'even' berdasarkan indeks baris yang terlihat
+                         if (visibleRowIndex % 2 === 0) {
+                             row.classList.add('even');
+                         } else {
+                             row.classList.add('odd');
+                         }
+                         visibleRowIndex++;  // Tingkatkan indeks hanya untuk baris yang terlihat
+                     } else {
+                         row.style.display = 'none';  // Sembunyikan baris
+                     }
+                 }
+             }
+     
+     
+             function applyRowAlternatingColors() {
+                 let table = document.getElementById('student-table');
+                 let rows = table.getElementsByTagName('tr');
+                 let visibleRowIndex = 0;
+     
+                 for (let i = 0; i < rows.length; i++) {
+                     let row = rows[i];
+                     // Bersihkan kelas lama
+                     row.classList.remove('even', 'odd');
+                     
+                     // Terapkan kelas 'odd' atau 'even' berdasarkan indeks baris yang terlihat
+                     if (visibleRowIndex % 2 === 0) {
+                         row.classList.add('even');
+                     } else {
+                         row.classList.add('odd');
+                     }
+                     visibleRowIndex++;  // Tingkatkan indeks hanya untuk baris yang terlihat
+                 }
+             }
+     
+             // Panggil fungsi ini ketika halaman dimuat
+             window.onload = function() {
+                 applyRowAlternatingColors();
+             }
+        </script>
+ 
+  
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    </body>
+</html>
