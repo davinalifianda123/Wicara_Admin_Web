@@ -165,7 +165,7 @@
                             <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
                                 <div class="flex-shrink-0">
                                 <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png" alt="Joseph McFall avatar">
-                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-red-600 rounded-full border border-white dark:border-gray-700">
+                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-red-600 rounded-full border border-white">
                                     <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"> <path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/> </svg>                      
                                 </div>
                                 </div>
@@ -183,7 +183,7 @@
                                 </div>
                                 <div class="pl-3 w-full">
                                     <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Leslie Livingston</span> mentioned you in a comment: <span class="font-medium text-primary-700">@bonnie.green</span> what do you say?</div>
-                                    <div class="text-xs font-medium text-primary-700 dark:text-primary-400">1 hour ago</div>
+                                    <div class="text-xs font-medium text-primary-700">1 hour ago</div>
                                 </div>
                             </a>
                             </div>
@@ -217,7 +217,7 @@
                             </ul>
                         </div>
                         <!-- Halaman Profil -->
-                    <div id="profile-section" class="hidden absolute right-0 mt-2 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+                    <div id="profile-section" class="hidden absolute right-0 mt-2 w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8">
                         <!-- Tombol Kembali -->
                         <div class="flex justify-end mb-4">
                             <button onclick="goBack()" class="flex items-center text-sm text-blue-500 hover:underline">
@@ -228,20 +228,20 @@
                             </button>
                         </div>
 
-                        <h5 class="text-xl font-medium text-gray-900 dark:text-white mb-4">Profil</h5>
+                        <h5 class="text-xl font-medium text-gray-900">Profil</h5>
 
                         <div class="flex items-center mb-4">
                             <img class="w-32 h-32 rounded-full object-cover" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Foto Profil">
                             <div class="ml-6">
-                                <p class="text-lg font-medium text-gray-900 dark:text-white">Foto Profil</p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">Pastikan gunakan foto dengan ukuran minimal 0x0 piksel, maksimal 0MB. Gunakan file PNG atau JPG.</p>
+                                <p class="text-lg font-medium text-gray-900">Foto Profil</p>
+                                <p class="text-sm text-gray-500">Pastikan gunakan foto dengan ukuran minimal 0x0 piksel, maksimal 0MB. Gunakan file PNG atau JPG.</p>
                                 <!-- Label Edit -->
                             <label for="profile-picture-upload" class="flex items-center mt-2 text-yellow-600 hover:text-yellow-500 cursor-pointer">
                                 <svg class="w-6 h-6 text-yellow-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
                                     <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
                                   </svg>                                  
-                                <span class="text-gray-500 font-medium">Edit</span>
+                                <span class="text-gray-500 font-medium">Ganti Profile</span>
                             </label>
                             <input id="profile-picture-upload" type="file" accept="image/png, image/jpeg" class="hidden">
                             </div>
@@ -249,30 +249,43 @@
 
                         <form class="space-y-4 flex flex-col justify-between h-full">
                             <div>
-                                <label for="admin-id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Admin</label>
-                                <input type="text" name="admin-id" id="admin-id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Masukan ID anda" required />
+                                <label for="admin-id" class="block mb-2 text-sm font-medium text-gray-900">ID Admin</label>
+                                <input type="text" name="admin-id" id="admin-id" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="43323020"  required />
                             </div>
                             <div>
-                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama</label>
-                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Masukan nama anda" required />
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
+                                <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Muhammad Syauqi" required />
                             </div>
                             <div>
-                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Masukan email anda" required />
+                                <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+                                <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Killua@gmail.com" required />
+                            </div>
+                            <div class="relative">
+                                <label for="" class="block mb-2 text-sm font-medium text-gray-900">Kata Sandi</label>
+                                <input type="" name="password" id="password" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" required />
+                        
+                                <!-- Tombol untuk menampilkan/menyembunyikan password -->
+                                <button type="button" id="togglePassword" class="absolute right-3 top-9 flex items-center">
+                                    <svg id="eyeIconOpen" class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <!-- Icon mata terbuka -->
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                    </svg>
+                                    <svg id="eyeIconClosed" class="hidden w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <!-- Icon mata tertutup -->
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                    </svg>
+                                </button>
                             </div>
                             <div>
-                                <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kata Sandi</label>
-                                <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Masukan kata sandi" required />
+                                <label for="role" class="block mb-2 text-sm font-medium text-gray-900">Role</label>
+                                <input type="text" name="role" id="role" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Super-Admin" required />
                             </div>
-                            <div>
-                                <label for="role" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
-                                <input type="text" name="role" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" placeholder="Masukan Role anda" required />
-                            </div>
-                            
+
                             <!-- Tombol Simpan -->
                             <div class="flex justify-end">
                                 <button type="button" class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
-                                    <svg class="w-6 h-6 text-gray-50 mr-2 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-6 h-6 text-gray-50 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm10 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7V5h8v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
                                       </svg>
                                       <span>Simpan</span>
@@ -301,6 +314,21 @@
                     function goBack() {
                         document.getElementById('profile-section').classList.add('hidden');
                     }
+                    const passwordInput = document.getElementById('password');
+                    const togglePasswordButton = document.getElementById('togglePassword');
+                    const eyeIconOpen = document.getElementById('eyeIconOpen');
+                    const eyeIconClosed = document.getElementById('eyeIconClosed');
+
+                    togglePasswordButton.addEventListener('click', function () {
+                        const isPasswordVisible = passwordInput.type === 'password';
+
+                        // Toggle password visibility
+                        passwordInput.type = isPasswordVisible ? 'text' : 'password';
+
+                        // Toggle icons
+                        eyeIconOpen.classList.toggle('hidden', !isPasswordVisible);
+                        eyeIconClosed.classList.toggle('hidden', isPasswordVisible);
+                    });
                 </script>
 
             <!-- CONTENT INII REAL CUY -->
