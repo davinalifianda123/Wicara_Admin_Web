@@ -8,6 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
         <style>
             body {
@@ -20,6 +21,38 @@
                 background: rgb(6,10,71);
                 background: linear-gradient(135deg, rgba(6,10,71,1) 0%, rgba(25,48,109,1) 100%);
             }
+
+            .tab-button {
+            transition: color 0.3s, border-bottom 0.3s;
+            }
+            .tab-button.active {
+                color: #fbbf24; /* yellow-500 */
+                border-bottom: 2px solid #fbbf24; /* yellow-500 */
+            }
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 10;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+                max-width: 400px;
+                text-align: center;
+            }
+            #notificationSidebar {
+                z-index: 10;
+            }
+
         </style>
     </head>
     <body>
@@ -131,73 +164,41 @@
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
-                        <button type="button" data-dropdown-toggle="notification-dropdown" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                        <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
                             <span class="sr-only">View notifications</span>
                             <!-- Bell icon -->
                             <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>
                         </button>
-                        <!-- Dropdown notifikasi -->
-                        <div class="hidden overflow-hidden z-50 my-4 max-w-sm text-base list-none bg-white rounded divide-y divide-gray-100 shadow-lg" id="notification-dropdown">
-                            <div class="block py-3 px-4 text-base font-medium text-center bg-gray-100">
-                                Notifications
+                        <div id="notificationSidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 overflow-y-auto">
+                            <div class="sticky top-0 bg-white z-10">
+                                <div class="border-b border-gray-200 p-4 flex justify-between items-center">
+                                    <button id="closeSidebarButton" class="text-gray-500 text-2xl">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </button>
+                                    <h1 class="text-center text-xl font-bold flex-1">Notifikasi</h1>
+                                </div>
+                                <div class="flex justify-around border-b border-gray-200 overflow-x-auto">
+                                    <button id="tab-semua" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('semua')">Semua</button>
+                                    <button id="tab-pengaduan" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('pengaduan')">Pengaduan</button>
+                                    <button id="tab-kehilangan" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('kehilangan')">Kehilangan</button>
+                                    <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
+                                </div>
                             </div>
-                            <div>
-                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
-                                <div class="flex-shrink-0">
-                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Green avatar">
-                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 rounded-full border border-white bg-primary-700">
-                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18"><path d="M15.977.783A1 1 0 0 0 15 0H3a1 1 0 0 0-.977.783L.2 9h4.239a2.99 2.99 0 0 1 2.742 1.8 1.977 1.977 0 0 0 3.638 0A2.99 2.99 0 0 1 13.561 9H17.8L15.977.783ZM6 2h6a1 1 0 1 1 0 2H6a1 1 0 0 1 0-2Zm7 5H5a1 1 0 0 1 0-2h8a1 1 0 1 1 0 2Z"/><path d="M1 18h16a1 1 0 0 0 1-1v-6h-4.439a.99.99 0 0 0-.908.6 3.978 3.978 0 0 1-7.306 0 .99.99 0 0 0-.908-.6H0v6a1 1 0 0 0 1 1Z"/></svg>
-                                </div>
-                                </div>
-                                <div class="pl-3 w-full">
-                                    <div class="text-gray-500 font-normal text-sm mb-1.5">New message from <span class="font-semibold text-gray-900">Bonnie Green</span>: "Hey, what's up? All set for the presentation?"</div>
-                                    <div class="text-xs font-medium text-primary-700">a few moments ago</div>
-                                </div>
-                            </a>
-                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
-                                <div class="flex-shrink-0">
-                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png" alt="Jese Leos avatar">
-                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-gray-900 rounded-full border border-white">
-                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Zm11-3h-2V5a1 1 0 0 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 0 0 2 0V9h2a1 1 0 1 0 0-2Z"/></svg>
-                                </div>
-                                </div>
-                                <div class="pl-3 w-full">
-                                    <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Jese leos</span> and <span class="font-medium text-gray-900">5 others</span> started following you.</div>
-                                    <div class="text-xs font-medium text-primary-700">10 minutes ago</div>
-                                </div>
-                            </a>
-                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
-                                <div class="flex-shrink-0">
-                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png" alt="Joseph McFall avatar">
-                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-red-600 rounded-full border border-white dark:border-gray-700">
-                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"> <path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z"/> </svg>                      
-                                </div>
-                                </div>
-                                <div class="pl-3 w-full">
-                                    <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Joseph Mcfall</span> and <span class="font-medium text-gray-900">141 others</span> love your story. See it and view more stories.</div>
-                                    <div class="text-xs font-medium text-primary-700">44 minutes ago</div>
-                                </div>
-                            </a>
-                            <a href="#" class="flex py-3 px-4 border-b hover:bg-gray-100">
-                                <div class="flex-shrink-0">
-                                <img class="w-11 h-11 rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png" alt="Roberta Casas image">
-                                <div class="flex absolute justify-center items-center ml-6 -mt-5 w-5 h-5 bg-green-400 rounded-full border border-white">
-                                    <svg class="w-2 h-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18"><path d="M18 0H2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h2v4a1 1 0 0 0 1.707.707L10.414 13H18a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5 4h2a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2ZM5 4h5a1 1 0 1 1 0 2H5a1 1 0 0 1 0-2Zm2 5H5a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Zm9 0h-6a1 1 0 0 1 0-2h6a1 1 0 1 1 0 2Z"/></svg>
-                                </div>
-                                </div>
-                                <div class="pl-3 w-full">
-                                    <div class="text-gray-500 font-normal text-sm mb-1.5"><span class="font-semibold text-gray-900">Leslie Livingston</span> mentioned you in a comment: <span class="font-medium text-primary-700">@bonnie.green</span> what do you say?</div>
-                                    <div class="text-xs font-medium text-primary-700 dark:text-primary-400">1 hour ago</div>
-                                </div>
-                            </a>
+                            <div id="notifications" class="p-4">
+                                <!-- Notifications will be dynamically inserted here -->
                             </div>
-                            <a href="#" class="block py-2 text-base font-medium text-center text-gray-900 bg-gray-50 hover:bg-gray-100">
-                                <div class="inline-flex items-center ">
-                                <svg aria-hidden="true" class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
-                                View all
-                                </div>
-                            </a>
                         </div>
+                    
+                        <div id="confirmationModal" class="modal">
+                            <div class="modal-content">
+                                <p>Apakah anda yakin?</p>
+                                <div class="flex justify-center space-x-4 mt-4">
+                                    <button id="confirmYes" class="bg-green-500 text-white py-1 px-3 rounded">Ya</button>
+                                    <button id="confirmNo" class="bg-red-500 text-white py-1 px-3 rounded">Batal</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- INII Profile -->
                         <button type="button" class="flex mx-2 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                             <span class="sr-only">Open user menu</span>
@@ -371,5 +372,89 @@
                 modal.classList.remove('flex');
             });
         </script>
+        <!-- INII SCRIPT NOTIF -->
+        <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
+        <script>
+            const notifications = [
+                { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
+                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=4' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=5' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=8' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=9' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=10' },
+                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=11' }
+            ];
+    
+            document.getElementById('notificationButton').addEventListener('click', () => {
+                document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
+            });
+    
+            document.getElementById('closeSidebarButton').addEventListener('click', () => {
+                document.getElementById('notificationSidebar').classList.add('translate-x-full');
+            });
+    
+            function filterNotifications(type) {
+                const container = document.getElementById('notifications');
+                container.innerHTML = '';
+                const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
+                filteredNotifications.forEach(notification => {
+                    const notificationElement = document.createElement('div');
+                    notificationElement.classList.add('flex', 'items-center', 'mb-4');
+                    notificationElement.innerHTML = `
+                        <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+                        <div class="flex-1">
+                            <h2 class="font-bold">${notification.title}</h2>
+                            <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
+                            ${notification.type === 'rating' ? `<div class="text-yellow-500">${'<i class="fas fa-star"></i>'.repeat(notification.rating)}${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}</div>` : ''}
+                            ${notification.type === 'kehilangan' ? `
+                                <div class="flex space-x-2 mt-2">
+                                    <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
+                                    <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    container.appendChild(notificationElement);
+                });
+    
+                // Update tab button styles
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                    button.classList.add('text-gray-500');
+                });
+                document.getElementById(`tab-${type}`).classList.add('active');
+            }
+    
+            function showConfirmationDialog(action) {
+                const modal = document.getElementById('confirmationModal');
+                modal.style.display = 'block';
+    
+                document.getElementById('confirmYes').onclick = () => {
+                    alert(`${action} berhasil!`);
+                    modal.style.display = 'none';
+                };
+    
+                document.getElementById('confirmNo').onclick = () => {
+                    modal.style.display = 'none';
+                };
+            }
+    
+            // Initialize with all notifications
+            filterNotifications('semua');
+    
+            // Close the modal when clicking outside of it
+            window.onclick = function(event) {
+                const modal = document.getElementById('confirmationModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+        </script>
+        <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+
     </body>
 </html>
