@@ -361,7 +361,7 @@
                 </thead>
                 <tbody id="table-body" class="bg-white">
                   <!-- Contoh data -->
-                  <tr class="border-b">
+                  <tr data-id="A09876" class="border-b">
                     <td class="px-6 py-3">1</td>
                     <td class="px-6 py-3">A09876</td>
                     <td class="px-6 py-3">Hape Hilang</td>
@@ -369,12 +369,43 @@
                     <td class="px-6 py-3">Samsung J2 Prime</td>
                     <td class="px-6 py-3">Lorem Ipsum...</td>
                     <td class="px-6 py-3">
-                      <span class="bg-red-200 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">Hilang</span>
+                      <span class="status-label bg-red-200 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Hilang</span>
                     </td>
                     <td class="px-6 py-3">
                       <button class="ellipsis-btn text-gray-500 focus:outline-none">&#8230;</button>
                     </td>
                   </tr>
+
+                  <tr data-id="A09876" class="border-b">
+                    <td class="px-6 py-3">2</td>
+                    <td class="px-6 py-3">A09879</td>
+                    <td class="px-6 py-3">Laptop Hilang</td>
+                    <td class="px-6 py-3">13-10-2024</td>
+                    <td class="px-6 py-3">Lenovo Region</td>
+                    <td class="px-6 py-3">warna putih ada sticker upin ipinnya</td>
+                    <td class="px-6 py-3">
+                      <span class="status-label bg-green-200 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Ditemukan</span>
+                    </td>
+                    <td class="px-6 py-3">
+                      <button class="ellipsis-btn text-gray-500 focus:outline-none">&#8230;</button>
+                    </td>
+                  </tr>
+
+                  <tr data-id="A09876" class="border-b">
+                    <td class="px-6 py-3">3</td>
+                    <td class="px-6 py-3">A098781</td>
+                    <td class="px-6 py-3">Photo Card</td>
+                    <td class="px-6 py-3">26-10-2024</td>
+                    <td class="px-6 py-3">Photo Card Karina Aespa</td>
+                    <td class="px-6 py-3">Photo Card Karina Aespa warna titanium lemited edition</td>
+                    <td class="px-6 py-3">
+                      <span class="status-label bg-yellow-200 text-yellow-700 text-xs font-medium px-2.5 py-0.5 rounded"> Belum Ditemukan</span>
+                    </td>
+                    <td class="px-6 py-3">
+                      <button class="ellipsis-btn text-gray-500 focus:outline-none">&#8230;</button>
+                    </td>
+                  </tr>
+
                   <!-- Tambahkan baris lainnya -->
                 </tbody>
               </table>
@@ -383,45 +414,134 @@
 
           <!-- Modal -->
           <div id="modal" class="modal">
-            <div class="modal-content">
+            <div class="modal-content max-w-4xl p-6">
               <span class="close">&times;</span>
-              <h2>Form Laporan Kehilangan</h2>
+              <div class="grid grid-cols-1">
+                <label class="font-medium py-4 text-lg">Form Laporan Kehilangan</label>
+              </div>
               <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label>ID Laporan</label>
-                  <input type="text" value="09000647839" class="border border-gray-300 rounded-lg p-2 w-full" />
+                <div class="grid grid-cols-1 gap-4">
+                  <div>
+                    <label>ID Laporan</label>
+                    <input type="text" value="09000647839" disabled class="block border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+                  </div>
+                  <div>
+                    <label>User</label>
+                    <input type="text" value="Miaauw@polines.ac.id" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+                  </div>
+                  <div>
+                    <label>Judul Laporan</label>
+                    <input type="text" value="Hapeku Hilang" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+                  </div>
+                  <div>
+                    <label>Jenis Barang</label>
+                    <input type="text" value="Samsung J2 Prime" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+                  </div>
+                  <div>
+                    <label>Tanggal Laporan</label>
+                    <input type="text" value="01-09-2024" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+                  </div>
+                  <div>
+                    <label>Status Laporan</label>
+                    <select id="status-laporan" class="border border-gray-300 rounded-lg p-2 w-full">
+                      <option value="hilang">Hilang</option>
+                      <option value="ditemukan">Ditemukan</option>
+                      <option value="proses">Proses</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label>Lokasi</label>
+                    <input type="text" value="Polines" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+                  </div>
                 </div>
-                <div>
-                  <label>User</label>
-                  <input type="text" value="Miaauw@polines.ac.id" class="border border-gray-300 rounded-lg p-2 w-full" />
-                </div>
-                <div>
-                  <label>Judul Laporan</label>
-                  <input type="text" value="Hapeku Hilang" class="border border-gray-300 rounded-lg p-2 w-full" />
-                </div>
-                <div>
-                  <label>Jenis Barang</label>
-                  <input type="text" value="Samsung J2 Prime" class="border border-gray-300 rounded-lg p-2 w-full" />
-                </div>
-                <div>
-                  <label>Tanggal Laporan</label>
-                  <input type="text" value="01-09-2024" class="border border-gray-300 rounded-lg p-2 w-full" />
-                </div>
-                <div>
-                  <label>Status Laporan</label>
-                  <input type="text" value="Hilang" class="border border-gray-300 rounded-lg p-2 w-full" />
-                </div>
-                <div>
-                  <label>Lokasi</label>
-                  <input type="text" value="Polines" class="border border-gray-300 rounded-lg p-2 w-full" />
-                </div>
-                <div>
-                  <label>Deskripsi Laporan</label>
-                  <textarea class="border border-gray-300 rounded-lg p-2 w-full">Lorem ipsum ale ale ale</textarea>
+
+                <div class="grid grid-cols-1 gap-4">
+                  <img src="assets/laptop.jpg" class="h-auto max-w-xs" alt="Laptop" />
                 </div>
               </div>
+
+              <!-- Description section at the bottom -->
+              <div class="grid grid-cols-1 gap-4">
+                <label>Deskripsi Laporan</label>
+                <textarea disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200 h-32">
+          Lorem ipsum ale ale ale...
+                </textarea>
+              </div>
+
               <div class="flex justify-end mt-4">
-                <button class="bg-red-500 text-white px-4 py-2 rounded-lg focus:outline-none">Hapus</button>
+                <button
+                  data-modal-target="popup-modal-simpan"
+                  data-modal-toggle="popup-modal-simpan"
+                  class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  type="button"
+                >
+                  Simpan
+                </button>
+
+                <div id="popup-modal-simpan" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                  <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                      <button
+                        type="button"
+                        class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="popup-modal-simpan"
+                      >
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close</span>
+                      </button>
+                      <div class="p-4 md:p-5 text-center">
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menyimpan perubahan?</h3>
+                        <button data-modal-hide="popup-modal-simpan" type="button" class="bg-blue-500 text-white px-4 py-2 rounded-lg focus:outline-none">Simpan</button>
+                        <button
+                          data-modal-hide="popup-modal-simpan"
+                          type="button"
+                          class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        >
+                          Batal
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  data-modal-target="popup-modal-hapus"
+                  data-modal-toggle="popup-modal-hapus"
+                  class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red- ml-4"
+                  type="button"
+                >
+                  Hapus
+                </button>
+
+                <div id="popup-modal-hapus" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                  <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                      <button
+                        type="button"
+                        class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="popup-modal-hapus"
+                      >
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close </span>
+                      </button>
+                      <div class="p-4 md:p-5 text-center">
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menghapus laporan ini?</h3>
+                        <button data-modal-hide="popup-modal-hapus" type="button" class="bg-red-500 text-white px-4 py-2 rounded-lg focus:outline-none">Hapus</button>
+                        <button
+                          data-modal-hide="popup-modal-hapus"
+                          type="button"
+                          class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                        >
+                          Batal
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -496,6 +616,43 @@
         if (event.target == modal) {
           modal.style.display = "none";
         }
+      });
+
+      // Event listener pada tombol "Simpan" di modal
+      document.getElementById("save-btn").addEventListener("click", function () {
+        // Ambil nilai status dari select dropdown di modal
+        const statusLaporan = document.getElementById("status-laporan").value;
+
+        // Ambil ID laporan dari modal (misalnya dari input hidden atau input field lain)
+        const idLaporan = document.querySelector("input[name='id-laporan']").value;
+
+        // Cari baris tabel yang sesuai dengan ID laporan
+        const row = document.querySelector(`tr[data-id="${idLaporan}"]`);
+
+        // Jika baris ditemukan
+        if (row) {
+          // Ambil elemen span untuk status di dalam kolom status
+          const statusLabel = row.querySelector(".status-label");
+
+          // Reset teks dan class status sebelumnya
+          statusLabel.textContent = ""; // Hapus teks lama
+          statusLabel.className = "status-label text-xs font-medium px-2.5 py-0.5 rounded"; // Reset class
+
+          // Perbarui status berdasarkan pilihan dari dropdown di modal
+          if (statusLaporan === "hilang") {
+            statusLabel.textContent = "Hilang"; // Isi teks dengan "Hilang"
+            statusLabel.classList.add("bg-red-200", "text-red-800"); // Tambahkan kelas warna untuk status hilang
+          } else if (statusLaporan === "ditemukan") {
+            statusLabel.textContent = "Ditemukan"; // Isi teks dengan "Ditemukan"
+            statusLabel.classList.add("bg-green-200", "text-green-800"); // Tambahkan kelas warna untuk status ditemukan
+          } else if (statusLaporan === "proses") {
+            statusLabel.textContent = "Proses"; // Isi teks dengan "Proses"
+            statusLabel.classList.add("bg-yellow-200", "text-yellow-800"); // Tambahkan kelas warna untuk status proses
+          }
+        }
+
+        // Tutup modal setelah penyimpanan (optional)
+        document.getElementById("modal").style.display = "none";
       });
     </script>
   </body>
