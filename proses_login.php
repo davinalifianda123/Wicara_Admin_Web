@@ -1,4 +1,3 @@
-// proses_login.php
 <?php
     $host = "localhost";
     $username = "root";
@@ -26,7 +25,7 @@
         $_SESSION["email"] = $username;
         header("Location: Dashboard.php");
     } else {
-        echo "Username atau password salah";
+        echo $err;
     }
 
     $conn->close();

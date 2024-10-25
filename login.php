@@ -20,7 +20,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 size-full bg-[rgb(249,249,249)]">
         <!-- Info -->
         <div class="bg-[#070D59] rounded-b-[50px] md:rounded-r-[50px] md:rounded-b-none relative overflow-clip">
-          <img src="assets/Pattern_1.png" alt="" class="absolute size-full">
+          <img src="assets/Pattern-cover.png" alt="" class="hidden md:block absolute size-full">
           <div class="pt-12 pl-12 size-full">
             <div class="bg-white w-44 h-12 rounded-full flex items-center justify-center">
               <img src="assets/Polines.png" alt="" class="h-7 w-auto">
@@ -33,27 +33,27 @@
           </div> 
         </div>
         <!-- Form Login -->
-        <div class="bg-[#F9F9F9] md:pt-12 pl-12 relative overflow-clip">
-          <div class="mt-24">
-            <p class="text-blue-950 text-4xl font-bold">LOGIN</p>
+        <div class="bg-[#F9F9F9] flex flex-col items-center relative overflow-clip">
+          <div class="mt-24 mx-6 md:ml-8">
+            <p class="text-blue-950 text-xl md:text-4xl font-bold">LOGIN</p>
             <p class="text-black italic mt-2">Selamat Datang di Platform Aspirasi dan Rating Akademik!</p>  
           </div>       
             <form action="proses_login.php" method="post" class="w-[80%] mt-7">
               <div class="mb-5">
                 <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
-                <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 p-2.5" placeholder="email@gmail.com" required />
+                <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 px-4 py-2.5" placeholder="email@gmail.com" required />
               </div>
               <div class="mb-5 relative">
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 p-2.5" placeholder="••••••••" />
+                <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 px-4 py-2.5" placeholder="••••••••" />
 
                 <!-- Tombol untuk menampilkan/menyembunyikan password -->
-                <button type="button" id="togglePassword" class="absolute right-3 top-10 flex items-center">
-                  <svg id="eyeIconClosed" class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <button type="button" id="togglePassword" class="absolute right-4 top-10 flex items-center">
+                  <svg id="eyeIconClosed" class="w-6 h-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <!-- Icon mata tertutup -->
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
                   </svg>
-                  <svg id="eyeIconOpen" class="hidden w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <svg id="eyeIconOpen" class="hidden w-6 h-6 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <!-- Icon mata terbuka -->
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                       <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
