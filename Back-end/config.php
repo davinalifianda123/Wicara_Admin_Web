@@ -11,6 +11,7 @@
                 echo "Koneksi database gagal : " . mysqli_connect_error();
             }
         }
+        
         function tampil_data()
         {
             $data = mysqli_query($this->koneksi, "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
@@ -168,11 +169,35 @@
             VALUES ('$id_jenis_kejadian','$id_user', '$id_instansi', '$isi_komentar', '$tanggal', '$skala_bintang')");
         }
 //FORM USER
-        function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role)
+        function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image)
         { 
-            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role) 
-            VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role')");
+            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, image) 
+            VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image')");
         }
+        function edit_user_with_image($id_user, $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path) {
+            if ($image_path) {
+                // Jika ada gambar baru yang diunggah, perbarui juga kolom 'image'
+                $stmt = $this->koneksi->prepare("UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, email=?, password=?, role=?, image=? WHERE id_user=?");
+                $stmt->bind_param("sssssssi", $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path, $id_user);
+            } else {
+                // Jika tidak ada gambar baru, update data kecuali kolom 'image'
+                $stmt = $this->koneksi->prepare("UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, email=?, password=?, role=? WHERE id_user=?");
+                $stmt->bind_param("ssssssi", $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $id_user);
+            }
+        
+            // Eksekusi query
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        
+            // Tutup statement
+            $stmt->close();
+        }
+        
+        
+
 //EDIT KEHILANGAN, PENGADUAN DAN ULASAN
         function kode_kejadian($id_kejadian){
             $data = mysqli_query($this->koneksi,"select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
@@ -206,10 +231,11 @@
             mysqli_query($this->koneksi,"UPDATE kejadian set id_jenis_kejadian = '$id_jenis_kejadian', id_user = '$id_user', id_instansi = '$id_instansi',
                                                         isi_komentar = '$isi_komentar', tanggal = '$tanggal', skala_bintang = '$skala_bintang' Where id_kejadian = $id_kejadian");
         }
+
         function hapus_data($id_kejadian)
         {
             mysqli_query($this->koneksi,"DELETE from kejadian where id_kejadian = '$id_kejadian'");
-        }
+        }  
         
     }
 

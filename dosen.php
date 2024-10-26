@@ -1,9 +1,25 @@
+<?php
+    // buat update profile
+    session_start();
+    include './Back-end/config.php';
+    $db = new database();
+
+    if (!isset($_SESSION['id_user'])) {
+        header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
+    }
+
+    $id_user = $_SESSION['id_user'];
+    $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
+    $user = mysqli_fetch_assoc($user_data);
+    $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pengaduan</title>
+        <title>Dashboard</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,14 +29,26 @@
         <style>
             body {
                 font-family: 'Poppins', sans-serif !important;
-                background-image: url('assets/Pattern-cover.png');
+                background-image: url('assets/Pattern_1.png');
                 background-size: cover;
-                background-color: #F6F6F6;
+                background-color: #f9f9f9;
             }
 
             .color-linear {
                 background: rgb(6,10,71);
                 background: linear-gradient(135deg, rgba(6,10,71,1) 0%, rgba(25,48,109,1) 100%);
+            }
+
+            .max-h-60 {
+                max-height: 240px; /* Set height according to your needs */
+            }
+
+            .even {
+                background-color: #f9f9f9; /* Warna latar untuk baris genap */
+            }
+
+            .odd {
+                background-color: #ffffff; /* Warna latar untuk baris ganjil */
             }
 
             .tab-button {
@@ -69,7 +97,7 @@
                         <p class="ms-5 text-gray-50 font-semibold my-4">Menu</p>
                     </li>
                     <li>
-                        <a href="./Dashboard.html" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                        <a href="./Dashboard.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
                             <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
                             </svg>
@@ -77,29 +105,27 @@
                         </a>
                     </li>
                     <li>
-                        <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group bg-blue-950" aria-controls="dropdown-pengaduan" data-collapse-toggle="dropdown-pengaduan">
-                            <div class="rounded-full p-2 bg-yellow-400">
-                                <svg class="w-6 h-6 text-gray-50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z" clip-rule="evenodd"/>
-                                    <path fill-rule="evenodd" d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z" clip-rule="evenodd"/>
-                                </svg>  
-                            </div>
-                            <a href="./lihat_pengaduan.html" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">Pengaduan</a>
+                        <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-blue-900" aria-controls="dropdown-pengaduan" data-collapse-toggle="dropdown-pengaduan">
+                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M8 7V2.221a2 2 0 0 0-.5.365L3.586 6.5a2 2 0 0 0-.365.5H8Zm2 0V2h7a2 2 0 0 1 2 2v.126a5.087 5.087 0 0 0-4.74 1.368v.001l-6.642 6.642a3 3 0 0 0-.82 1.532l-.74 3.692a3 3 0 0 0 3.53 3.53l3.694-.738a3 3 0 0 0 1.532-.82L19 15.149V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Z" clip-rule="evenodd"/>
+                                <path fill-rule="evenodd" d="M17.447 8.08a1.087 1.087 0 0 1 1.187.238l.002.001a1.088 1.088 0 0 1 0 1.539l-.377.377-1.54-1.542.373-.374.002-.001c.1-.102.22-.182.353-.237Zm-2.143 2.027-4.644 4.644-.385 1.924 1.925-.385 4.644-4.642-1.54-1.54Zm2.56-4.11a3.087 3.087 0 0 0-2.187.909l-6.645 6.645a1 1 0 0 0-.274.51l-.739 3.693a1 1 0 0 0 1.177 1.176l3.693-.738a1 1 0 0 0 .51-.274l6.65-6.646a3.088 3.088 0 0 0-2.185-5.275Z" clip-rule="evenodd"/>
+                            </svg>  
+                            <a href="./lihat_pengaduan.php" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">Pengaduan</a>
                             <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                             </svg>
                         </button>
-                        <ul id="dropdown-pengaduan" class=" py-2 space-y-2">
+                        <ul id="dropdown-pengaduan" class="hidden py-2 space-y-2">
                             <li>
-                                <a href="./lihat_pengaduan.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Lihat Pengaduan</a>
+                                <a href="./lihat_pengaduan.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Lihat Pengaduan</a>
                             </li>
                             <li>
-                                <a href="#" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group text-yellow-400 text-sm">Kategori Pengaduan</a>
+                                <a href="./kategori_pengaduan.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Kategori Pengaduan</a>
                             </li>
                         </ul>  
                     </li>
                     <li>
-                        <a href="./kehilangan.html" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                        <a href="./kehilangan.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
                             <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M9 7V2.221a2 2 0 0 0-.5.365L4.586 6.5a2 2 0 0 0-.365.5H9Zm2 0V2h7a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V9h5a2 2 0 0 0 2-2Zm.5 5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm0 5c.47 0 .917-.092 1.326-.26l1.967 1.967a1 1 0 0 0 1.414-1.414l-1.817-1.818A3.5 3.5 0 1 0 11.5 17Z" clip-rule="evenodd"/>
                             </svg>                                
@@ -107,7 +133,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="./rating.html" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                        <a href="./rating.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
                             <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"/>
                             </svg>    
@@ -118,26 +144,28 @@
                         <p class="ms-5 text-gray-50 font-semibold my-4">Setting</p>
                     </li>
                     <li>
-                        <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 transition duration-75 rounded-lg group hover:bg-blue-900" aria-controls="dropdown-user" data-collapse-toggle="dropdown-user">
-                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                            </svg>    
-                            <a href="./mahasiswa.html" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">User</a>
+                        <button type="button" class="flex items-center w-full p-2 text-base text-gray-50 rounded-lg group bg-blue-950" aria-controls="dropdown-user" data-collapse-toggle="dropdown-user">
+                            <div class="rounded-full p-2 bg-yellow-400">
+                                <svg class="w-6 h-6 text-gray-50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <a href="./mahasiswa.php" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">User</a>
                             <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                             </svg>
                         </button>
-                        <ul id="dropdown-user" class="hidden py-2 space-y-2">
+                        <!-- Mahasiswa - Dosen -->
+                        <ul id="dropdown-user" class="py-2 space-y-2">
                             <li>
-                               <a href="./mahasiswa.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Mahasiswa</a>
+                                <a href="mahasiswa.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Mahasiswa</a>
                             </li>
                             <li>
-                               <a href="./dosen.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Dosen/Tendik</a>
+                               <a href="dosen.php" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group text-yellow-400 text-sm">Dosen/Tendik</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="./unit_layanan.html" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+                        <a href="./unit_layanan.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
                             <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7 3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V9a5 5 0 1 1 10 0v7.083A2.919 2.919 0 0 1 14.083 19H14a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 1.732-1h.351a4.917 4.917 0 0 0 4.83-4H19a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3 7 7 0 0 0-7-7Zm1.45 3.275a4 4 0 0 0-4.352.976 1 1 0 0 0 1.452 1.376 2.001 2.001 0 0 1 2.836-.067 1 1 0 1 0 1.386-1.442 4 4 0 0 0-1.321-.843Z" clip-rule="evenodd"/>
                             </svg>                               
@@ -151,17 +179,28 @@
         <!-- CONTENT INII -->
         <div class="py-4 px-4 sm:ml-64">
             <!-- NAVBAR INII -->
-            <nav class="w-full bg-transparent lg:px-0 pb-4">
+            <nav class="w-full lg:px-0 pb-4">
                 <div class="flex flex-wrap justify-between items-center">
-                    <div class="flex items-center">
-                        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 hover:text-yellow-400">
-                            <span class="sr-only">Open sidebar</span>
-                            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-                            </svg>
-                        </button>
-                        <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">Pengaduan > Kategori Pengaduan</span>
-                    </div>
+                    <nav class="flex justify-center items-center" aria-label="Breadcrumb">
+                        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                            <li class="inline-flex items-center">
+                                <a href="#" class="inline-flex items-center text-sm font-semibold text-blue-950 hover:text-blue-600">
+                                    <svg class="w-6 h-6 mr-2 rounded-xl transition duration-75 group-hover:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
+                                    </svg>
+                                    User
+                                </a>
+                            </li>
+                            <li aria-current="page">
+                                <div class="flex items-center">
+                                    <svg class="rtl:rotate-180 w-3 h-3 text-blue-950 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                                    </svg>
+                                    <span class="ms-1 text-sm font-semibold text-blue-950 md:ms-2">Dosen/Tendik</span>
+                                </div>
+                            </li>
+                        </ol>
+                    </nav>   
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
                         <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
@@ -198,7 +237,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- INII Profile -->
                         <button type="button" class="flex mx-2 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                             <span class="sr-only">Open user menu</span>
@@ -215,7 +253,7 @@
                                     <a href="#profile-section" class="block py-2 px-4 text-sm hover:bg-gray-100">My profile</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100">Sign out</a>
+                                    <a href="./Back-end/proses_logout.php" class="block py-2 px-4 text-sm hover:bg-gray-100">Logout</a>
                                 </li>
                             </ul>
                         </div>
@@ -236,32 +274,31 @@
                     </button>
                 </div>
 
-
                 <div class="flex items-center mb-4">
-                    <img class="w-32 h-32 rounded-full object-cover" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Foto Profil">
+                    <img class="w-32 h-32 bg-gray-300 rounded-full object-cover" src="<?php echo $user_image; ?>" alt="Foto Profil">
                 </div>
-
+                
                 <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label for="admin-id" class="block mb-2 text-sm font-bold text-gray-900">ID Admin</label>
-                        <input type="text" id="admin-id" name="admin-id" class="text-black bg-transparent border-none focus:ring-0 p-0" value="4.33.23.0.20" readonly />
+                        <label for="name" class="block mb-2 text-sm font-bold text-gray-900">Nama</label>
+                        <input type="text" name="name" id="name" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['nama']; ?>" readonly />
                     </div>
                     <div>
-                        <label for="name" class="block mb-2 text-sm font-bold text-gray-900">Nama</label>
-                        <input type="text" name="name" id="name" class="text-black bg-transparent border-none focus:ring-0 p-0" value="Muhammad Syauqi" readonly />
+                        <label for="nomor_induk" class="block mb-2 text-sm font-bold text-gray-900">Nomor Induk</label>
+                        <input type="text" name="nomor_induk" id="nomor_induk" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['nomor_induk']; ?>" readonly />
+                    </div>
+                    <div>
+                        <label for="nomor_telepon" class="block mb-2 text-sm font-bold text-gray-900">Nomor Telepon</label>
+                        <input type="text" name="nomor_telepon" id="nomor_telepon" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['nomor_telepon']; ?>" readonly />
                     </div>
                     <div>
                         <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email</label>
-                        <input type="email" name="email" id="email" class="text-black bg-transparent border-none focus:ring-0 p-0" value="killua@gmail.com" readonly />
+                        <input type="email" name="email" id="email" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['email']; ?>" readonly />
                     </div>
                     <div>
                         <label for="password" class="block mb-2 text-sm font-bold text-gray-900">Kata Sandi</label>
-                        <input type="password" name="password" id="password" class="text-black bg-transparent border-none focus:ring-0 p-0" value="12345678" readonly />
-                    </div>
-                    <div>
-                        <label for="role" class="block mb-2 text-sm font-bold text-gray-900">Role</label>
-                        <input type="text" name="role" id="role" class="text-black bg-transparent border-none focus:ring-0 p-0" value="Super-Admin" readonly />
-                    </div>                        
+                        <input type="password" name="password" id="password" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['password']; ?>" readonly />
+                    </div>                     
                                             
                     <!-- Tombol Edit -->
                     <div class="flex justify-end">
@@ -282,37 +319,32 @@
                     </button>
                 </div>
 
-
-                <div class="flex flex-col lg:items-center mb-4">
-                    <img class="w-32 h-32 rounded-full object-cover" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Foto Profil">
-                    <div class="mt-5">
-                        <label for="profile-picture-upload" class="flex items-center mt-2 text-yellow-600 hover:text-yellow-500 cursor-pointer">
-                            <svg class="w-6 h-6 text-yellow-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
-                                <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
-                            </svg>                                  
-                            <span class="text-gray-500 font-medium">Ganti Profile</span>
-                        </label>
-                        <input id="profile-picture-upload" type="file" accept="image/png, image/jpeg" class="hidden">
+                <form action="./Back-end/update_profile.php" method="POST" enctype="multipart/form-data" class="space-y-4 flex flex-col justify-between h-full">
+                    <div class="flex flex-col lg:items-center mb-4">
+                        <img id="profile-preview" class="w-32 h-32 rounded-full object-cover" src="<?php echo $user_image; ?>" alt="Foto Profil">
                     </div>
-                </div>
-
-                <form class="space-y-4 flex flex-col justify-between h-full">
                     <div>
-                        <label for="admin-id" class="block mb-2 text-sm font-bold text-gray-900">ID Admin</label>
-                        <input type="text" name="admin-id" id="admin-id" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="43323020"  required />
+                        <input type="hidden" name="id_user" id="admin-id" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['id_user']; ?>"  required />
                     </div>
                     <div>
                         <label for="name" class="block mb-2 text-sm font-bold text-gray-900 ">Nama</label>
-                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Muhammad Syauqi" required />
+                        <input type="text" name="nama" id="name" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['nama']; ?>" required />
+                    </div>
+                    <div>
+                        <label for="nomor_induk" class="block mb-2 text-sm font-bold text-gray-900 ">Nomor Induk</label>
+                        <input type="text" name="nomor_induk" id="nomor_induk" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['nomor_induk']; ?>" required />
+                    </div>
+                    <div>
+                        <label for="nomor_telepon" class="block mb-2 text-sm font-bold text-gray-900 ">No Telepon</label>
+                        <input type="text" name="nomor_telepon" id="nomor_telepon" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['nomor_telepon']; ?>" required />
                     </div>
                     <div>
                         <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email</label>
-                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Killua@gmail.com" required />
+                        <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['email']; ?>" required />
                     </div>
                     <div class="relative">
                         <label for="password" class="block mb-2 text-sm font-bold text-gray-900">Kata Sandi</label>
-                        <input type="password" name="password" id="password-edit" value="davin" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" required />
+                        <input type="password" name="password" id="password-edit" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" value="<?php echo $user['password']; ?>" required />
                 
                         <!-- Tombol untuk menampilkan/menyembunyikan password -->
                         <button type="button" id="togglePassword" class="absolute right-3 top-9 flex items-center">
@@ -328,13 +360,14 @@
                         </button>
                     </div>
                     <div>
-                        <label for="role" class="block mb-2 text-sm font-bold text-gray-900">Role</label>
-                        <input type="text" name="role" id="role" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Super-Admin" required />
+                        <label class="block mb-2 text-sm font-bold text-gray-900 " for="image">Foto Profile</label>
+                        <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none" id="image" type="file" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event)">
                     </div>
+                    
 
                     <!-- Tombol Simpan -->
                     <div class="flex justify-end">
-                        <button type="button" class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
+                        <button type="submit" name="update" class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
                             <svg class="w-6 h-6 text-gray-50 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm10 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7V5h8v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
                               </svg>
@@ -345,67 +378,174 @@
             </div>
 
             <!-- CONTENT INII REAL CUY -->
-            <div class="relative overflow-x-auto bg-white p-3 drop-shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <!-- INII TABS STATUS -->
-                    <div class="text-sm font-medium text-center bg-white text-gray-500 border-b border-gray-200">
-                        <ul class="flex flex-wrap -mb-px">
-                            <li class="me-2">
-                                <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Kategori Pengaduan</a>
-                            </li>
-                        </ul>
+            <div class="flex justify-between">
+                <!-- Bagian yang tidak akan tergulir -->
+                <p class="p-2 text-gray-500" style="font-size: 10px;">Update terakhir: 1 September 2024 (20:00 WIB)</p>
+                <p class="p-2 text-gray-500" style="font-size: 10px;">Σ Jumlah: 2000 Mahasiswa</p>
+            </div>
+        
+            <div class="bg-white p-4 border-2 border-gray-200 border-dashed rounded-lg" style="height: 530px;">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="font-bold p-0 whitespace-nowrap">Data Mahasiswa</p>
+                        <p class="text-xs p-0 text-gray-500">Detail Mahasiswa</p>
                     </div>
-                    <!-- JUDUL KOLOM -->
-                    <thead class="text-[#858585] text-xs bg-gray-50 text-center">
-                        <tr>
-                            <th scope="col" class="px-2.5 py-2 font-light">
-                                No
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                ID Kategori
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                Nama Kategori
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                Deskripsi
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                <span class="sr-only">Edit</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-2 text-center">
-                                1
-                            </th>
-                            <td class="px-6 py-4 text-center">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <div class="ml-auto">
+                        <button class="text-sm text-gray-600 mr-4">+ Tambah</button>
+                    </div>
+                    <form class="flex-grow max-w-sm">
+                        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                </svg>
+                            </div>
+                            <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="nama, nim, jurusan, atau prodi.." required onkeyup="searchTable()" />
+                        </div>
+                    </form>
+                </div>
+        
+                <!-- Area yang bisa di-scroll -->
+                <div class="mt-4 overflow-y-auto" style="max-height: 450px;">
+                    <table id="student-table" class="w-full text-sm text-left rtl:text-right text-gray-500">
+                        <tbody>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Rahwa Arduinoto</div>
+                                        <div class="font-medium text-black">ID: 1992873</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <!-- Tambahkan baris lainnya... -->
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Ghifari Yanuar</div>
+                                        <div class="font-medium text-black">ID: 782091</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Maulana Fajar Rohmani</div>
+                                        <div class="font-medium text-black">ID: 43323017</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Irma Inayah</div>
+                                        <div class="font-medium text-black">ID: 433230024</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                            <tr class="flex justify-between items-center p-4">
+                                <td class="flex items-center">
+                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
+                                    <div>
+                                        <div class="font-semibold text-blue-950">Khilda S.A.</div>
+                                        <div class="font-medium text-black">ID: 43323000</div>
+                                        <div class="text-gray-600">Jurusan Elektro</div>
+                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
- 
-  
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <script src="main.js"></script>
-        <!-- INII SCRIPT NOTIF -->
+
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
-            const notifications = [
+            function searchTable() {
+                 let input = document.getElementById('default-search').value.toLowerCase();
+                 let table = document.getElementById('student-table');
+                 let rows = table.getElementsByTagName('tr');
+                 let visibleRowIndex = 0;
+     
+                 for (let i = 0; i < rows.length; i++) {
+                     let row = rows[i];
+                     let text = row.innerText.toLowerCase();
+     
+                     // Jika teks sesuai dengan input, tampilkan baris; jika tidak, sembunyikan
+                     if (text.includes(input)) {
+                         row.style.display = '';  // Tampilkan baris
+                         // Bersihkan kelas lama
+                         row.classList.remove('even', 'odd');
+                         
+                         // Terapkan kelas 'odd' atau 'even' berdasarkan indeks baris yang terlihat
+                         if (visibleRowIndex % 2 === 0) {
+                             row.classList.add('even');
+                         } else {
+                             row.classList.add('odd');
+                         }
+                         visibleRowIndex++;  // Tingkatkan indeks hanya untuk baris yang terlihat
+                     } else {
+                         row.style.display = 'none';  // Sembunyikan baris
+                     }
+                 }
+             }
+     
+     
+             function applyRowAlternatingColors() {
+                 let table = document.getElementById('student-table');
+                 let rows = table.getElementsByTagName('tr');
+                 let visibleRowIndex = 0;
+     
+                 for (let i = 0; i < rows.length; i++) {
+                     let row = rows[i];
+                     // Bersihkan kelas lama
+                     row.classList.remove('even', 'odd');
+                     
+                     // Terapkan kelas 'odd' atau 'even' berdasarkan indeks baris yang terlihat
+                     if (visibleRowIndex % 2 === 0) {
+                         row.classList.add('even');
+                     } else {
+                         row.classList.add('odd');
+                     }
+                     visibleRowIndex++;  // Tingkatkan indeks hanya untuk baris yang terlihat
+                 }
+             }
+     
+             // Panggil fungsi ini ketika halaman dimuat
+             window.onload = function() {
+                 applyRowAlternatingColors();
+             }
+
+            //  Notifikasi
+             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
                 { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
                 { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
@@ -523,7 +663,20 @@
                 eyeIconClosed.classList.toggle('hidden', isPasswordVisible);
                 eyeIconOpen.classList.toggle('hidden', !isPasswordVisible);
             });
+
+            // Fungsi untuk menampilkan gambar preview profile
+            function previewImage(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('profile-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
         </script>
+        
+    
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     </body>
 </html>

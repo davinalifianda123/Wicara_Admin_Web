@@ -1,3 +1,19 @@
+<?php
+    // buat update profile
+    session_start();
+    include './Back-end/config.php';
+    $db = new database();
+
+    if (!isset($_SESSION['id_user'])) {
+        header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
+    }
+
+    $id_user = $_SESSION['id_user'];
+    $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
+    $user = mysqli_fetch_assoc($user_data);
+    $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -109,7 +125,7 @@
             <p class="ms-5 text-gray-50 font-semibold my-4">Menu</p>
           </li>
           <li>
-            <a href="./Dashboard.html" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+            <a href="./Dashboard.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
               <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   fill-rule="evenodd"
@@ -134,17 +150,17 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <a href="./lihat_pengaduan.html" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">Pengaduan</a>
+              <a href="./lihat_pengaduan.php" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">Pengaduan</a>
               <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
               </svg>
             </button>
             <ul id="dropdown-pengaduan" class="hidden py-2 space-y-2">
               <li>
-                <a href="./lihat_pengaduan.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Lihat Pengaduan</a>
+                <a href="./lihat_pengaduan.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Lihat Pengaduan</a>
               </li>
               <li>
-                <a href="./kategori_pengaduan.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Kategori Pengaduan</a>
+                <a href="./kategori_pengaduan.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Kategori Pengaduan</a>
               </li>
             </ul>
           </li>
@@ -163,7 +179,7 @@
             </a>
           </li>
           <li>
-            <a href="./rating.html" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+            <a href="./rating.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
               <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   d="M13.849 4.22c-.684-1.626-3.014-1.626-3.698 0L8.397 8.387l-4.552.361c-1.775.14-2.495 2.331-1.142 3.477l3.468 2.937-1.06 4.392c-.413 1.713 1.472 3.067 2.992 2.149L12 19.35l3.897 2.354c1.52.918 3.405-.436 2.992-2.15l-1.06-4.39 3.468-2.938c1.353-1.146.633-3.336-1.142-3.477l-4.552-.36-1.754-4.17Z"
@@ -184,22 +200,22 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              <a href="./mahasiswa.html" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">User</a>
+              <a href="./mahasiswa.php" class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap group-hover:text-yellow-400">User</a>
               <svg class="w-3 h-3 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4" />
               </svg>
             </button>
             <ul id="dropdown-user" class="hidden py-2 space-y-2">
               <li>
-                <a href="./mahasiswa.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Mahasiswa</a>
+                <a href="./mahasiswa.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Mahasiswa</a>
               </li>
               <li>
-                <a href="./dosen.html" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Dosen/Tendik</a>
+                <a href="./dosen.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Dosen/Tendik</a>
               </li>
             </ul>
           </li>
           <li>
-            <a href="./unit_layanan.html" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
+            <a href="./unit_layanan.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
               <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path
                   fill-rule="evenodd"
@@ -291,7 +307,7 @@
                   <a href="#profile-section" class="block py-2 px-4 text-sm hover:bg-gray-100">My profile</a>
                 </li>
                 <li>
-                  <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100">Sign out</a>
+                  <a href="./Back-end/proses_logout.php" class="block py-2 px-4 text-sm hover:bg-gray-100">Logout</a>
                 </li>
               </ul>
             </div>
@@ -301,124 +317,119 @@
 
       <!-- PROFILE READ CONTENT -->
       <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
-        <!-- Tombol Kembali -->
-        <div class="flex justify-between mb-4">
-            <h5 class="text-xl font-bold text-gray-900">Profil</h5>
-            <button onclick="goBack()" class="flex items-center text-sm text-blue-500 hover:underline">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-                Kembali
-            </button>
-        </div>
+          <!-- Tombol Kembali -->
+          <div class="flex justify-between mb-4">
+              <h5 class="text-xl font-bold text-gray-900">Profil</h5>
+              <button onclick="goBack()" class="flex items-center text-sm text-blue-500 hover:underline">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Kembali
+              </button>
+          </div>
 
-
-        <div class="flex items-center mb-4">
-          <img class="w-32 h-32 rounded-full object-cover" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Foto Profil">
-        </div>
-
-        <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-              <label for="admin-id" class="block mb-2 text-sm font-bold text-gray-900">ID Admin</label>
-              <input type="text" id="admin-id" name="admin-id" class="text-black bg-transparent border-none focus:ring-0 p-0" value="4.33.23.0.20" readonly />
+          <div class="flex items-center mb-4">
+              <img class="w-32 h-32 bg-gray-300 rounded-full object-cover" src="<?php echo $user_image; ?>" alt="Foto Profil">
           </div>
-          <div>
-              <label for="name" class="block mb-2 text-sm font-bold text-gray-900">Nama</label>
-              <input type="text" name="name" id="name" class="text-black bg-transparent border-none focus:ring-0 p-0" value="Muhammad Syauqi" readonly />
-          </div>
-          <div>
-              <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email</label>
-              <input type="email" name="email" id="email" class="text-black bg-transparent border-none focus:ring-0 p-0" value="killua@gmail.com" readonly />
-          </div>
-          <div>
-              <label for="password" class="block mb-2 text-sm font-bold text-gray-900">Kata Sandi</label>
-              <input type="password" name="password" id="password" class="text-black bg-transparent border-none focus:ring-0 p-0" value="12345678" readonly />
-          </div>
-          <div>
-              <label for="role" class="block mb-2 text-sm font-bold text-gray-900">Role</label>
-              <input type="text" name="role" id="role" class="text-black bg-transparent border-none focus:ring-0 p-0" value="Super-Admin" readonly />
-          </div>                        
-                                  
-          <!-- Tombol Edit -->
-          <div class="flex justify-end">
-              <button id="edit-profile" type="button" class=" text-white bg-yellow-400 hover:bg-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Edit</button>
-          </div>
-        </form>
-    </div>
-
-    <!-- PROFILE EDIT CONTENT -->
-    <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
-      <div class="flex justify-between mb-4">
-          <h5 class="text-xl font-bold text-gray-900">Profil</h5>
-          <button onclick="goBack2()" class="flex items-center text-sm text-blue-500 hover:underline">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-              </svg>
-              Kembali
-          </button>
+          
+          <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                  <label for="name" class="block mb-2 text-sm font-bold text-gray-900">Nama</label>
+                  <input type="text" name="name" id="name" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['nama']; ?>" readonly />
+              </div>
+              <div>
+                  <label for="nomor_induk" class="block mb-2 text-sm font-bold text-gray-900">Nomor Induk</label>
+                  <input type="text" name="nomor_induk" id="nomor_induk" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['nomor_induk']; ?>" readonly />
+              </div>
+              <div>
+                  <label for="nomor_telepon" class="block mb-2 text-sm font-bold text-gray-900">Nomor Telepon</label>
+                  <input type="text" name="nomor_telepon" id="nomor_telepon" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['nomor_telepon']; ?>" readonly />
+              </div>
+              <div>
+                  <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email</label>
+                  <input type="email" name="email" id="email" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['email']; ?>" readonly />
+              </div>
+              <div>
+                  <label for="password" class="block mb-2 text-sm font-bold text-gray-900">Kata Sandi</label>
+                  <input type="password" name="password" id="password" class="text-black bg-transparent border-none focus:ring-0 p-0" value="<?php echo $user['password']; ?>" readonly />
+              </div>                     
+                                      
+              <!-- Tombol Edit -->
+              <div class="flex justify-end">
+                  <button id="edit-profile" type="button" class=" text-white bg-yellow-400 hover:bg-yellow-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Edit</button>
+              </div>
+          </form>
       </div>
 
+      <!-- PROFILE EDIT CONTENT -->
+      <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
+          <div class="flex justify-between mb-4">
+              <h5 class="text-xl font-bold text-gray-900">Profil</h5>
+              <button onclick="goBack2()" class="flex items-center text-sm text-blue-500 hover:underline">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Kembali
+              </button>
+          </div>
 
-      <div class="flex flex-col lg:items-center mb-4">
-        <img class="w-32 h-32 rounded-full object-cover" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Foto Profil">
-        <div class="mt-5">
-            <label for="profile-picture-upload" class="flex items-center mt-2 text-yellow-600 hover:text-yellow-500 cursor-pointer">
-                <svg class="w-6 h-6 text-yellow-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd" d="M11.32 6.176H5c-1.105 0-2 .949-2 2.118v10.588C3 20.052 3.895 21 5 21h11c1.105 0 2-.948 2-2.118v-7.75l-3.914 4.144A2.46 2.46 0 0 1 12.81 16l-2.681.568c-1.75.37-3.292-1.263-2.942-3.115l.536-2.839c.097-.512.335-.983.684-1.352l2.914-3.086Z" clip-rule="evenodd"/>
-                    <path fill-rule="evenodd" d="M19.846 4.318a2.148 2.148 0 0 0-.437-.692 2.014 2.014 0 0 0-.654-.463 1.92 1.92 0 0 0-1.544 0 2.014 2.014 0 0 0-.654.463l-.546.578 2.852 3.02.546-.579a2.14 2.14 0 0 0 .437-.692 2.244 2.244 0 0 0 0-1.635ZM17.45 8.721 14.597 5.7 9.82 10.76a.54.54 0 0 0-.137.27l-.536 2.84c-.07.37.239.696.588.622l2.682-.567a.492.492 0 0 0 .255-.145l4.778-5.06Z" clip-rule="evenodd"/>
-                </svg>                                  
-                <span class="text-gray-500 font-medium">Ganti Profile</span>
-            </label>
-            <input id="profile-picture-upload" type="file" accept="image/png, image/jpeg" class="hidden">
-        </div>
+          <form action="./Back-end/update_profile.php" method="POST" enctype="multipart/form-data" class="space-y-4 flex flex-col justify-between h-full">
+              <div class="flex flex-col lg:items-center mb-4">
+                  <img id="profile-preview" class="w-32 h-32 rounded-full object-cover" src="<?php echo $user_image; ?>" alt="Foto Profil">
+              </div>
+              <div>
+                  <input type="hidden" name="id_user" id="admin-id" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['id_user']; ?>"  required />
+              </div>
+              <div>
+                  <label for="name" class="block mb-2 text-sm font-bold text-gray-900 ">Nama</label>
+                  <input type="text" name="nama" id="name" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['nama']; ?>" required />
+              </div>
+              <div>
+                  <label for="nomor_induk" class="block mb-2 text-sm font-bold text-gray-900 ">Nomor Induk</label>
+                  <input type="text" name="nomor_induk" id="nomor_induk" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['nomor_induk']; ?>" required />
+              </div>
+              <div>
+                  <label for="nomor_telepon" class="block mb-2 text-sm font-bold text-gray-900 ">No Telepon</label>
+                  <input type="text" name="nomor_telepon" id="nomor_telepon" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['nomor_telepon']; ?>" required />
+              </div>
+              <div>
+                  <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email</label>
+                  <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['email']; ?>" required />
+              </div>
+              <div class="relative">
+                  <label for="password" class="block mb-2 text-sm font-bold text-gray-900">Kata Sandi</label>
+                  <input type="password" name="password" id="password-edit" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" value="<?php echo $user['password']; ?>" required />
+          
+                  <!-- Tombol untuk menampilkan/menyembunyikan password -->
+                  <button type="button" id="togglePassword" class="absolute right-3 top-9 flex items-center">
+                      <svg id="eyeIconClosed" class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <!-- Icon mata tertutup -->
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                      </svg>
+                      <svg id="eyeIconOpen" class="hidden w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <!-- Icon mata terbuka -->
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                      </svg>
+                  </button>
+              </div>
+              <div>
+                  <label class="block mb-2 text-sm font-bold text-gray-900 " for="image">Foto Profile</label>
+                  <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none" id="image" type="file" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event)">
+              </div>
+              
+
+              <!-- Tombol Simpan -->
+              <div class="flex justify-end">
+                  <button type="submit" name="update" class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
+                      <svg class="w-6 h-6 text-gray-50 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm10 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7V5h8v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                        </svg>
+                        <span>Simpan</span>
+                  </button>
+              </div>
+          </form>
       </div>
-
-      <form class="space-y-4 flex flex-col justify-between h-full">
-        <div>
-            <label for="admin-id" class="block mb-2 text-sm font-bold text-gray-900">ID Admin</label>
-            <input type="text" name="admin-id" id="admin-id" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="43323020"  required />
-        </div>
-        <div>
-            <label for="name" class="block mb-2 text-sm font-bold text-gray-900 ">Nama</label>
-            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Muhammad Syauqi" required />
-        </div>
-        <div>
-            <label for="email" class="block mb-2 text-sm font-bold text-gray-900">Email</label>
-            <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Killua@gmail.com" required />
-        </div>
-        <div class="relative">
-            <label for="password" class="block mb-2 text-sm font-bold text-gray-900">Kata Sandi</label>
-            <input type="password" name="password" id="password-edit" value="davin" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" required />
-    
-            <!-- Tombol untuk menampilkan/menyembunyikan password -->
-            <button type="button" id="togglePassword" class="absolute right-3 top-9 flex items-center">
-                <svg id="eyeIconClosed" class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <!-- Icon mata tertutup -->
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                </svg>
-                <svg id="eyeIconOpen" class="hidden w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <!-- Icon mata terbuka -->
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
-                </svg>
-            </button>
-        </div>
-        <div>
-          <label for="role" class="block mb-2 text-sm font-bold text-gray-900">Role</label>
-          <input type="text" name="role" id="role" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="Super-Admin" required />
-        </div>
-
-        <!-- Tombol Simpan -->
-        <div class="flex justify-end">
-          <button type="button" class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
-              <svg class="w-6 h-6 text-gray-50 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                <path fill-rule="evenodd" d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7.414A2 2 0 0 0 20.414 6L18 3.586A2 2 0 0 0 16.586 3H5Zm10 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7V5h8v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
-              </svg>
-              <span>Simpan</span>
-          </button>
-        </div>
-      </form>
-    </div>
 
       <!-- CONTENT INII REAL CUY -->
       <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg">
@@ -879,9 +890,16 @@
           eyeIconClosed.classList.toggle('hidden', isPasswordVisible);
           eyeIconOpen.classList.toggle('hidden', !isPasswordVisible);
       });
+      // Fungsi untuk menampilkan gambar preview profile
+      function previewImage(event) {
+          var reader = new FileReader();
+          reader.onload = function() {
+              var output = document.getElementById('profile-preview');
+              output.src = reader.result;
+          }
+          reader.readAsDataURL(event.target.files[0]);
+      }
     </script>
     <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-
-
   </body>
 </html>

@@ -4,6 +4,6 @@
     setcookie("password", "", time() - 3600, "/");
 
     // Redirect ke halaman login setelah cookie dihapus
-    header("Location: login.php");
+    header("Location: ../login.php");
     exit();
 ?>

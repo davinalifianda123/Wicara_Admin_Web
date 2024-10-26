@@ -46,7 +46,7 @@
             <p class="text-blue-950 text-xl md:text-4xl font-bold">LOGIN</p>
             <p class="text-black italic mt-2">Selamat Datang di Platform Aspirasi dan Rating Akademik!</p>  
           </div>       
-            <form action="proses_login.php" method="post" class="w-[80%] mt-7">
+            <form action="./Back-end/proses_login.php" method="post" class="w-[80%] mt-7">
               <!-- ini pesan peringatan -->
               <?php if (isset($_GET['login_failed'])): ?>
                 <div id="login-alert" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
