@@ -221,7 +221,7 @@
                                     <a href="#profile-section" class="block py-2 px-4 text-sm hover:bg-gray-100">My profile</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="block py-2 px-4 text-sm hover:bg-gray-100">Sign out</a>
+                                    <a href="./proses_logout.php" class="block py-2 px-4 text-sm hover:bg-gray-100">Logout</a>
                                 </li>
                             </ul>
                         </div>

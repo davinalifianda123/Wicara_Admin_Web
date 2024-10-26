@@ -1,9 +1,17 @@
+<?php
+    $saved_email = isset($_COOKIE['email']) ? $_COOKIE['email'] : '';
+    $saved_password = isset($_COOKIE['password']) ? $_COOKIE['password'] : '';
+
+    // Tentukan apakah Remember Me harus ditampilkan
+    $show_remember_me = empty($saved_email) && empty($saved_password);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,18 +42,26 @@
         </div>
         <!-- Form Login -->
         <div class="bg-[#F9F9F9] flex flex-col items-center relative overflow-clip">
-          <div class="mt-24 mx-6 md:ml-8">
+          <div class="text-center mt-24 mx-6 md:text-start">
             <p class="text-blue-950 text-xl md:text-4xl font-bold">LOGIN</p>
             <p class="text-black italic mt-2">Selamat Datang di Platform Aspirasi dan Rating Akademik!</p>  
           </div>       
             <form action="proses_login.php" method="post" class="w-[80%] mt-7">
+              <!-- ini pesan peringatan -->
+              <?php if (isset($_GET['login_failed'])): ?>
+                <div id="login-alert" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                  <span class="font-medium">Login gagal!</span> Email atau password salah, coba lagi.
+                </div>
+              <?php endif; ?>
+              <!-- ini input email -->
               <div class="mb-5">
                 <label for="email" class="block mb-2 text-sm font-medium text-gray-900 ">Email</label>
-                <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 px-4 py-2.5" placeholder="email@gmail.com" required />
+                <input type="email" id="email" name="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 px-4 py-2.5" placeholder="email@gmail.com" value="<?php echo $saved_email; ?>" required />
               </div>
+              <!-- ini input password -->
               <div class="mb-5 relative">
                 <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
-                <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 px-4 py-2.5" placeholder="••••••••" />
+                <input type="password" id="password" name="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-[#F7B633] focus:border-[#F7B633] block w-full h-12 px-4 py-2.5" placeholder="••••••••" value="<?php echo $saved_password; ?>" />
 
                 <!-- Tombol untuk menampilkan/menyembunyikan password -->
                 <button type="button" id="togglePassword" class="absolute right-4 top-10 flex items-center">
@@ -60,13 +76,17 @@
                   </svg>
                 </button>
               </div>
+              <!-- ini tombol remember -->
+              <?php if ($show_remember_me): ?>
               <div class="flex items-start mb-5">
                 <div class="flex items-center h-5">
-                  <input id="remember" type="checkbox" value="" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-[#070D59] text-[#070D59]" required />
+                  <input id="remember" type="checkbox" value="" name="remember" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-[#070D59] text-[#070D59]" required />
                 </div>
                 <label for="remember" class="ms-2 text-sm font-medium text-gray-900">Remember me</label>
               </div>
-              <button type="submit" class="text-white bg-[#F7B633] hover:bg-[#070D59] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-full h-12 px-5 py-2.5 text-center">Login</button>
+              <?php endif; ?>
+              <!-- ini tombol login -->
+              <button type="submit" name="login" class="text-white bg-[#F7B633] hover:bg-[#070D59] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-full h-12 px-5 py-2.5 text-center">Login</button>
             </form>
         </div>
       </div>
