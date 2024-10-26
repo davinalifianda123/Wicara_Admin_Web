@@ -249,8 +249,8 @@
                         <!-- Dropdown profile -->
                         <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow" id="dropdown">
                             <div class="py-3 px-4">
-                                <span class="block text-sm font-semibold text-gray-900 ">Davin Alifianda</span>
-                                <span class="block text-sm text-gray-500 truncate ">admin@adm.polines.ac.id</span>
+                                <span class="block text-sm font-semibold text-gray-900 "><?php echo $user['nama'];?></span>
+                                <span class="block text-sm text-gray-500 truncate "><?php echo $user['email'];?></span>
                             </div>
                             <ul class="py-1 text-gray-500 " aria-labelledby="dropdown">
                                 <li>
