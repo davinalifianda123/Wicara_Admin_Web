@@ -426,190 +426,170 @@
                         </tr>
                     </thead>
                     <!-- INII ISI KOLOM -->
-                    <tbody>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-3 py-4">
-                                1
-                            </th>
-                            <td class="px-6 py-4">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Bullying
-                            </td>
-                            <td class="px-6 py-4">
-                                Lorem Ipsum uke uke...
-                            </td>
-                            <td class="">
-                                <span class="bg-gray-100 text-gray-500 text-xs font-medium px-3 py-1 rounded">Diajukan</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-3 py-4">
-                                2
-                            </th>
-                            <td class="px-6 py-4">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Bullying
-                            </td>
-                            <td class="px-6 py-4">
-                                Lorem Ipsum uke uke...
-                            </td>
-                            <td class="">
-                                <span class="bg-yellow-100 text-yellow-400 text-xs font-medium px-3 py-1 rounded">Diproses</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-3 py-4">
-                                3
-                            </th>
-                            <td class="px-6 py-4">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Bullying
-                            </td>
-                            <td class="px-6 py-4">
-                                Lorem Ipsum uke uke...
-                            </td>
-                            <td class="">
-                                <span class="bg-green-200 text-green-600 text-xs font-medium px-3 py-1 rounded">Selesai</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-3 py-4">
-                                4
-                            </th>
-                            <td class="px-6 py-4">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Bullying
-                            </td>
-                            <td class="px-6 py-4">
-                                Lorem Ipsum uke uke...
-                            </td>
-                            <td class="">
-                                <span class="bg-red-200 text-red-600 text-xs font-medium px-3 py-1 rounded">Ditolak</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-3 py-4">
-                                5
-                            </th>
-                            <td class="px-6 py-4">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Bullying
-                            </td>
-                            <td class="px-6 py-4">
-                                Lorem Ipsum uke uke...
-                            </td>
-                            <td class="">
-                                <span class="bg-pink-100 text-pink-500 text-xs font-medium px-3 py-1 rounded">Dibatalkan</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-white border-b">
-                            <th scope="row" class="px-3 py-4">
-                                6
-                            </th>
-                            <td class="px-6 py-4">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Bullying
-                            </td>
-                            <td class="px-6 py-4">
-                                Lorem Ipsum uke uke...
-                            </td>
-                            <td class="">
-                                <span class="bg-gray-100 text-gray-500 text-xs font-medium px-3 py-1 rounded">Diajukan</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
-                            </td>
-                        </tr>
+                    <tbody class="text-center">
+                        <?php
+                            $no = 1;
+                            foreach($db->tampil_data_pengaduan() as $x){
+                        ?>
+                            <tr class="bg-white border-b">
+                                <th scope="row" class="px-3 py-4">
+                                    <?php echo $no++; ?>
+                                </th>
+                                <td class="px-6 py-4">
+                                    <?php echo $x['id_kejadian']; ?>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <?php echo $x['judul']; ?>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <?php echo $x['tanggal']; ?>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <?php echo $x['nama_jenis_pengaduan']; ?>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <?php echo $x['deskripsi']; ?>
+                                </td>
+                                <td class="">
+                                    <?php
+                                        if($x['nama_status_pengaduan'] == "Diajukan"){
+                                            echo '<span class="bg-gray-100 text-gray-500 text-xs font-medium px-3 py-1 rounded">Diajukan</span>';
+                                        }elseif($x['nama_status_pengaduan'] == "Diproses"){
+                                            echo '<span class="bg-yellow-100 text-yellow-400 text-xs font-medium px-3 py-1 rounded">Diproses</span>';
+                                        }elseif($x['nama_status_pengaduan'] == "Selesai"){
+                                            echo '<span class="bg-green-200 text-green-600 text-xs font-medium px-3 py-1 rounded">Selesai</span>';
+                                        }elseif($x['nama_status_pengaduan'] == "Ditolak"){
+                                            echo '<span class="bg-red-200 text-red-600 text-xs font-medium px-3 py-1 rounded">Ditolak</span>';
+                                        }elseif($x['nama_status_pengaduan'] == "Dibatalkan"){
+                                            echo '<span class="bg-pink-100 text-pink-500 text-xs font-medium px-3 py-1 rounded">Dibatalkan</span>';
+                                        }
+                                    ?>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <button id="updateProductButton" data-modal-target="updateProductModal" data-modal-toggle="updateProductModal" class="inline text-blue-600 hover:underline font-medium text-sm" type="button" 
+                                        data-id="<?php echo $x['id_kejadian']; ?>"
+                                        data-user="<?php echo $x['nama']; ?>"
+                                        data-judul="<?php echo $x['judul']; ?>"
+                                        data-kategori="<?php echo $x['nama_jenis_pengaduan']; ?>"
+                                        data-tanggal="<?php echo $x['tanggal']; ?>"
+                                        data-status="<?php echo $x['nama_status_pengaduan']; ?>"
+                                        data-lokasi="<?php echo $x['lokasi']; ?>"
+                                        data-lampiran="<?php echo $x['lampiran']; ?>"
+                                        data-deskripsi="<?php echo $x['deskripsi']; ?>">
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php
+                            }
+                        ?>
                     </tbody>
                 </table>
-                <nav aria-label="Page navigation example" class="flex justify-end">
-                    <ul class="inline-flex -space-x-px text-sm">
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-                      </li>
-                      <li>
-                        <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
-                      </li>
-                      <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-                      </li>
-                    </ul>
-                </nav>
+            </div>
+            <nav aria-label="Page navigation example" class="flex justify-end">
+                <ul class="inline-flex -space-x-px text-sm">
+                  <li>
+                    <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                  </li>
+                  <li>
+                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
+                  </li>
+                  <li>
+                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
+                  </li>
+                  <li>
+                    <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
+                  </li>
+                  <li>
+                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
+                  </li>
+                  <li>
+                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
+                  </li>
+                  <li>
+                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                  </li>
+                </ul>
+            </nav>
+        </div>
+
+
+        <!-- Main modal -->
+        <div id="updateProductModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
+            <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+                <!-- Modal content -->
+                <div class="relative p-4 bg-white rounded-lg shadow sm:p-5">
+                    <!-- Modal header -->
+                    <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            Detail Pengaduan
+                        </h3>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="updateProductModal">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <form action="simpan_edit_kejadian_pengaduan.php" method="POST">
+                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                            <div>
+                                <label for="id_kejadian" class="block mb-2 text-sm font-medium text-gray-900">ID Aduan</label>
+                                <input type="text" name="id_kejadian" id="id_kejadian" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="user" class="block mb-2 text-sm font-medium text-gray-900">User</label>
+                                <input type="text" name="user" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="judul" class="block mb-2 text-sm font-medium text-gray-900">Judul Aduan</label>
+                                <input type="text" name="judul" id="judul" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="kategori" class="block mb-2 text-sm font-medium text-gray-900">Kategori</label>
+                                <input type="text" name="kategori" id="kategori" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-900">Tanggal</label>
+                                <input type="text" name="tanggal" id="tanggal" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="status" class="block mb-2 text-sm font-medium text-gray-900">Status</label>
+                                <input type="text" name="status" id="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="lokasi" class="block mb-2 text-sm font-medium text-gray-900">Lokasi</label>
+                                <input type="text" name="lokasi" id="lokasi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Instansi</label>
+                                <select name="instansi" id="instansi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                                    <option selected>Pilih Instansi</option>
+                                    <?php
+                                        foreach($db->tampil_instansi() as $x){
+                                            echo '<option value="' . $x['id_instansi'] . '">' . $x['nama_instansi'] . '</option>';
+                                        }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900">Deskripsi</label>
+                                <textarea type="text" name="deskripsi" id="deskripsi" rows=5 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly></textarea>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="lampiran" class="block mb-2 text-sm font-medium text-gray-900">Lampiran</label>
+                                <img id="lampiran" class="w-full h-fit rounded-lg object-cover" src="./assets/default-image.png" alt="Lampiran">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-end space-x-4">
+                            <button type="submit" class="text-white bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                Terima
+                            </button>
+                            <button type="button" class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                Tolak
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
  
@@ -747,6 +727,47 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
+
+            // Fungsi untuk menampilkan modal update product
+            document.addEventListener("DOMContentLoaded", function(event) {
+                document.getElementById('updateProductButton').click();
+            });
+
+            // Fungsi untuk mengisi input di dalam modal
+            document.addEventListener('DOMContentLoaded', function() {
+                const updateButtons = document.querySelectorAll('#updateProductButton');
+                
+                updateButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = button.getAttribute('data-id');
+                        const user = button.getAttribute('data-user');
+                        const judul = button.getAttribute('data-judul');
+                        const kategori = button.getAttribute('data-kategori');
+                        const tanggal = button.getAttribute('data-tanggal');
+                        const status = button.getAttribute('data-status');
+                        const lokasi = button.getAttribute('data-lokasi');
+                        const lampiran = button.getAttribute('data-lampiran');
+                        const deskripsi = button.getAttribute('data-deskripsi');
+
+                        const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
+                        if (deskripsiField) {
+                            deskripsiField.value = deskripsi;
+                        } else {
+                            console.error('Textarea tidak ditemukan');
+                        }
+
+                        // Mengisi input di dalam modal
+                        document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id;
+                        document.querySelector('#updateProductModal input[name="user"]').value = user;
+                        document.querySelector('#updateProductModal input[name="judul"]').value = judul;
+                        document.querySelector('#updateProductModal input[name="kategori"]').value = kategori;
+                        document.querySelector('#updateProductModal input[name="tanggal"]').value = tanggal;
+                        document.querySelector('#updateProductModal input[name="status"]').value = status;
+                        document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
+                        document.querySelector('#updateProductModal input[name="lampiran"]').value = lampiran;
+                    });
+                });
+            });
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 

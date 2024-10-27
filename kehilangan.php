@@ -526,136 +526,136 @@
             </div>
           </div>
 
-          <!-- Modal -->
-          <div id="modal" class="modal">
-            <div class="modal-content max-w-4xl p-6">
-              <span class="close">&times;</span>
-              <div class="grid grid-cols-1">
-                <label class="font-medium py-4 text-lg">Form Laporan Kehilangan</label>
-              </div>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="grid grid-cols-1 gap-4">
-                  <div>
-                    <label>ID Laporan</label>
-                    <input type="text" value="09000647839" disabled class="block border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
-                  </div>
-                  <div>
-                    <label>User</label>
-                    <input type="text" value="Miaauw@polines.ac.id" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
-                  </div>
-                  <div>
-                    <label>Judul Laporan</label>
-                    <input type="text" value="Hapeku Hilang" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
-                  </div>
-                  <div>
-                    <label>Jenis Barang</label>
-                    <input type="text" value="Samsung J2 Prime" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
-                  </div>
-                  <div>
-                    <label>Tanggal Laporan</label>
-                    <input type="text" value="01-09-2024" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
-                  </div>
-                  <div>
-                    <label>Status Laporan</label>
-                    <select id="status-laporan" class="border border-gray-300 rounded-lg p-2 w-full">
-                      <option value="hilang">Hilang</option>
-                      <option value="ditemukan">Ditemukan</option>
-                      <option value="proses">Proses</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label>Lokasi</label>
-                    <input type="text" value="Polines" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
-                  </div>
-                </div>
+        </div>
+      </div>
+      <!-- Modal -->
+    </div>
+  </div>
+  <div id="modal" class="modal z-20">
+    <div class="modal-content max-w-4xl p-6">
+      <span class="close">&times;</span>
+      <div class="grid grid-cols-1">
+        <label class="font-medium py-4 text-lg">Form Laporan Kehilangan</label>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4">
+          <div>
+            <label>ID Laporan</label>
+            <input type="text" value="09000647839" disabled class="block border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+          </div>
+          <div>
+            <label>User</label>
+            <input type="text" value="Miaauw@polines.ac.id" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+          </div>
+          <div>
+            <label>Judul Laporan</label>
+            <input type="text" value="Hapeku Hilang" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+          </div>
+          <div>
+            <label>Jenis Barang</label>
+            <input type="text" value="Samsung J2 Prime" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+          </div>
+          <div>
+            <label>Tanggal Laporan</label>
+            <input type="text" value="01-09-2024" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+          </div>
+          <div>
+            <label>Status Laporan</label>
+            <select id="status-laporan" class="border border-gray-300 rounded-lg p-2 w-full">
+              <option value="hilang">Hilang</option>
+              <option value="ditemukan">Ditemukan</option>
+              <option value="proses">Proses</option>
+            </select>
+          </div>
+          <div>
+            <label>Lokasi</label>
+            <input type="text" value="Polines" disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200" />
+          </div>
+        </div>
 
-                <div class="grid grid-cols-1 gap-4">
-                  <img src="assets/laptop.jpg" class="h-auto max-w-xs" alt="Laptop" />
-                </div>
-              </div>
+        <div class="grid grid-cols-1 gap-4">
+          <img src="assets/laptop.jpg" class="h-auto max-w-xs" alt="Laptop" />
+        </div>
+      </div>
 
-              <!-- Description section at the bottom -->
-              <div class="grid grid-cols-1 gap-4">
-                <label>Deskripsi Laporan</label>
-                <textarea disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200 h-32">
-          Lorem ipsum ale ale ale...
-                </textarea>
-              </div>
+      <!-- Description section at the bottom -->
+      <div class="grid grid-cols-1 gap-4">
+        <label>Deskripsi Laporan</label>
+        <textarea disabled class="border border-gray-300 rounded-lg p-2 w-full disabled:bg-gray-200 h-32">
+  Lorem ipsum ale ale ale...
+        </textarea>
+      </div>
 
-              <div class="flex justify-end mt-4">
+      <div class="flex justify-end mt-4">
+        <button
+          data-modal-target="popup-modal-simpan"
+          data-modal-toggle="popup-modal-simpan"
+          class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          type="button"
+        >
+          Simpan
+        </button>
+
+        <div id="popup-modal-simpan" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <button
+                type="button"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-hide="popup-modal-simpan"
+              >
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+                <span class="sr-only">Close</span>
+              </button>
+              <div class="p-4 md:p-5 text-center">
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menyimpan perubahan?</h3>
+                <button data-modal-hide="popup-modal-simpan" type="button" class="bg-blue-500 text-white px-4 py-2 rounded-lg focus:outline-none">Simpan</button>
                 <button
-                  data-modal-target="popup-modal-simpan"
-                  data-modal-toggle="popup-modal-simpan"
-                  class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  data-modal-hide="popup-modal-simpan"
                   type="button"
+                  class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 >
-                  Simpan
+                  Batal
                 </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                <div id="popup-modal-simpan" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                  <div class="relative p-4 w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                      <button
-                        type="button"
-                        class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-hide="popup-modal-simpan"
-                      >
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                        <span class="sr-only">Close</span>
-                      </button>
-                      <div class="p-4 md:p-5 text-center">
-                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menyimpan perubahan?</h3>
-                        <button data-modal-hide="popup-modal-simpan" type="button" class="bg-blue-500 text-white px-4 py-2 rounded-lg focus:outline-none">Simpan</button>
-                        <button
-                          data-modal-hide="popup-modal-simpan"
-                          type="button"
-                          class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                        >
-                          Batal
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <button
+          data-modal-target="popup-modal-hapus"
+          data-modal-toggle="popup-modal-hapus"
+          class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red- ml-4"
+          type="button"
+        >
+          Hapus
+        </button>
 
+        <div id="popup-modal-hapus" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+          <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+              <button
+                type="button"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-hide="popup-modal-hapus"
+              >
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+                <span class="sr-only">Close </span>
+              </button>
+              <div class="p-4 md:p-5 text-center">
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menghapus laporan ini?</h3>
+                <button data-modal-hide="popup-modal-hapus" type="button" class="bg-red-500 text-white px-4 py-2 rounded-lg focus:outline-none">Hapus</button>
                 <button
-                  data-modal-target="popup-modal-hapus"
-                  data-modal-toggle="popup-modal-hapus"
-                  class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red- ml-4"
+                  data-modal-hide="popup-modal-hapus"
                   type="button"
+                  class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                 >
-                  Hapus
+                  Batal
                 </button>
-
-                <div id="popup-modal-hapus" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                  <div class="relative p-4 w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                      <button
-                        type="button"
-                        class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-hide="popup-modal-hapus"
-                      >
-                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                        </svg>
-                        <span class="sr-only">Close </span>
-                      </button>
-                      <div class="p-4 md:p-5 text-center">
-                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Apakah Anda yakin ingin menghapus laporan ini?</h3>
-                        <button data-modal-hide="popup-modal-hapus" type="button" class="bg-red-500 text-white px-4 py-2 rounded-lg focus:outline-none">Hapus</button>
-                        <button
-                          data-modal-hide="popup-modal-hapus"
-                          type="button"
-                          class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-red-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                        >
-                          Batal
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

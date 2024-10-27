@@ -56,7 +56,7 @@ $kejadian = isset($kejadian) ? $kejadian : [];
             </tr>
             <tr>
                 <td>Lampiran</td>
-                <td><textarea name="lampiran" cols="30" rows="10"></textarea></td>
+                <td><input type="file" name="lampiran" id="lampiran" accept="image/png, image/jpeg, image/jpg"></td>
             </tr>
             <tr>
                 <td>Jenis Pengaduan</td>
