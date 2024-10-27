@@ -294,7 +294,7 @@
             <!-- INII Profile -->
             <button type="button" class="flex mx-2 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
               <span class="sr-only">Open user menu</span>
-              <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+              <img class="w-8 h-8 rounded-full" src="<?php echo $user_image; ?>" alt="user photo" />
             </button>
             <!-- Dropdown profile -->
             <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow" id="dropdown">
@@ -412,6 +412,9 @@
                           <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
                       </svg>
                   </button>
+              </div>
+              <div>
+                  <input type="hidden" name="role" id="role" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['role']; ?>"  required />
               </div>
               <div>
                   <label class="block mb-2 text-sm font-bold text-gray-900 " for="image">Foto Profile</label>

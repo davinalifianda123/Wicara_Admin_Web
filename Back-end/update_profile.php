@@ -3,6 +3,7 @@ session_start();
 include 'config.php';
 $db = new database();
 
+
 if (isset($_POST['update'])) {
     $id_user = $_POST['id_user'];
     $nama = $_POST['nama'];
@@ -10,6 +11,7 @@ if (isset($_POST['update'])) {
     $nomor_telepon = $_POST['nomor_telepon'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $role = $_POST['role'];
 
     // Tentukan folder untuk menyimpan gambar
     $upload_dir = './foto-profile/';
@@ -36,6 +38,7 @@ if (isset($_POST['update'])) {
     }
     
     // Redirect ke profile setelah update
-    header("Location: ../Dashboard.php");
+    header("Location: ../Dashboard.php?message=Profile updated successfully");
+
 }
 ?>

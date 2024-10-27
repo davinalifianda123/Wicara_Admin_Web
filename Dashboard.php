@@ -12,6 +12,18 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    // Jika ada pesan sukses
+    if (isset($_GET['message'])) {
+        $message = htmlspecialchars($_GET['message'], ENT_QUOTES, 'UTF-8');
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                showToast('$message');
+            });
+        </script>
+        ";
+    }
 ?>
 
 
@@ -225,7 +237,7 @@
                         <!-- INII Profile -->
                         <button type="button" class="flex mx-2 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                             <span class="sr-only">Open user menu</span>
-                            <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+                            <img class="w-8 h-8 rounded-full" src="<?php echo $user_image; ?>" alt="user photo">
                         </button>
                         <!-- Dropdown profile -->
                         <div class="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow" id="dropdown">
@@ -345,8 +357,11 @@
                         </button>
                     </div>
                     <div>
+                        <input type="hidden" name="role" id="role" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value="<?php echo $user['role']; ?>"  required />
+                    </div>
+                    <div>
                         <label class="block mb-2 text-sm font-bold text-gray-900 " for="image">Foto Profile</label>
-                        <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none" id="image" type="file" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event)">
+                        <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" id="image" type="file" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event)">
                     </div>
                     
 
@@ -588,6 +603,7 @@
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
         <script src="main.js"></script>
+        <script src="./Back-end/toast.js"></script>
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
             const notifications = [
