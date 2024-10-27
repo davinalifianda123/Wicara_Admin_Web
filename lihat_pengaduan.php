@@ -475,7 +475,8 @@
                                         data-status="<?php echo $x['nama_status_pengaduan']; ?>"
                                         data-lokasi="<?php echo $x['lokasi']; ?>"
                                         data-lampiran="<?php echo $x['lampiran']; ?>"
-                                        data-deskripsi="<?php echo $x['deskripsi']; ?>">
+                                        data-deskripsi="<?php echo $x['deskripsi']; ?>"
+                                        data-instansi="<?php echo $x['nama_instansi']; ?>">
                                         Edit
                                     </button>
                                 </td>
@@ -515,10 +516,10 @@
 
 
         <!-- Main modal -->
-        <div id="updateProductModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-            <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <div id="updateProductModal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:min-h-screen">
+            <div class="relative p-4 mx-4 w-full max-w-2xl h-auto md:min-h-screen">
                 <!-- Modal content -->
-                <div class="relative p-4 bg-white rounded-lg shadow sm:p-5">
+                <div class="relative p-4 bg-white rounded-lg overflow-y-auto max-h-screen shadow sm:p-5">
                     <!-- Modal header -->
                     <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5">
                         <h3 class="text-lg font-semibold text-gray-900">
@@ -561,15 +562,8 @@
                                 <input type="text" name="lokasi" id="lokasi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div>
-                                <label for="price" class="block mb-2 text-sm font-medium text-gray-900">Instansi</label>
-                                <select name="instansi" id="instansi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
-                                    <option selected>Pilih Instansi</option>
-                                    <?php
-                                        foreach($db->tampil_instansi() as $x){
-                                            echo '<option value="' . $x['id_instansi'] . '">' . $x['nama_instansi'] . '</option>';
-                                        }
-                                    ?>
-                                </select>
+                                <label for="instansi" class="block mb-2 text-sm font-medium text-gray-900">Instansi</label>
+                                <input type="text" name="instansi" id="instansi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900">Deskripsi</label>
@@ -577,7 +571,7 @@
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="lampiran" class="block mb-2 text-sm font-medium text-gray-900">Lampiran</label>
-                                <img id="lampiran" class="w-full h-fit rounded-lg object-cover" src="./assets/default-image.png" alt="Lampiran">
+                                <img id="lampiran" class="w-full h-fit rounded-lg object-cover" alt="Lampiran">
                             </div>
                         </div>
                         <div class="flex items-center justify-end space-x-4">
@@ -748,12 +742,24 @@
                         const lokasi = button.getAttribute('data-lokasi');
                         const lampiran = button.getAttribute('data-lampiran');
                         const deskripsi = button.getAttribute('data-deskripsi');
+                        const instansi = button.getAttribute('data-instansi');
 
                         const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
                         if (deskripsiField) {
                             deskripsiField.value = deskripsi;
                         } else {
                             console.error('Textarea tidak ditemukan');
+                        }
+
+                        const lampiranField = document.querySelector('#updateProductModal img[id="lampiran"]');
+                        if (lampiranField) {
+                            if (lampiran === "") {
+                                lampiranField.src = "./assets/default-image.png";
+                            } else {
+                                lampiranField.src = "./Back-end/foto-pengaduan/" + lampiran;
+                            }
+                        }  else {
+                            console.error('Gambar tidak ditemukan');
                         }
 
                         // Mengisi input di dalam modal
@@ -764,7 +770,7 @@
                         document.querySelector('#updateProductModal input[name="tanggal"]').value = tanggal;
                         document.querySelector('#updateProductModal input[name="status"]').value = status;
                         document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
-                        document.querySelector('#updateProductModal input[name="lampiran"]').value = lampiran;
+                        document.querySelector('#updateProductModal input[name="instansi"]').value = instansi;
                     });
                 });
             });

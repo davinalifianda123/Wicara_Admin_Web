@@ -157,11 +157,12 @@
             VALUES ('$id_jenis_kejadian','$id_user', '$jenis_barang', '$deskripsi', '$tanggal', '$lokasi', '$status_kehilangan', '$tanggal_kadaluwarsa')");
         }
 //FORM PENGADUAN
-        function tambah_kejadian_pengaduan($id_jenis_kejadian,$id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran,$id_jenis_pengaduan, $status_pengaduan, $id_instansi)
-        { 
-            mysqli_query($this->koneksi,"INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi,lampiran, id_jenis_pengaduan,status_pengaduan, id_instansi) 
-            VALUES ('$id_jenis_kejadian','$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi','$lampiran','$id_jenis_pengaduan', '$status_pengaduan', '$id_instansi')");
+        function tambah_kejadian_pengaduan($id_jenis_kejadian, $id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $id_jenis_pengaduan, $status_pengaduan, $id_instansi) {
+            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, id_jenis_pengaduan, status_pengaduan, id_instansi) 
+                    VALUES ('$id_jenis_kejadian', '$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$id_jenis_pengaduan', '$status_pengaduan', '$id_instansi')";
+            mysqli_query($this->koneksi, $query);
         }
+
 //FORM ULASAN
         function tambah_kejadian_ulasan($id_jenis_kejadian,$id_user, $id_instansi, $isi_komentar, $tanggal, $skala_bintang)
         { 
@@ -194,6 +195,16 @@
         
             // Tutup statement
             $stmt->close();
+        }
+        public function get_user_image($id_user) {
+            $query = "SELECT image FROM user WHERE id_user = ?";
+            $stmt = $this->koneksi->prepare($query);
+            $stmt->bind_param("i", $id_user);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $user = $result->fetch_assoc();
+    
+            return $user ? $user['image'] : null;
         }
         
         

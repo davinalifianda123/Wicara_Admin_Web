@@ -15,7 +15,7 @@ $kejadian = isset($kejadian) ? $kejadian : [];
     $db = new Database();
 ?>
 <h3>Buat Laporan Pengaduan</h3>
-    <form action="simpan_kejadian_pengaduan.php" method="POST">
+    <form action="simpan_kejadian_pengaduan.php" method="POST" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>Jenis Kejadian</td>
