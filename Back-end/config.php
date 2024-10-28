@@ -150,6 +150,7 @@
             }
             return $hasil;
         }
+        
 //FORM KEHILANGAN
         function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $jenis_barang, $deskripsi, $tanggal, $lokasi,  $status_kehilangan, $tanggal_kadaluwarsa)
         {

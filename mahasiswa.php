@@ -12,6 +12,29 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    // Get the current page number, default to 1 if not set
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $itemsPerPage = 7;
+    $offset = ($currentPage - 1) * $itemsPerPage;
+
+    // Get the total number of users with role 3
+    $totalUsers = count(array_filter($db->tampil_user(), function($x) {
+        return $x['role'] == 3;
+    }));
+
+    // Calculate the total number of pages
+    $totalPages = ceil($totalUsers / $itemsPerPage);
+
+    // Fetch the users for the current page
+    $users = array_filter($db->tampil_user(), function($x) {
+        return $x['role'] == 3;
+    });
+    $usersToShow = array_slice($users, $offset, $itemsPerPage);
+
+    // Display the users in the table
+    $no = $offset + 1; // Start numbering from the current offset
+
 ?>
 
 <!DOCTYPE html>
@@ -162,7 +185,7 @@
                                 <a href="mahasiswa.php" class="flex items-center w-full p-2 transition duration-75 rounded-lg pl-11 group text-yellow-400 text-sm">Mahasiswa</a>
                             </li>
                             <li>
-                               <a href="./dosen.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Dosen/Tendik</a>
+                               <a href="./dosen.php" class="flex items-center w-full p-2 text-gray-50 transition duration-75 rounded-lg pl-11 group hover:text-yellow-400 text-sm">Dosen</a>
                             </li>
                         </ul>
                     </li>
@@ -183,26 +206,9 @@
             <!-- NAVBAR INII -->
             <nav class="w-full lg:px-0 pb-4">
                 <div class="flex flex-wrap justify-between items-center">
-                    <nav class="flex justify-center items-center" aria-label="Breadcrumb">
-                        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                            <li class="inline-flex items-center">
-                                <a href="#" class="inline-flex items-center text-sm font-semibold text-blue-950 hover:text-blue-600">
-                                    <svg class="w-6 h-6 mr-2 rounded-xl transition duration-75 group-hover:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd" d=    "M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z" clip-rule="evenodd"/>
-                                    </svg>
-                                    User
-                                </a>
-                            </li>
-                            <li aria-current="page">
-                                <div class="flex items-center">
-                                    <svg class="rtl:rotate-180 w-3 h-3 text-blue-950 mx-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                                    </svg>
-                                    <span class="ms-1 text-sm font-semibold text-blue-950 md:ms-2">Mahasiswa</span>
-                                </div>
-                            </li>
-                        </ol>
-                    </nav>                        
+                    <div>
+                    <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">User &gt; Mahasiswa</span>
+                    </div>                     
   
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
@@ -390,9 +396,8 @@
                 <p class="p-2 text-gray-500" style="font-size: 10px;">Update terakhir: 1 September 2024 (20:00 WIB)</p>
                 <p class="p-2 text-gray-500" style="font-size: 10px;">Σ Jumlah: 2000 Mahasiswa</p>
             </div>
-            
-            <div class="bg-white p-4 border-2 border-gray-200 border-dashed rounded-lg" style="height: 530px;">
-                <div class="flex justify-between items-center">
+            <div class="bg-white p-2 border-2 border-gray-200 border-dashed rounded-lg">
+                <div class="flex justify-between items-center py-2">
                     <div>
                         <p class="font-bold p-0 whitespace-nowrap">Data Mahasiswa</p>
                         <p class="text-xs p-0 text-gray-500">Detail Mahasiswa</p>
@@ -408,124 +413,122 @@
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="nama, nim, jurusan, atau prodi.." required onkeyup="searchTable()" />
+                            <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="search anything..." required onkeyup="searchTable()" />
                         </div>
                     </form>
                 </div>
-        
-                <!-- Area yang bisa di-scroll -->
-                <div class="mt-4 overflow-y-auto" style="max-height: 450px;">
-                    <table id="student-table" class="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <tbody>
-                            <tr class="flex justify-between items-center p-4">
-                                <td class="flex items-center">
-                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
-                                    <div>
-                                        <div class="font-semibold text-blue-950">Khilda S.A.</div>
-                                        <div class="font-medium text-black">NIM: 43323000</div>
-                                        <div class="text-gray-600">Teknologi Rekayasa Komputer</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
-                                </td>
-                            </tr>
-                            <!-- Tambahkan baris lainnya... -->
-                            <tr class="flex justify-between items-center p-4">
-                                <td class="flex items-center">
-                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
-                                    <div>
-                                        <div class="font-semibold text-blue-950">Davin Alifianda</div>
-                                        <div class="font-medium text-black">NIM: 43323004</div>
-                                        <div class="text-gray-600">Teknologi Rekayasa Komputer</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
-                                </td>
-                            </tr>
-                            <tr class="flex justify-between items-center p-4">
-                                <td class="flex items-center">
-                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
-                                    <div>
-                                        <div class="font-semibold text-blue-950">Maulana Fajar Rohmani</div>
-                                        <div class="font-medium text-black">NIM: 43323017</div>
-                                        <div class="text-gray-600">Teknologi Rekayasa Komputer</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
-                                </td>
-                            </tr>
-                            <tr class="flex justify-between items-center p-4">
-                                <td class="flex items-center">
-                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
-                                    <div>
-                                        <div class="font-semibold text-blue-950">Irma Inayah</div>
-                                        <div class="font-medium text-black">NIM: 433230024</div>
-                                        <div class="text-gray-600">Teknologi Rekayasa Komputer</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
-                                </td>
-                            </tr>
-                            <tr class="flex justify-between items-center p-4">
-                                <td class="flex items-center">
-                                    <img src="assets/it.jpg" alt="Gambar IT" class="h-16 w-16 rounded-full object-cover mr-4">
-                                    <div>
-                                        <div class="font-semibold text-blue-950">Khilda S.A.</div>
-                                        <div class="font-medium text-black">NIM: 43323000</div>
-                                        <div class="text-gray-600">Teknologi Rekayasa Komputer</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a href="#" class="text-blue-600 hover:underline font-medium">Edit</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Tabel -->
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <tbody>
+                    <?php 
+                    // Initialize the overall row index
+                    static $overallRowIndex = 0;
+                    $visibleRowIndex = 0; // Counter for visible rows
+
+                    // Loop through the users to show
+                    foreach ($usersToShow as $x): 
+                        $imagePath = $x['image'];
+
+                        // Increment the overall row index
+                        $overallRowIndex++;
+                        
+                        // Check if the row should be displayed
+                        $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                        
+                        if ($isVisible) {
+                            // Increment the visible row index if the row is visible
+                            $visibleRowIndex++;
+                        }
+
+                        // Determine the row color based on the visible index
+                        $rowClass = $visibleRowIndex % 2 == 0 ? 'bg-white' : 'bg-gray-100';
+                    ?>
+                    <tr class="<?php echo $rowClass; ?> border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>">
+                        <th scope="row" style="padding: 0.5rem; width: 60px;">
+                            <img src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>" alt="Profile Image" style="border-radius: 50%; ">
+                        </th>
+                        <td class="px-4 py-2" style="height: 3rem;">
+                            <span class="text-base font-semibold text-blue-950">
+                                <?php echo $x['nama']; ?>
+                            </span>
+                            <br>
+                            <span class="text-sm text-gray-600">
+                                <?php echo 'NIM: ', $x['nomor_induk']; ?>
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <button class="text-blue-500 hover:">Edit</button>
+                            </span>
+                        </td>
+                    </tr>
+                    <?php 
+                        endforeach; 
+                        // Handle remaining rows
+                        $remainingRows = $itemsPerPage - count($usersToShow);
+                        for ($i = 0; $i < $remainingRows; $i++): 
+                            // Increment overall row index for empty rows
+                            $overallRowIndex++;
+                            $rowClass = $overallRowIndex % 2 == 0 ? 'bg-white' : 'bg-gray-100'; // Maintain color pattern
+                    ?>
+                    <?php 
+                    endfor 
+                    ?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Tampilan navigasi Pagination -->
+            <nav aria-label="Page navigation example" class="flex justify-end">
+                <ul class="inline-flex -space-x-px text-sm">
+                    <li>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
             </div>
         </div>
 
         <script>
             function searchTable() {
-                 let input = document.getElementById('default-search').value.toLowerCase();
-                 let table = document.getElementById('student-table');
-                 let rows = table.getElementsByTagName('tr');
-                 let visibleRowIndex = 0;
+                const searchInput = document.getElementById('default-search').value.toLowerCase();
+                const tableRows = document.querySelectorAll('table tbody tr');
+                let visibleRowIndex = 0; // Initialize a visible row index
+
+                tableRows.forEach(row => {
+                    const cells = row.getElementsByTagName('td');
+                    let found = false;
+
+                    for (let i = 0; i < cells.length; i++) {
+                        const cellText = cells[i].innerText.toLowerCase();
+                        if (cellText.includes(searchInput)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // Show or hide the row based on the search results
+                    if (found) {
+                        row.style.display = ''; // Show the row
+                        visibleRowIndex++;
+
+                        // Update the background color based on the visible index
+                        row.className = (visibleRowIndex % 2 === 0) ? 'bg-white border-b' : 'bg-gray-100 border-b';
+                    } else {
+                        row.style.display = 'none'; // Hide the row
+                    }
+                });
+            }
      
-                 for (let i = 0; i < rows.length; i++) {
-                     let row = rows[i];
-                     let text = row.innerText.toLowerCase();
-     
-                     // Jika teks sesuai dengan input, tampilkan baris; jika tidak, sembunyikan
-                     if (text.includes(input)) {
-                         row.style.display = '';  // Tampilkan baris
-                         // Bersihkan kelas lama
-                         row.classList.remove('even', 'odd');
-                         
-                         // Terapkan kelas 'odd' atau 'even' berdasarkan indeks baris yang terlihat
-                         if (visibleRowIndex % 2 === 0) {
-                             row.classList.add('even');
-                         } else {
-                             row.classList.add('odd');
-                         }
-                         visibleRowIndex++;  // Tingkatkan indeks hanya untuk baris yang terlihat
-                     } else {
-                         row.style.display = 'none';  // Sembunyikan baris
-                     }
-                 }
-             }
-     
-     
-             function applyRowAlternatingColors() {
+            function applyRowAlternatingColors() {
                  let table = document.getElementById('student-table');
                  let rows = table.getElementsByTagName('tr');
                  let visibleRowIndex = 0;
@@ -550,6 +553,7 @@
                  applyRowAlternatingColors();
              }
         </script>
+
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
