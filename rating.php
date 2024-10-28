@@ -74,10 +74,10 @@
     </head>
     <body>
         <!-- SIDEBAR INII -->
-        <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+        <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full md:translate-x-0" aria-label="Sidebar">
             <div class="h-full px-3 py-4 overflow-y-auto color-linear">
                 <a href="#" class="flex items-center ps-2.5 mb-4 text-gray-50">
-                    <img src="assets/logo-polines.png" class="h-6 me-3 sm:h-7" alt="Polines Logo" />
+                    <img src="assets/logo-polines.png" class="h-6 me-3 md:h-7" alt="Polines Logo" />
                     <span class="text-2xl self-center font-bold whitespace-nowrap">WICARA</span>
                 </a>
                 <hr>
@@ -166,18 +166,18 @@
         </aside>
         
         <!-- CONTENT INII -->
-        <div class="py-4 px-4 sm:ml-64">
+        <div class="py-4 px-4 md:ml-64">
             <!-- NAVBAR INII -->
             <nav class="w-full bg-transparent lg:px-0 pb-4">
                 <div class="flex flex-wrap justify-between items-center">
                     <div class="flex items-center">
-                        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 hover:text-yellow-400">
+                        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 hover:text-yellow-400">
                             <span class="sr-only">Open sidebar</span>
                             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                             </svg>
                         </button>
-                        <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">Rating</span>
+                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block">Rating</span>
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
@@ -240,7 +240,7 @@
             </nav>
 
             <!-- PROFILE READ CONTENT -->
-            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
+            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
                 <!-- Tombol Kembali -->
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
@@ -286,7 +286,7 @@
             </div>
 
             <!-- PROFILE EDIT CONTENT -->
-            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
+            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
                     <button onclick="goBack2()" class="flex items-center text-sm text-blue-500 hover:underline">
@@ -359,7 +359,7 @@
             </div>
 
             <!-- CONTENT INII REAL CUY -->
-            <div class="relative overflow-x-auto bg-white p-3 drop-shadow-md sm:rounded-lg">
+            <div class="relative overflow-x-auto bg-white p-3 drop-shadow-md md:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <!-- INII TABS STATUS -->
                     <div class="text-sm font-medium text-center bg-white text-gray-500 border-b border-gray-200">
@@ -369,110 +369,321 @@
                         </li>
                       </ul>
                       <!-- INI CARDNYA -->
-                      <div class="grid grid-cols-2 mt-5">
-                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow items-start">
-                          <figure class="relative max-w-sm">
-                            <a href="#">
-                              <div class="relative w-full h-0 pb-[56.25%] overflow-hidden">
-                                <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5 justify-center">
+                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                              <figure class="relative max-w-full">
+                              <a href="#">
+                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                                </div>
+                              </a>
+                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                <p class="text-lg font-bold">POLIKLINIK</p>
+                                <p class="text-sm">PIC@gmail.com</p>
+                              </figcaption>
+                              </figure>
+                          <div class="p-4 w-full mx-auto">
+                          <div class="flex flex-col justify-between items-start">
+                            <div class="flex items-center flex-nowrap">
+                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
+                              <p class="ms-1 text-sm font-medium text-black">/</p>
+                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                              <div class="flex ">
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
                               </div>
-                            </a>
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                            <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                              <p class="text-lg font-bold">POLIKLINIK</p>
-                              <p class="text-sm">PIC@gmail.com</p>
-                            </figcaption>
-                          </figure>
-                          <div class="p-4">
-                            <!--Rate-->
-                            <div class="flex justify-between items-start">
-                              <div>
-                                  <div class="flex items-center">
-                                      <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                                      <p class="ms-1 text-sm font-medium text-black">/</p>
-                                      <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                  </div>
-                                  <div class="flex text-start mt-1">
-                                      <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                      <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                                  </div>
+                            </div>
+                              <div class="flex text-start mt-1">
+                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
                               </div>
-                              <div class="flex items-center justify-center h-12">
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:underline ali-center">Detail</a>
-                              </div>
-                          </div>                          
-                          <!-- Batas Rate -->
+                          </div>
+                            <div class="flex justify-end mt-2">
+                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            </div>
                           </div>
                         </div>
-                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow items-end">
-                          <figure class="relative max-w-sm">
-                            <a href="#">
-                              <div class="relati   ve w-full h-0 pb-[56.25%] overflow-hidden">
-                                <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                              <figure class="relative max-w-full">
+                              <a href="#">
+                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                                </div>
+                              </a>
+                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                <p class="text-lg font-bold">POLIKLINIK</p>
+                                <p class="text-sm">PIC@gmail.com</p>
+                              </figcaption>
+                              </figure>
+                          <div class="p-4 w-full mx-auto">
+                          <div class="flex flex-col justify-between items-start">
+                            <div class="flex items-center flex-nowrap">
+                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
+                              <p class="ms-1 text-sm font-medium text-black">/</p>
+                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                              <div class="flex ">
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
                               </div>
-                            </a>
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                            <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                              <p class="text-lg font-bold">POLIKLINIK</p>
-                              <p class="text-sm">PIC@gmail.com</p>
-                            </figcaption>
-                          </figure>
-                          <div class="p-4">
-                            <!--Rate-->
-                            <div class="flex justify-between items-start">
-                              <div>
-                                  <div class="flex items-center">
-                                      <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                                      <p class="ms-1 text-sm font-medium text-black">/</p>
-                                      <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                  </div>
-                                  <div class="flex text-start mt-1">
-                                      <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                      <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                                  </div>
+                            </div>
+                              <div class="flex text-start mt-1">
+                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
                               </div>
-                              <div class="flex items-center justify-center h-12">
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:underline ali-center">Detail</a>
+                          </div>
+                            <div class="flex justify-end mt-2">
+                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                              <figure class="relative max-w-full">
+                              <a href="#">
+                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                                </div>
+                              </a>
+                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                <p class="text-lg font-bold">POLIKLINIK</p>
+                                <p class="text-sm">PIC@gmail.com</p>
+                              </figcaption>
+                              </figure>
+                          <div class="p-4 w-full mx-auto">
+                          <div class="flex flex-col justify-between items-start">
+                            <div class="flex items-center flex-nowrap">
+                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
+                              <p class="ms-1 text-sm font-medium text-black">/</p>
+                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                              <div class="flex">
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
                               </div>
-                          </div>                          
-                          <!-- Batas Rate -->
+                            </div>
+                              <div class="flex text-start mt-1">
+                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
+                              </div>
+                          </div>
+                            <div class="flex justify-end mt-2">
+                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                              <figure class="relative max-w-full">
+                              <a href="#">
+                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                                </div>
+                              </a>
+                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                <p class="text-lg font-bold">POLIKLINIK</p>
+                                <p class="text-sm">PIC@gmail.com</p>
+                              </figcaption>
+                              </figure>
+                          <div class="p-4 w-full mx-auto">
+                          <div class="flex flex-col justify-between items-start">
+                            <div class="flex items-center flex-nowrap">
+                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
+                              <p class="ms-1 text-sm font-medium text-black">/</p>
+                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                              <div class="flex ">
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              </div>
+                            </div>
+                              <div class="flex text-start mt-1">
+                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
+                              </div>
+                          </div>
+                            <div class="flex justify-end mt-2">
+                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                              <figure class="relative max-w-full">
+                              <a href="#">
+                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                                </div>
+                              </a>
+                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                <p class="text-lg font-bold">POLIKLINIK</p>
+                                <p class="text-sm">PIC@gmail.com</p>
+                              </figcaption>
+                              </figure>
+                          <div class="p-4 w-full mx-auto">
+                          <div class="flex flex-col justify-between items-start">
+                            <div class="flex items-center flex-nowrap">
+                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
+                              <p class="ms-1 text-sm font-medium text-black">/</p>
+                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                              <div class="flex ">
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              </div>
+                            </div>
+                              <div class="flex text-start mt-1">
+                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
+                              </div>
+                          </div>
+                            <div class="flex justify-end mt-2">
+                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                              <figure class="relative max-w-full">
+                              <a href="#">
+                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                                </div>
+                              </a>
+                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                <p class="text-lg font-bold">POLIKLINIK</p>
+                                <p class="text-sm">PIC@gmail.com</p>
+                              </figcaption>
+                              </figure>
+                          <div class="p-4 w-full mx-auto">
+                          <div class="flex flex-col justify-between items-start">
+                            <div class="flex items-center flex-nowrap">
+                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
+                              <p class="ms-1 text-sm font-medium text-black">/</p>
+                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                              <div class="flex ">
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                              </svg>
+                              </div>
+                            </div>
+                              <div class="flex text-start mt-1">
+                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
+                              </div>
+                          </div>
+                            <div class="flex justify-end mt-2">
+                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            </div>
                           </div>
                         </div>
                       </div>                        
                     </div>
                 </table>
             </div>
+          <nav aria-label="Page navigation example" class="flex justify-end mt-2">
+            <ul class="inline-flex -space-x-px text-sm">
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
+              </li>
+              <li>
+                <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+              </li>
+            </ul>
+          </nav>
         </div>
+
+        
         
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
