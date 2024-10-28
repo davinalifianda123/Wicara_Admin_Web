@@ -419,8 +419,6 @@
                                     <div>
                                         <div class="font-semibold text-blue-950">Rahwa Arduinoto</div>
                                         <div class="font-medium text-black">ID: 1992873</div>
-                                        <div class="text-gray-600">Jurusan Elektro</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
                                     </div>
                                 </td>
                                 <td>
@@ -434,8 +432,6 @@
                                     <div>
                                         <div class="font-semibold text-blue-950">Ghifari Yanuar</div>
                                         <div class="font-medium text-black">ID: 782091</div>
-                                        <div class="text-gray-600">Jurusan Elektro</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
                                     </div>
                                 </td>
                                 <td>
@@ -448,8 +444,6 @@
                                     <div>
                                         <div class="font-semibold text-blue-950">Maulana Fajar Rohmani</div>
                                         <div class="font-medium text-black">ID: 43323017</div>
-                                        <div class="text-gray-600">Jurusan Elektro</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
                                     </div>
                                 </td>
                                 <td>
@@ -462,8 +456,6 @@
                                     <div>
                                         <div class="font-semibold text-blue-950">Irma Inayah</div>
                                         <div class="font-medium text-black">ID: 433230024</div>
-                                        <div class="text-gray-600">Jurusan Elektro</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
                                     </div>
                                 </td>
                                 <td>
@@ -476,8 +468,6 @@
                                     <div>
                                         <div class="font-semibold text-blue-950">Khilda S.A.</div>
                                         <div class="font-medium text-black">ID: 43323000</div>
-                                        <div class="text-gray-600">Jurusan Elektro</div>
-                                        <div class="text-gray-400 text-xs">15/9/2024 20:00</div>
                                     </div>
                                 </td>
                                 <td>
