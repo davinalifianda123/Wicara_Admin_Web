@@ -13,27 +13,31 @@
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
 
+    // Get the selected status from the query parameter, default to 'semua'
+    $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'semua';
+
     // Get the current page number, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $itemsPerPage = 10;
     $offset = ($currentPage - 1) * $itemsPerPage;
 
-    // Get the total number of users with role 3
-    $totalKejadian = count(array_filter($db->tampil_data_pengaduan(), function($x) {
-        return $x['id_kejadian'];
-    }));
+    // Filter the data based on the selected status
+    $filteredKejadian = array_filter($db->tampil_data_pengaduan(), function($x) use ($statusFilter) {
+        if ($statusFilter === 'semua') {
+            return true; // Show all if 'semua' is selected
+        }
+        return strtolower($x['nama_status_pengaduan']) === $statusFilter;
+    });
 
-    // Calculate the total number of pages
+    // Calculate the total number of items and pages based on filtered data
+    $totalKejadian = count($filteredKejadian);
     $totalPages = ceil($totalKejadian / $itemsPerPage);
 
-    // Fetch the Kejadian for the current page
-    $Kejadian = array_filter($db->tampil_data_pengaduan(), function($x) {
-        return $x['id_kejadian'];
-    });
-    $KejadianToShow = array_slice($Kejadian, $offset, $itemsPerPage);
+    // Fetch the items for the current page
+    $KejadianToShow = array_slice($filteredKejadian, $offset, $itemsPerPage);
 
-    // Display the Kejadian in the table
-    $no = $offset + 1; // Start numbering from the current offset
+    // Start numbering from the current offset
+    $no = $offset + 1;
 
 ?>
 
@@ -389,31 +393,31 @@
                     <div class="text-sm font-medium text-center bg-white text-gray-500 border-b border-gray-200">
                         <ul class="flex flex-wrap -mb-px">
                             <li class="me-2">
-                                <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Semua</a>
+                                <a href="?status=semua" class="status-tab inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" data-status="semua">Semua</a>
                             </li>
                             <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Diajukan</a>
+                                <a href="?status=diajukan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="diajukan">Diajukan</a>
                             </li>
                             <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Diproses</a>
+                                <a href="?status=diproses" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="diproses">Diproses</a>
                             </li>
                             <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Selesai</a>
+                                <a href="?status=selesai" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="selesai">Selesai</a>
                             </li>
                             <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Ditolak</a>
+                                <a href="?status=ditolak" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="ditolak">Ditolak</a>
                             </li>
                             <li class="me-2">
-                                <a href="#" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300">Dibatalkan</a>
+                                <a href="?status=dibatalkan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="dibatalkan">Dibatalkan</a>
                             </li>
-                            <form class="flex flex-wrap mx-auto" action="#" method="POST">
+                            <form class="flex-grow mx-auto">
                                 <div class="relative top-2">
                                     <div class="absolute top-2.5 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                         </svg>
                                     </div>
-                                    <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required />
+                                    <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchTable()" required />
                                 </div>
                             </form>
                         </ul>
@@ -468,7 +472,7 @@
                                 $visibleRowIndex++;
                             }
                         ?>
-                            <tr class="bg-white border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>">
+                            <tr class="bg-white border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>" data-status="<?php echo strtolower($x['nama_status_pengaduan']); ?>">
                                 <th scope="row" class="px-3 py-4">
                                     <?php echo $no++; ?>
                                 </th>
@@ -536,15 +540,15 @@
             <nav aria-label="Page navigation example" class="flex justify-end">
                 <ul class="inline-flex -space-x-px text-sm">
                     <li>
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                        <a href="?status=<?php echo $statusFilter; ?>&page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                         <li>
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                            <a href="?status=<?php echo $statusFilter; ?>&page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
                     <li>
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                        <a href="?status=<?php echo $statusFilter; ?>&page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
                     </li>
                 </ul>
             </nav>
@@ -610,12 +614,21 @@
                                 <img id="lampiran" class="w-full h-fit rounded-lg object-cover" alt="Lampiran">
                             </div>
                         </div>
-                        <div class="flex items-center justify-end space-x-4">
-                            <button type="submit" class="text-white bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        <!-- Buttons area inside the modal -->
+                        <div class="flex items-center justify-end space-x-4" id="actionButtons">
+                            <!-- Accept Button -->
+                            <button type="submit" id="acceptButton" class="text-white bg-blue-600 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden">
                                 Terima
                             </button>
-                            <button type="button" class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                            
+                            <!-- Reject Button -->
+                            <button type="button" id="rejectButton" class="text-red-600 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden">
                                 Tolak
+                            </button>
+
+                            <!-- Delete Button -->
+                            <button type="button" id="deleteButton" class="text-red-600 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden">
+                                Delete
                             </button>
                         </div>
                     </form>
@@ -626,9 +639,38 @@
   
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <!-- INII SCRIPT NOTIF -->
+        <script src="Back-end/toast.js"></script>
+        <!-- INII SCRIPT -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
+            // Search Table
+            function searchTable() {
+                const searchInput = document.getElementById('default-search').value.toLowerCase();
+                const tableRows = document.querySelectorAll('table tbody tr');
+                let visibleRowIndex = 0; // Initialize a visible row index
+
+                tableRows.forEach(row => {
+                    const cells = row.getElementsByTagName('td');
+                    let found = false;
+
+                    for (let i = 0; i < cells.length; i++) {
+                        const cellText = cells[i].innerText.toLowerCase();
+                        if (cellText.includes(searchInput)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    // Show or hide the row based on the search results
+                    if (found) {
+                        row.style.display = ''; // Show the row
+                        visibleRowIndex++;
+                    } else {
+                        row.style.display = 'none'; // Hide the row
+                    }
+                });
+            }
+
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
                 { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
@@ -763,7 +805,7 @@
                 document.getElementById('updateProductButton').click();
             });
 
-            // Fungsi untuk mengisi input di dalam modal
+            // Fungsi untuk menampilkan modal update product
             document.addEventListener('DOMContentLoaded', function() {
                 const updateButtons = document.querySelectorAll('#updateProductButton');
                 
@@ -774,31 +816,13 @@
                         const judul = button.getAttribute('data-judul');
                         const kategori = button.getAttribute('data-kategori');
                         const tanggal = button.getAttribute('data-tanggal');
-                        const status = button.getAttribute('data-status');
+                        const status = button.getAttribute('data-status').toLowerCase();
                         const lokasi = button.getAttribute('data-lokasi');
                         const lampiran = button.getAttribute('data-lampiran');
                         const deskripsi = button.getAttribute('data-deskripsi');
                         const instansi = button.getAttribute('data-instansi');
 
-                        const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
-                        if (deskripsiField) {
-                            deskripsiField.value = deskripsi;
-                        } else {
-                            console.error('Textarea tidak ditemukan');
-                        }
-
-                        const lampiranField = document.querySelector('#updateProductModal img[id="lampiran"]');
-                        if (lampiranField) {
-                            if (lampiran === "") {
-                                lampiranField.src = "./assets/default-image.png";
-                            } else {
-                                lampiranField.src = "./Back-end/foto-pengaduan/" + lampiran;
-                            }
-                        }  else {
-                            console.error('Gambar tidak ditemukan');
-                        }
-
-                        // Mengisi input di dalam modal
+                        // Populate modal fields
                         document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id;
                         document.querySelector('#updateProductModal input[name="user"]').value = user;
                         document.querySelector('#updateProductModal input[name="judul"]').value = judul;
@@ -807,6 +831,108 @@
                         document.querySelector('#updateProductModal input[name="status"]').value = status;
                         document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
                         document.querySelector('#updateProductModal input[name="instansi"]').value = instansi;
+
+                        const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
+                        if (deskripsiField) deskripsiField.value = deskripsi;
+
+                        const lampiranField = document.querySelector('#updateProductModal img[id="lampiran"]');
+                        if (lampiranField) {
+                            lampiranField.src = lampiran ? `./Back-end/foto-pengaduan/${lampiran}` : "./assets/default-image.png";
+                        }
+
+                        // Show or hide buttons based on the status
+                        const acceptButton = document.getElementById('acceptButton');
+                        const rejectButton = document.getElementById('rejectButton');
+                        const deleteButton = document.getElementById('deleteButton');
+
+                        if (status === 'diajukan') {
+                            // Show "Terima" and "Tolak" buttons, hide "Delete"
+                            acceptButton.classList.remove('hidden');
+                            rejectButton.classList.remove('hidden');
+                            deleteButton.classList.add('hidden');
+                        } else {
+                            // Show "Delete" button, hide "Terima" and "Tolak"
+                            acceptButton.classList.add('hidden');
+                            rejectButton.classList.add('hidden');
+                            deleteButton.classList.remove('hidden');
+                        }
+                    });
+                });
+
+                const acceptButton = document.getElementById('acceptButton');
+                const rejectButton = document.getElementById('rejectButton');
+                const deleteButton = document.getElementById('deleteButton');
+                
+                // Mengambil id kejadian dari modal
+                const getIdKejadian = () => document.querySelector('#updateProductModal input[name="id_kejadian"]').value;
+
+                // Fungsi AJAX untuk mengirim data
+                function sendAction(action) {
+                    const idKejadian = getIdKejadian();
+                    fetch('Back-end/update_status_pengaduan.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `id_kejadian=${idKejadian}&action=${action}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            location.reload(); // Refresh halaman setelah aksi berhasil
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+
+                // Event listeners untuk tombol aksi
+                acceptButton.addEventListener('click', () => sendAction('terima'));
+                rejectButton.addEventListener('click', () => sendAction('tolak'));
+                deleteButton.addEventListener('click', () => {
+                    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                        sendAction('delete');
+                    }
+                });
+            });
+
+
+            // Fungsi untuk menampilkan tab status
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get all the status tabs
+                const tabs = document.querySelectorAll('.status-tab');
+
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', function (e) {
+                        e.preventDefault();
+
+                        // Get the status from the tab
+                        const status = tab.getAttribute('data-status');
+
+                        // Get all table rows
+                        const rows = document.querySelectorAll('tbody tr');
+
+                        // Show/hide rows based on the selected status
+                        rows.forEach(row => {
+                            const rowStatus = row.getAttribute('data-status');
+                            if (status === 'semua' || rowStatus === status) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+
+                        // Update the active tab styling
+                        tabs.forEach(t => {
+                            t.classList.remove('text-yellow-400', 'border-yellow-400', 'active');
+                            t.classList.add('hover:text-gray-600', 'hover:border-gray-300', 'border-transparent');
+                        });
+
+                        // Add active styling to the clicked tab
+                        tab.classList.add('text-yellow-400', 'border-yellow-400', 'active');
+                        tab.classList.remove('hover:text-gray-600', 'hover:border-gray-300', 'border-transparent');
                     });
                 });
             });
