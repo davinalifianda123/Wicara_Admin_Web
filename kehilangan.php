@@ -79,8 +79,17 @@
       }
 
       .tab-button {
-        transition: color 0.3s, border-bottom 0.3s;
+        transition: background-color 0.3s, color 0.3s;
+        display: flex;
+        width: 100%;
+        align-items: center;
+        text-align: left;
       }
+      
+      .tab-button:hover {
+        background-color: #f3f4f6; /* light gray */
+      }
+
       .tab-button.active {
         color: #fbbf24; /* yellow-500 */
         border-bottom: 2px solid #fbbf24; /* yellow-500 */
@@ -276,7 +285,7 @@
                         <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
                     </div>
                 </div>
-                <div id="notifications" class="p-4">
+                <div id="notifications" class="p-4 flex flex-col space-y-2">
                     <!-- Notifications will be dynamically inserted here -->
                 </div>
             </div>
@@ -776,84 +785,80 @@
     <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
     <script>
       const notifications = [
-          { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
-          { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
-          { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
-          { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=4' },
-          { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=5' },
-          { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
-          { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
-          { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=8' },
-          { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=9' },
-          { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=10' },
-          { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=11' }
-      ];
+                { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=4' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=5' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
+            ];
 
-      document.getElementById('notificationButton').addEventListener('click', () => {
-          document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
-      });
+            document.getElementById('notificationButton').addEventListener('click', () => {
+                document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
+            });
 
-      document.getElementById('closeSidebarButton').addEventListener('click', () => {
-          document.getElementById('notificationSidebar').classList.add('translate-x-full');
-      });
+            document.getElementById('closeSidebarButton').addEventListener('click', () => {
+                document.getElementById('notificationSidebar').classList.add('translate-x-full');
+            });
 
-      function filterNotifications(type) {
-          const container = document.getElementById('notifications');
-          container.innerHTML = '';
-          const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
-          filteredNotifications.forEach(notification => {
-              const notificationElement = document.createElement('div');
-              notificationElement.classList.add('flex', 'items-center', 'mb-4');
-              notificationElement.innerHTML = `
-                  <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
-                  <div class="flex-1">
-                      <h2 class="font-bold">${notification.title}</h2>
-                      <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
-                      ${notification.type === 'rating' ? `<div class="text-yellow-500">${'<i class="fas fa-star"></i>'.repeat(notification.rating)}${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}</div>` : ''}
-                      ${notification.type === 'kehilangan' ? `
-                          <div class="flex space-x-2 mt-2">
-                              <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
-                              <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
-                          </div>
-                      ` : ''}
-                  </div>
-              `;
-              container.appendChild(notificationElement);
-          });
+            function filterNotifications(type) {
+                const container = document.getElementById('notifications');
+                container.innerHTML = '';
+                const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
+                filteredNotifications.forEach(notification => {
+                    const notificationElement = document.createElement('button');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full');
+                    notificationElement.innerHTML = `
+                        <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+                        <div class="flex-1">
+                            <h2 class="font-bold">${notification.title}</h2>
+                            <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
+                            ${notification.type === 'rating' ? `<div class="text-yellow-500">${'<i class="fas fa-star"></i>'.repeat(notification.rating)}${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}</div>` : ''}
+                            ${notification.type === 'kehilangan' ? `
+                                <div class="flex space-x-2 mt-2">
+                                    <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
+                                    <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    container.appendChild(notificationElement);
+                });
 
-          // Update tab button styles
-          document.querySelectorAll('.tab-button').forEach(button => {
-              button.classList.remove('active');
-              button.classList.add('text-gray-500');
-          });
-          document.getElementById(`tab-${type}`).classList.add('active');
-      }
+                // Update tab button styles
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.classList.remove('active');
+                    button.classList.add('text-gray-500');
+                });
+                document.getElementById(`tab-${type}`).classList.add('active');
+            }
 
-      function showConfirmationDialog(action) {
-          const modal = document.getElementById('confirmationModal');
-          modal.style.display = 'block';
+            function showConfirmationDialog(action) {
+                const modal = document.getElementById('confirmationModal');
+                modal.style.display = 'block';
 
-          document.getElementById('confirmYes').onclick = () => {
-              alert(`${action} berhasil!`);
-              modal.style.display = 'none';
-          };
+                document.getElementById('confirmYes').onclick = () => {
+                    alert(`${action} berhasil!`);
+                    modal.style.display = 'none';
+            };
 
-          document.getElementById('confirmNo').onclick = () => {
-              modal.style.display = 'none';
-          };
-      }
+                document.getElementById('confirmNo').onclick = () => {
+                    modal.style.display = 'none';
+                };
+            }
 
-      // Initialize with all notifications
-      filterNotifications('semua');
+            // Initialize with all notifications
+            filterNotifications('semua');
 
-      // Close the modal when clicking outside of it
-      window.onclick = function(event) {
-          const modal = document.getElementById('confirmationModal');
-          if (event.target === modal) {
-              modal.style.display = 'none';
-          }
-      };
-      
+            // Close the modal when clicking outside of it
+            window.onclick = function(event) {
+                const modal = document.getElementById('confirmationModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
+
       // Fungsi untuk menampilkan halaman read profile
       document.querySelector('[href="#profile-section"]').addEventListener('click', function () {
           document.getElementById('profile-section-body').classList.remove('hidden');

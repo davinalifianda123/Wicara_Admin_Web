@@ -1,6 +1,6 @@
 <?php
     class database{
-        var $host = "localhost";
+        var $host = "localhost:3307";
         var $username = "root";
         var $password = "";
         var $database = "wicara";
