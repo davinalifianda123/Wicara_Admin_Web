@@ -12,6 +12,29 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    // Get the current page number, default to 1 if not set
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $itemsPerPage = 10;
+    $offset = ($currentPage - 1) * $itemsPerPage;
+
+    // Get the total number of users with role 3
+    $totalKejadian = count(array_filter($db->tampil_data_pengaduan(), function($x) {
+        return $x['id_kejadian'];
+    }));
+
+    // Calculate the total number of pages
+    $totalPages = ceil($totalKejadian / $itemsPerPage);
+
+    // Fetch the Kejadian for the current page
+    $Kejadian = array_filter($db->tampil_data_pengaduan(), function($x) {
+        return $x['id_kejadian'];
+    });
+    $KejadianToShow = array_slice($Kejadian, $offset, $itemsPerPage);
+
+    // Display the Kejadian in the table
+    $no = $offset + 1; // Start numbering from the current offset
+
 ?>
 
 <!DOCTYPE html>
@@ -427,11 +450,25 @@
                     </thead>
                     <!-- INII ISI KOLOM -->
                     <tbody class="text-center">
-                        <?php
-                            $no = 1;
-                            foreach($db->tampil_data_pengaduan() as $x){
+                        <?php 
+                        // Initialize the overall row index
+                        static $overallRowIndex = 0;
+                        $visibleRowIndex = 0; // Counter for visible rows
+
+                        // Loop through the users to show
+                        foreach ($KejadianToShow as $x): 
+                            // Increment the overall row index
+                            $overallRowIndex++;
+                            
+                            // Check if the row should be displayed
+                            $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                            
+                            if ($isVisible) {
+                                // Increment the visible row index if the row is visible
+                                $visibleRowIndex++;
+                            }
                         ?>
-                            <tr class="bg-white border-b">
+                            <tr class="bg-white border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>">
                                 <th scope="row" class="px-3 py-4">
                                     <?php echo $no++; ?>
                                 </th>
@@ -448,7 +485,7 @@
                                     <?php echo $x['nama_jenis_pengaduan']; ?>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <?php echo $x['deskripsi']; ?>
+                                    <?php echo substr($x['deskripsi'], 0, 30) . '...'; ?>
                                 </td>
                                 <td class="">
                                     <?php
@@ -481,35 +518,34 @@
                                     </button>
                                 </td>
                             </tr>
-                        <?php
-                            }
+                        <?php 
+                            endforeach; 
+                            // Handle remaining rows
+                            $remainingRows = $itemsPerPage - count($KejadianToShow);
+                            for ($i = 0; $i < $remainingRows; $i++): 
+                                // Increment overall row index for empty rows
+                                $overallRowIndex++;
+                        ?>
+                        <?php 
+                        endfor 
                         ?>
                     </tbody>
                 </table>
             </div>
+            <!-- PAGENATION -->
             <nav aria-label="Page navigation example" class="flex justify-end">
                 <ul class="inline-flex -space-x-px text-sm">
-                  <li>
-                    <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                  </li>
-                  <li>
-                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
-                  </li>
-                  <li>
-                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-                  </li>
-                  <li>
-                    <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-                  </li>
-                  <li>
-                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
-                  </li>
-                  <li>
-                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
-                  </li>
-                  <li>
-                    <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-                  </li>
+                    <li>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    </li>
                 </ul>
             </nav>
         </div>
