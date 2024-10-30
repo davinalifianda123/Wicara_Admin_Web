@@ -1,6 +1,6 @@
 async function fetchDonutChartData() {
   try {
-    const response = await fetch('http://localhost/Wicara_Admin_Web/Back-end/api_donut_chart.php'); // URL endpoint baru
+    const response = await fetch('http://localhost/Wicara_Admin_Web/Back-end/api_dashboard.php'); // URL endpoint baru
     const data = await response.json();
     
     // Menyiapkan data untuk grafik

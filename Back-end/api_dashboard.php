@@ -18,13 +18,21 @@ $result = mysqli_query($koneksi, $query);
 
 if ($result) {
     $data = [];
+    $total = 0;
     while ($row = mysqli_fetch_assoc($result)) {
         $data[] = [
             'kejadian' => $row['kejadian'],
             'count' => $row['count']
         ];
+        $total += $row['count']; // Menghitung total
     }
+
+    foreach ($data as &$item) {
+        $item['percentage'] = $total > 0 ? ($item['count'] / $total) * 100 : 0; // Menghindari pembagian dengan nol
+    }
+
     echo json_encode($data);
+    
 } else {
     echo json_encode(['error' => 'Data gagal diambil']);
 }
