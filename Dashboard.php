@@ -411,7 +411,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
+                                        <div class="text-[24px] font-bold text-black" id="pengaduan-count">0</div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
                                             <a href="./Pengaduan.html">
@@ -432,7 +432,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
+                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count">0</div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
                                             <a href="./Pengaduan.html">
@@ -453,8 +453,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
-                                        <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
+                                        <div class="text-[24px] font-bold text-black" id="ulasan-count">0</div>
+                                        <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
                                             <a href="./Pengaduan.html">
                                                 Detail
@@ -543,7 +543,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="mahasiswaCount" class="text-2xl px-2 py-2 font-bold text-black"></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
@@ -568,7 +568,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="dosenCount" class="text-2xl px-2 py-2 font-bold text-black">150</div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
@@ -593,7 +593,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="unitCount" class="text-2xl px-2 py-2 font-bold text-black">150</div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
@@ -617,6 +617,43 @@
         <script src="main.js"></script>
         <script src="./Back-end/toast.js"></script>
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
+        <script>
+            async function fetchKejadianCounts() {
+                try {
+                    // Panggil API menggunakan fetch
+                    const response = await fetch('http://localhost/Wicara_Admin_Web/Back-end/api_dashboard.php');
+                    const data = await response.json();
+
+                    // Update elemen HTML berdasarkan data yang diterima
+                    data.forEach(item => {
+                        if (item.kejadian === 'Laporan Pengaduan') {
+                            document.querySelector('#pengaduan-count').textContent = item.count;
+                        } else if (item.kejadian === 'Laporan Kehilangan') {
+                            document.querySelector('#kehilangan-count').textContent = item.count;
+                        } else if (item.kejadian === 'Ulasan') {
+                            document.querySelector('#ulasan-count').textContent = item.count;
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+
+            // Jalankan fungsi fetchKejadianCounts saat halaman dimuat
+            document.addEventListener('DOMContentLoaded', fetchKejadianCounts);
+
+            // Fetch statistics data
+            fetch('http://localhost:3000/Wicara_Admin_Web/Back-end/api_dashboard.php')  // Update with the correct endpoint
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('mahasiswaCount').innerText = data.mahasiswa || 0;
+                    document.getElementById('dosenCount').innerText = data.dosen_tendik || 0;
+                    document.getElementById('unitCount').innerText = data.unit_layanan || 0;
+                })
+                .catch(error => console.error('Error fetching statistics:', error));
+        </script>
+
+
         <script>
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
