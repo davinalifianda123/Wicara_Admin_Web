@@ -415,7 +415,7 @@
                         <!-- Button to open the popup -->
                         <button class="text-sm text-gray-600 mr-4" onclick="togglePopup()">+ Tambah</button>
                         <!-- Popup Form -->
-                        <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+                        <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
                             <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
                                 <button onclick="togglePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
                                     &times;
