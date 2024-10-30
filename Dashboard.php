@@ -675,7 +675,7 @@
                 document.getElementById('confirmYes').onclick = () => {
                     alert(`${action} berhasil!`);
                     modal.style.display = 'none';
-            };
+                };
 
                 document.getElementById('confirmNo').onclick = () => {
                     modal.style.display = 'none';
@@ -692,45 +692,17 @@
                     modal.style.display = 'none';
                 }
             };
-            
-            //fungsi if notif baru, redDot keluar
-            // let lastCheckTimestamp = new Date().toISOString();
-            // let idPengaduanTerbaru = null;
 
-            // function cekNotifikasi() {
-            //     fetch(`api_notifikasi.php?lastCheckTimestamp=${lastCheckTimestamp}`)
-            //         .then(response => response.json())
-            //         .then(data => {
-            //             const notificationDot = document.getElementById('notificationDot');
-            //             if (data.newPengaduan) {
-            //                 notificationDot.classList.remove('hidden');
-            //                 idPengaduanTerbaru = data.idPengaduanTerbaru; // Simpan ID pengaduan terbaru
-            //             } else {
-            //                 notificationDot.classList.add('hidden');
-            //             }
-            //         })
-            //         .catch(error => console.error('Error:', error));
-            // }
-
-            // setInterval(cekNotifikasi, 5000); // Cek setiap 30 detik
-
-            // function loadPengaduan() {
-            //     lastCheckTimestamp = new Date().toISOString();
-            //     cekNotifikasi();
-            //     // Contoh navigasi ke detail pengaduan dengan ID terbaru
-            //     window.location.href = "lihat_pengaduan.php?id=" + idPengaduanTerbaru;
-            // }
-            
             // Fungsi untuk menampilkan halaman read profile
             document.querySelector('[href="#profile-section"]').addEventListener('click', function () {
                 document.getElementById('profile-section-body').classList.remove('hidden');
                 document.getElementById('dropdown').classList.add('hidden');
             });
-
+            
             // Fungsi tombol kembali
             function goBack() {
                 document.getElementById('profile-section-body').classList.add('hidden');
-            }
+            };
 
             // Fungsi untuk menampilkan halaman edit profile
             document.querySelector('[id="edit-profile"]').addEventListener('click', function () {
@@ -770,7 +742,7 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-        </scrip>
+        </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </body>
 </html>
