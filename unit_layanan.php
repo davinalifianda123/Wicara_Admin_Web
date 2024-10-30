@@ -367,6 +367,7 @@
 
             <!-- Bagian Kartu Utama -->
             <div class="bg-white p-4 border-2 border-gray-200 rounded-lg">
+                <!-- INI HEADER -->
                 <div class="flex justify-between items-center">
                     <div>
                         <p class="font-bold p-0 text-lg">Data Unit Layanan</p>
@@ -387,102 +388,188 @@
                     </form>
                 </div>
 
-
                 <!-- Kartu Layanan -->
-                <div class="mt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent shadow-lg rounded-lg shadow-gray-400 w-full" style="max-height: 400px;">
-                    <div class="space-y-4">
-                    <!-- Kartu Poliklinik -->
-                    <div class="bg-white shadow-md overflow-hidden">
-                        <div class="relative">
-                        <img src="assets/data_rating.png" alt="Poliklinik" class="w-full h-52 object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-blue-900 opacity-35"></div>
-                        </div>
-                        <div class="p-4 flex justify-between items-center">
-                        <div>
-                            <div class="font-semibold text-blue-950">Poliklinik</div>
-                            <div class="text-gray-500">PIC: PIC@gmail.com</div>
-                        </div>
-                        <a href="#" class="text-gray-600 hover:text-blue-600 ml-auto">Edit</a>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                
-
-                <!-- Ulangi Blok di atas untuk unit layanan lainnya -->
-                <div class="mt-4 overflow-y-auto shadow-lg rounded-lg shadow-gray-400" style="max-height: 400px;"></div>
-                    <div class="space-y-4">
-                        <!-- Kartu Poliklinik -->
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div class="relative">
-                            <img src="assets/data_rating.png" alt="Poliklinik" class="w-full h-52 object-cover"> <!-- Ubah tinggi gambar -->
-                            <div class="absolute inset-0 bg-gradient-to-t from-blue-900 opacity-35"></div>
-                        </div>
-                        <div class="p-4 flex justify-between items-center">
-                            <div>
-                            <div class="font-semibold text-blue-950">Poliklinik</div>
-                            <div class="text-gray-500">PIC: PIC@gmail.com</div>
-                            </div>
-                            <a href="#" class="text-gray-600 hover:text-blue-600 ml-auto">Edit</a>
-                        </div>
-                        </div>
-                    </div>
-                </div> 
-
-                <!-- Modal Form -->
-                <div id="modal" class="hidden fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50">
-                    <div class="bg-white rounded-lg w-4/5 lg:w-1/2 p-6 relative">
-                        <!-- Tombol Tutup Modal -->
-                        <button id="closeModalBtn" class="absolute top-2 right-4 text-gray-600 hover:text-gray-900">X</button>
-
-                        <!-- Form Unit Layanan -->
-                        <h1 class="text-xl font-bold mb-2">Form Unit Layanan</h1>
-                        <p class="text-gray-500 mb-4">Tambah Unit Layanan</p>
-
-                        <!-- Gambar Form -->
-                        <div class="md flex justify-center items-center mb-4">
-                            <img src="assets/Frame 1000003401.png" alt="Gambar" class="w-full h-40">
-                        </div>
-
-                        <!-- Input Fields -->
-                        <div class="space-y-4">
-                            <div class="flex items-center space-x-4">
-                                <label class="w-1/3">ID Unit Layanan</label>
-                                <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="09000647839" />
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <label class="w-1/3">Nama Unit Layanan</label>
-                                <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="Poliklinik" />
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <label class="w-1/3">Email PIC</label>
-                                <input type="email" class="w-full border border-gray-300 rounded-md p-2" value="PIC@gmail.com" />
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <label class="w-1/3">Jeda Waktu Rating</label>
-                                <div class="flex space-x-2">
-                                    <input type="number" class="border border-gray-300 rounded-md p-2" value="1" />
-                                    <span>Kali / Bulan</span>
+                <?php
+                        $no = 1;
+                        foreach ($db->tampil_instansi() as $x) {
+                        ?>
+                            <div class="mt-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent shadow-lg rounded-lg shadow-gray-400 w-full" style="max-height: 400px;">
+                                <div class="space-y-4">
+                                    <!-- Kartu Poliklinik -->
+                                    <div class="bg-white shadow-md overflow-hidden">
+                                        <div class="relative">
+                                            <img src="assets/data_rating.png" alt="Poliklinik" class="w-full h-52 object-cover">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-blue-900 opacity-35"></div>
+                                        </div>
+                                        <div class="p-4 flex justify-between items-center">
+                                            <div>
+                                                <div class="font-semibold text-blue-950"><?php echo $x['nama_instansi']; ?></div>
+                                                <div class="text-gray-500">PIC: PIC@gmail.com</div>
+                                            </div>
+                                            <a href="#" class="text-gray-600 hover:text-blue-600 ml-auto" onclick="openEditModal()">Edit</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
+            </div>
+            
 
-                        <!-- Tombol Tambah -->
-                        <div class="mt-6 flex justify-end">
-                            <button class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">+ Tambah</button>
+            <!-- Modal Form -->
+            <div id="modal" class="fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg p-8 w-full max-w-4xl relative">
+                    <!-- Tombol Tutup Modal -->
+                    <button id="closeModalBtn" class="flex items-center absolute top-2 right-4 text-blue-400 hover:text-gray-900">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                        </svg> 
+                        <span>Kembali</span>
+                    </button>
+                
+
+                    <!-- Form Unit Layanan -->
+                    <h1 class="text-xl font-bold mb-2">Form Unit Layanan</h1>
+                    <p class="text-gray-500 mb-4">Tambah Unit Layanan</p>
+
+                    <!-- Gambar Form -->
+                    <div class="md flex justify-center items-center mb-4">
+                        <img src="assets/Frame 1000003401.png" alt="Gambar" class="w-full h-40">
+                    </div>
+
+                    <!-- Input Fields -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">ID Unit Layanan</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="09000647839" />
                         </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Nama Unit Layanan</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="Poliklinik" />
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Email PIC</label>
+                            <input type="email" class="w-full border border-gray-300 rounded-md p-2" value="PIC@gmail.com" />
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Jeda Waktu Rating</label>
+                            <div class="flex space-x-2">
+                                <input type="number" class="border border-gray-300 rounded-md p-2" value="1" />
+                                <span>Kali / Bulan</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Tambah -->
+                    <div class="mt-6 flex justify-end">
+                        <button class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">+ Tambah</button>
                     </div>
                 </div>
             </div>
-        </div>
 
+            <!-- Modal: Edit Form -->
+            <div id="editModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg p-8 w-full max-w-4xl relative">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="text-2xl font-bold">Form Unit Layanan</h2>
+                            <p class="text-gray-500">Detail Unit Layanan</p>
+                        </div>
+                        <a href="#" class="flex items-center text-blue-400" onclick="closeEditModal()"> 
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                            </svg> 
+                            <span>Kembali</span>                         
+                        </a>
+                    </div>
+
+                    <!-- Image Section -->
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="flex items-center justify-center border rounded-lg p-4">
+                            <img src="assets/folder-cuate.png" alt="Unit Image" class="w-48 h-auto object-contain">
+                        </div>
+                        <div class="flex items-center justify-center border rounded-lg p-4">
+                            <img src="assets/QR.png" alt="QR Code" class="w-32 h-auto object-contain">
+                        </div>
+                    </div>
+
+                    <!-- Form Fields -->
+                    <form>
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="idLayanan" class="block text-gray-700 text-sm">ID Unit Layanan</label>
+                                <input type="text" id="idLayanan" value="09000647839" class="w-full p-3 border border-gray-300 rounded" />
+                            </div>
+                            <div>
+                                <label for="namaLayanan" class="block text-gray-700 text-sm">Nama Unit Layanan</label>
+                                <input type="text" id="namaLayanan" value="Poliklinik" class="w-full p-3 border border-gray-300 rounded" />
+                            </div>
+                            <div>
+                                <label for="emailPIC" class="block text-gray-700 text-sm">Email PIC</label>
+                                <input type="email" id="emailPIC" value="PIC@gmail.com" class="w-full p-3 border border-gray-300 rounded" />
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <label for="ratingJeda" class="block text-gray-700 text-sm flex-grow">Jeda Waktu Rating</label>
+                                <input type="number" id="ratingJeda" value="1" class="w-16 p-3 border border-gray-300 rounded" />
+                                <span class="text-gray-700">Kali / Bulan</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end items-center mt-8 space-x-4">
+                            <button type="button" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded" onclick="openSimpanModal()">
+                                <span>Simpan</span>
+                            </button>
+                            <button type="button" class="flex items-center bg-red-700 text-white px-6 py-3 rounded" onclick="openHapusModal()">
+                                <span>Hapus</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal: Simpan Confirmation -->
+            <div id="simpanModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
+                    <div class="text-green-500 text-4xl mb-4">&#10004;</div>
+                    <p class="text-gray-800 font-medium">Data anda telah <span class="font-semibold">Berhasil</span> disimpan</p>
+                    <button class="mt-6 bg-green-600 text-white px-6 py-2 rounded" onclick="closeSimpanModal()">OK</button>
+                </div>
+            </div>
+
+            <!-- Modal: Hapus Confirmation -->
+            <div id="hapusModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
+                    <div class="text-red-500 text-4xl mb-4">&#9888;</div>
+                    <p class="text-gray-800">Anda yakin akan <span class="font-semibold">menghapus</span> data ini?</p>
+                    <div class="flex justify-center space-x-4 mt-6">
+                        <button class="bg-gray-300 text-gray-800 px-4 py-2 rounded" onclick="closeHapusModal()">Batal</button>
+                        <button class="bg-red-600 text-white px-4 py-2 rounded" onclick="confirmHapus()">Hapus</button>
+                    </div>
+                </div>
+            </div>
   
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script>
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modal = document.getElementById('modal');
+
+            openModalBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            });
+
             function searchTable() {
                 let input = document.querySelector('input[type="search"]').value.toLowerCase();
                 let rows = document.querySelectorAll('.space-y-4 > div');
-                
+
                 rows.forEach(row => {
                     let text = row.innerText.toLowerCase();
                     if (text.includes(input)) {
@@ -492,20 +579,39 @@
                     }
                 });
             }
-    
-            const openModalBtn = document.getElementById('openModalBtn');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const modal = document.getElementById('modal');
-    
-            openModalBtn.addEventListener('click', () => {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            });
-    
-            closeModalBtn.addEventListener('click', () => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            });
+
+            function openEditModal() {
+                document.getElementById('editModal').classList.remove('hidden');
+                document.getElementById('editModal').classList.add('flex');
+            }
+            function closeEditModal() {
+                document.getElementById('editModal').classList.add('hidden');
+                document.getElementById('editModal').classList.remove('flex');
+            }
+
+            function openSimpanModal() {
+                document.getElementById('simpanModal').classList.remove('hidden');
+                document.getElementById('simpanModal').classList.add('flex');
+            }
+            function closeSimpanModal() {
+                document.getElementById('simpanModal').classList.add('hidden');
+                document.getElementById('simpanModal').classList.remmove('flex');
+            }
+
+            function openHapusModal() {
+                document.getElementById('hapusModal').classList.remove('hidden');
+                document.getElementById('hapusModal').classList.add('flex');
+            }
+            function closeHapusModal() {
+                document.getElementById('hapusModal').classList.add('hidden');
+                document.getElementById('hapusModal').classList.remove('flex');
+            }
+
+            function confirmHapus() {
+                closeHapusModal();
+                alert("Data berhasil dihapus.");
+            }
+            
         </script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
