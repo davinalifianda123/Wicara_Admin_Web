@@ -35,7 +35,14 @@
       $db->hapus_jenis_pengaduan($id_jenis_pengaduan);
       header("Location: kategori_pengaduan.php");
       exit;
-  }
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
+      $nama_jenis_pengaduan = $_POST['nama_jenis_pengaduan'];
+      $db = new Database();
+      $db->tambah_jenis_pengaduan($nama_jenis_pengaduan);
+      header("Location: kategori_pengaduan.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -400,7 +407,7 @@
                                 <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Kategori Pengaduan</a>
                             </li>
                             <div class="flex items-center ms-auto gap-2">
-                                <button class="text-sm text-gray-600 px-5">+ Tambah</button>
+                                <button class="text-sm text-gray-600 px-5" onclick="openAddModal()">+ Tambah</button>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -479,13 +486,13 @@
                 </div>
             </div>
 
-            <!--Add New MODAL-->
-            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <!-- Add New MODAL -->
+            <div id="add-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                 <div class="relative p-4 w-full max-w-md max-h-full">
                     <div class="relative bg-white rounded-lg shadow">
                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                             <h3 class="text-lg font-semibold text-gray-900">Tambah Kategori Pengaduan</h3>
-                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="closeEditModal()">
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="closeAddModal()">
                                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                                 </svg>
@@ -649,11 +656,20 @@
               setTimeout(() => {
                   document.getElementById('modal-nama').focus(); // Memastikan modal sudah terbuka sebelum fokus
               }, 0);
-          }
+            }
 
-          function closeEditModal() {
-              document.getElementById('crud-modal').classList.add('hidden');
-          }
+            function closeEditModal() {
+                document.getElementById('crud-modal').classList.add('hidden');
+            }
+
+            function openAddModal() {
+                document.getElementById('add-modal').classList.remove('hidden');
+            }
+
+            function closeAddModal() {
+                document.getElementById('add-modal').classList.add('hidden');
+            }
+
 
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
