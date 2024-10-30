@@ -15,7 +15,7 @@
 
     // Get the current page number, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    $itemsPerPage = 7;
+    $itemsPerPage = 5;
     $offset = ($currentPage - 1) * $itemsPerPage;
 
     // Get the total number of users with role 3
@@ -34,6 +34,8 @@
 
     // Display the users in the table
     $no = $offset + 1; // Start numbering from the current offset
+
+
 
 ?>
 
@@ -420,53 +422,53 @@
                         </div>
                     </form>
                     <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-                        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
-                            <button onclick="togglePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
-                                &times;
-                            </button>
-                            <h3 class="text-lg font-semibold text-gray-700 mb-4">Tambah User</h3>
-                            <form action="Back-end/simpan_tambah_mahasiswa.php" method="POST">
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
-                                    <input type="text" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Induk</label>
-                                    <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Telepon</label>
-                                    <input type="text" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                                    <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                                    <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2">Role</label>
-                                    <select name="role" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                        <option value=""></option>
-                                        <!-- Role options dynamically loaded from the database -->
-                                        <?php 
-                                            foreach($db->tampil_role() as $x){
-                                                echo '<option value="'.$x['id_role'].'">'.$x['nama_role'].'</option>';
-                                            }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">Simpan</button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+                        <button onclick="togglePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+                            &times;
+                        </button>
+                        <h3 class="text-lg font-semibold text-gray-700 mb-4">Tambah Mahasiswa</h3>
+                        <form action="Back-end/simpan_tambah_mahasiswa.php" method="POST">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
+                                <input type="text" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">NIM</label>
+                                <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Telepon</label>
+                                <input type="text" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                                <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">Simpan</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+                </div>
                 <!-- TABEL -->
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                <table class="w-full">
+                <thead class="text-[#858585] text-xs bg-gray-50">
+                        <tr>
+                            <th scope="col" class="text-center px-2.5 py-2">
+                                No
+                            </th>
+                            <th scope="col" class="text-center px-2 py-2">
+                                Profile
+                            </th>
+                            <th scope="col" class="px-4 text-left">
+                                Informasi Mahasiswa
+                            </th>
+                            <th class="text-left">
+                                Aksi
+                            </th>
+                        </tr>
+                    </thead>
                     <tbody>
                     <?php 
                     // Initialize the overall row index
@@ -487,21 +489,25 @@
                             // Increment the visible row index if the row is visible
                             $visibleRowIndex++;
                         }
-
-                        // Determine the row color based on the visible index
-                        $rowClass = $visibleRowIndex % 2 == 0 ? 'bg-white' : 'bg-gray-100';
                     ?>
                     <tr class="<?php echo $rowClass; ?> border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>">
-                        <th scope="row" style="padding: 0.5rem; width: 60px;">
-                            <img src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>" alt="Profile Image" style="border-radius: 50%; ">
+                        <th class="text-center w-10">
+                            <?php echo $no++;?>
                         </th>
+                        <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>">
+                        </td>
                         <td class="px-4 py-2" style="height: 3rem;">
                             <span class="text-base font-semibold text-blue-950">
                                 <?php echo $x['nama']; ?>
                             </span>
                             <br>
-                            <span class="text-sm text-gray-600">
+                            <span class="text-sm text-gray-800 font-medium">
                                 <?php echo 'NIM: ', $x['nomor_induk']; ?>
+                            </span>
+                            <br>
+                            <span class="text-sm text-gray-600">
+                                <?php echo $x['nomor_telepon']; ?>
                             </span>
                         </td>
                         <td>
