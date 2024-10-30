@@ -506,7 +506,7 @@
                         </td>
                         <td>
                             <span>
-                                <button class="text-blue-500 hover:">Edit</button>
+                                <button class="text-blue-500 hover:underline">Edit</button>
                             </span>
                         </td>
                     </tr>

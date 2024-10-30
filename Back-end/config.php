@@ -177,6 +177,13 @@
             mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, image) 
             VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image')");
         }
+        
+        function edit_user($id_user, $nama, $nomor_induk, $nomor_telepon, $email, $role)
+        {
+            mysqli_query($this->koneksi,"UPDATE user set id_user = '$id_user', nama = '$nama', nomor_induk = '$nomor_induk',
+                                                        nomor_telepon = '$nomor_telepon', email = '$email', role = $role Where id_user = $id_user");
+        }
+
         function edit_user_with_image($id_user, $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path) {
             if ($image_path) {
                 // Jika ada gambar baru yang diunggah, perbarui juga kolom 'image'
