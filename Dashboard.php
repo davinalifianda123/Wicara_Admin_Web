@@ -1,7 +1,8 @@
 <?php
     // buat update profile
     session_start();
-    include './Back-end/config.php';
+    // include './Back-end/config.php';
+    include './Back-end/api_dashboard.php';
     $db = new database();
 
     if (!isset($_SESSION['id_user'])) {
@@ -411,7 +412,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="pengaduan-count">0</div>
+                                        <div class="text-[24px] font-bold text-black" id="pengaduan-count"><?=mysqli_num_rows($pengaduan);?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
                                             <a href="./Pengaduan.html">
