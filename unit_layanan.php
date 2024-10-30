@@ -412,9 +412,15 @@
                                         <div class="p-4 flex justify-between items-center">
                                             <div>
                                                 <div class="font-semibold text-blue-950"><?php echo $x['nama_instansi']; ?></div>
-                                                <div class="text-gray-500">PIC: PIC@gmail.com</div>
+                                                <div class="text-gray-500"><?=$x['email_pic'];?></div>
                                             </div>
-                                            <a href="#" class="text-gray-600 hover:text-blue-600 ml-auto" onclick="openEditModal()">Edit</a>
+                                            <button id="editModalButton" data-modal-target="editModal" data-modal-toggle="editModal" type="button" class="text-gray-600 hover:text-blue-600 ml-auto"
+                                                data-id="<?=$x['id_instansi'];?>"
+                                                data-nama="<?=$x['nama_instansi'];?>"
+                                                data-email="<?=$x['email_pic'];?>"
+                                                data-image="<?=$x['image_instansi'];?>">
+                                                Edit
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -434,7 +440,7 @@
                             <h2 class="text-2xl font-bold">Form Unit Layanan</h2>
                             <p class="text-gray-500">Tambah Unit Layanan</p>
                         </div>
-                        <button id="closeModalBtn" class="flex items-center text-blue-400 hover:text-gray-900">
+                        <button id="closeModalBtn" class="flex items-center text-blue-400 hover:underline">
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                             </svg> 
@@ -478,25 +484,25 @@
             </div>
 
             <!-- Modal: Edit Form -->
-            <div id="editModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg p-8 w-full max-w-4xl relative">
+            <div id="editModal" tabindex="-1" aria-hidden="true" class="hidden fixed z-50 items-center justify-center w-full md:inset-0 h-modal md:min-h-screen">
+                <div class="bg-white rounded-lg p-8 w-full max-w-4xl relative md:mih-h-screen">
                     <div class="flex justify-between items-center mb-4">
                         <div>
                             <h2 class="text-2xl font-bold">Form Unit Layanan</h2>
                             <p class="text-gray-500">Detail Unit Layanan</p>
                         </div>
-                        <a href="#" class="flex items-center text-blue-400" onclick="closeEditModal()"> 
+                        <button type="button" class="flex items-center text-blue-400 hover:underline" data-modal-toggle="editModal"> 
                             <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
                             </svg> 
                             <span>Kembali</span>                         
-                        </a>
+                        </button>
                     </div>
 
                     <!-- Image Section -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="flex items-center justify-center border rounded-lg p-4">
-                            <img src="assets/folder-cuate.png" alt="Unit Image" class="w-48 h-auto object-contain">
+                            <img name="image-unit" src="assets/folder-cuate.png" alt="Unit Image" class="w-48 h-auto object-contain">
                         </div>
                         <div class="flex items-center justify-center border rounded-lg p-4">
                             <img src="assets/QR.png" alt="QR Code" class="w-32 h-auto object-contain">
@@ -508,15 +514,15 @@
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label for="idLayanan" class="block text-gray-700 text-sm">ID Unit Layanan</label>
-                                <input type="text" id="idLayanan" value="09000647839" class="w-full p-3 border border-gray-300 rounded" />
+                                <input type="text" name="id-layanan" id="idLayanan" class="w-full p-3 border border-gray-300 rounded" />
                             </div>
                             <div>
                                 <label for="namaLayanan" class="block text-gray-700 text-sm">Nama Unit Layanan</label>
-                                <input type="text" id="namaLayanan" value="Poliklinik" class="w-full p-3 border border-gray-300 rounded" />
+                                <input type="text" name="nama-layanan" id="namaLayanan" class="w-full p-3 border border-gray-300 rounded" />
                             </div>
                             <div>
                                 <label for="emailPIC" class="block text-gray-700 text-sm">Email PIC</label>
-                                <input type="email" id="emailPIC" value="PIC@gmail.com" class="w-full p-3 border border-gray-300 rounded" />
+                                <input type="email" name="email-pic" id="emailPIC" class="w-full p-3 border border-gray-300 rounded" />
                             </div>
                             <div class="flex items-center space-x-2">
                                 <label for="ratingJeda" class="block text-gray-700 text-sm flex-grow">Jeda Waktu Rating</label>
@@ -589,14 +595,10 @@
                 });
             }
 
-            function openEditModal() {
-                document.getElementById('editModal').classList.remove('hidden');
-                document.getElementById('editModal').classList.add('flex');
-            }
-            function closeEditModal() {
-                document.getElementById('editModal').classList.add('hidden');
-                document.getElementById('editModal').classList.remove('flex');
-            }
+            // Fungsi untuk menampilkan modal update product
+            document.addEventListener("DOMContentLoaded", function(event) {
+                document.getElementById('editModalButton').click();
+            });
 
             function openSimpanModal() {
                 document.getElementById('simpanModal').classList.remove('hidden');
@@ -749,6 +751,25 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const updateButtons = document.querySelectorAll('#editModalButton');
+                
+                updateButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = button.getAttribute('data-id');
+                        const nama = button.getAttribute('data-nama');
+                        const emailPIC = button.getAttribute('data-email');
+                        const image = button.getAttribute('data-image');
+
+                        // Populate modal fields
+                        document.querySelector('#editModal input[name="id-layanan"]').value = id;
+                        document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
+                        document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
+                        document.querySelector('#editModal img[name="image-unit"]').value = image;
+                    });
+                });
+            });
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 
