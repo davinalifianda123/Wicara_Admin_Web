@@ -19,7 +19,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pengaduan</title>
+        <title>Rating</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -248,7 +248,7 @@
             </nav>
 
             <!-- PROFILE READ CONTENT -->
-            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
+            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <!-- Tombol Kembali -->
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
@@ -294,7 +294,7 @@
             </div>
 
             <!-- PROFILE EDIT CONTENT -->
-            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
+            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
                     <button onclick="goBack2()" class="flex items-center text-sm text-blue-500 hover:underline">
