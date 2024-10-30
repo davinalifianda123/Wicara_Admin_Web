@@ -433,7 +433,7 @@
                                     </div>
                                     <div>
                                         <div class="text-[24px] font-bold text-black" id="kehilangan-count">0</div>
-                                        <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
+                                        <p class="mb-2 font-small italic text-[12px] text-black">Laporan Kehilangan Baru</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
                                             <a href="./Pengaduan.html">
                                                 Detail
