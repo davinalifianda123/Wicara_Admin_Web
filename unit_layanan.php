@@ -19,7 +19,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
+        <title>Unit Layanan</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -429,17 +429,18 @@
             <div id="modal" class="fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50 hidden">
                 <div class="bg-white rounded-lg p-8 w-full max-w-4xl relative">
                     <!-- Tombol Tutup Modal -->
-                    <button id="closeModalBtn" class="flex items-center absolute top-2 right-4 text-blue-400 hover:text-gray-900">
-                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
-                        </svg> 
-                        <span>Kembali</span>
-                    </button>
-                
-
-                    <!-- Form Unit Layanan -->
-                    <h1 class="text-xl font-bold mb-2">Form Unit Layanan</h1>
-                    <p class="text-gray-500 mb-4">Tambah Unit Layanan</p>
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="text-2xl font-bold">Form Unit Layanan</h2>
+                            <p class="text-gray-500">Tambah Unit Layanan</p>
+                        </div>
+                        <button id="closeModalBtn" class="flex items-center text-blue-400 hover:text-gray-900">
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
+                            </svg> 
+                            <span>Kembali</span>
+                        </button>
+                    </div>
 
                     <!-- Gambar Form -->
                     <div class="md flex justify-center items-center mb-4">
