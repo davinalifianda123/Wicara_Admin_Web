@@ -1,7 +1,6 @@
 <?php
     // buat update profile
     session_start();
-    // include './Back-end/config.php';
     include './Back-end/api_dashboard.php';
     $db = new database();
 
@@ -544,7 +543,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div id="mahasiswaCount" class="text-2xl px-2 py-2 font-bold text-black"></div>
+                                        <div id="mahasiswaCount" class="text-2xl px-2 py-2 font-bold text-black"><?=mysqli_num_rows($mahasiswaCount);?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
@@ -569,7 +568,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div id="dosenCount" class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="dosenCount" class="text-2xl px-2 py-2 font-bold text-black"><?=mysqli_num_rows($dosenTendikCount);?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
@@ -594,7 +593,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div id="unitCount" class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="unitCount" class="text-2xl px-2 py-2 font-bold text-black"><?=mysqli_num_rows($unitLayananCount);?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
