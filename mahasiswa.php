@@ -544,19 +544,20 @@
             <!-- Tampilan navigasi Pagination -->
             <nav aria-label="Page navigation example" class="flex justify-end">
                 <ul class="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    <li class="border border-gray-300 rounded-s-lg">
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700">Previous</a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li>
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        <li class="border border-gray-300">
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
-                    <li>
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    <li class="border border-gray-300 rounded-e-lg">
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700">Next</a>
                     </li>
                 </ul>
             </nav>
+
 
             </div>
         </div>
