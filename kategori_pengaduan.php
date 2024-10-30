@@ -12,6 +12,37 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'save') {
+      if (isset($_POST['id_jenis_pengaduan']) && isset($_POST['nama_jenis_pengaduan'])) {
+          $id_jenis_pengaduan = $_POST['id_jenis_pengaduan'];
+          $nama_jenis_pengaduan = $_POST['nama_jenis_pengaduan'];
+  
+          $koneksi = new Database();
+          $koneksi->edit_jenis_pengaduan($id_jenis_pengaduan, $nama_jenis_pengaduan);
+  
+          header('Location: kategori_pengaduan.php');
+          exit;
+      }
+    }  
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'delete') {
+      $id_jenis_pengaduan = $_POST['id_jenis_pengaduan'];
+      if (!$id_jenis_pengaduan) {
+          echo "ID tidak ditemukan!";
+          exit;
+      }
+      $db->hapus_jenis_pengaduan($id_jenis_pengaduan);
+      header("Location: kategori_pengaduan.php");
+      exit;
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
+      $nama_jenis_pengaduan = $_POST['nama_jenis_pengaduan'];
+      $db = new Database();
+      $db->tambah_jenis_pengaduan($nama_jenis_pengaduan);
+      header("Location: kategori_pengaduan.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +71,15 @@
             }
 
             .tab-button {
-            transition: color 0.3s, border-bottom 0.3s;
+                transition: background-color 0.3s, color 0.3s;
+                display: flex;
+                width: 100%;
+                align-items: center;
+                text-align: left;
+            }
+            
+            .tab-button:hover {
+                background-color: #f3f4f6; /* light gray */
             }
             .tab-button.active {
                 color: #fbbf24; /* yellow-500 */
@@ -200,7 +239,7 @@
                                     <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
                                 </div>
                             </div>
-                            <div id="notifications" class="p-4">
+                            <div id="notifications" class="p-4 flex flex-col space-y-2">
                                 <!-- Notifications will be dynamically inserted here -->
                             </div>
                         </div>
@@ -342,7 +381,7 @@
                     </div>
                     <div>
                         <label class="block mb-2 text-sm font-bold text-gray-900 " for="image">Foto Profile</label>
-                        <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none" id="image" type="file" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event)">
+                        <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" id="image" type="file" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event)">
                     </div>
                     
 
@@ -359,59 +398,121 @@
             </div>
 
             <!-- CONTENT INII REAL CUY -->
-            <div class="relative overflow-x-auto bg-white p-3 drop-shadow-md sm:rounded-lg">
+            <div class="relative overflow-x-auto bg-white px-3 drop-shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <!-- INII TABS STATUS -->
+                    <!-- TABS STATUS -->
                     <div class="text-sm font-medium text-center bg-white text-gray-500 border-b border-gray-200">
-                        <ul class="flex flex-wrap -mb-px">
+                        <ul class="flex items-center justify-between flex-wrap -mb-px">
                             <li class="me-2">
                                 <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Kategori Pengaduan</a>
                             </li>
+                            <div class="flex items-center ms-auto gap-2">
+                                <button class="text-sm text-gray-600 px-5" onclick="openAddModal()">+ Tambah</button>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required />
+                                </div>
+                            </div>
                         </ul>
                     </div>
+
                     <!-- JUDUL KOLOM -->
                     <thead class="text-[#858585] text-xs bg-gray-50 text-center">
                         <tr>
-                            <th scope="col" class="px-2.5 py-2 font-light">
-                                No
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                ID Kategori
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                Nama Kategori
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                Deskripsi
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                <span class="sr-only">Edit</span>
-                            </th>
+                            <th scope="col" class="px-2.5 py-2 font-light">No</th>
+                            <th scope="col" class="px-6 py-2 font-light">ID Kategori</th>
+                            <th scope="col" class="px-6 py-2 font-light">Nama Kategori</th>
+                            <th scope="col" class="px-6 py-2 font-light"><span class="sr-only">Edit</span></th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                        $no = 1;
+                        foreach ($db->tampil_jenis_pengaduan() as $x) {
+                        ?>
                         <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-2 text-center">
-                                1
-                            </th>
+                            <th scope="row" class="px-6 py-2 text-center"><?php echo $no++; ?></th>
+                            <td class="px-6 py-4 text-center"><?php echo $x['id_jenis_pengaduan']; ?></td>
+                            <td class="px-6 py-4 text-center"><?php echo $x['nama_jenis_pengaduan']; ?></td>
                             <td class="px-6 py-4 text-center">
-                                A09876
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                Dibully teman
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                14-09-2024
-                            </td>
-                            <td class="px-6 py-4 text-center">
-                                <a href="#" class="font-medium text-blue-600 hover:underline">Edit</a>
+                                <button class="font-medium text-blue-600 hover:underline edit-button" 
+                                        data-id="<?php echo $x['id_jenis_pengaduan']; ?>" 
+                                        data-nama="<?php echo $x['nama_jenis_pengaduan']; ?>" 
+                                        onclick="openEditModal(this)">Edit</button>
                             </td>
                         </tr>
+                        <?php
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
-        </div>
- 
+
+            <!--Edit Delete MODAL-->
+            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow">
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                            <h3 class="text-lg font-semibold text-gray-900">Edit Kategori Pengaduan</h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="closeEditModal()">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <form class="p-4 md:p-5" action="" method="POST">
+                            <div class="grid gap-4 mb-4 grid-cols-2">                         
+                                <div class="col-span-2">
+                                    <label for="modal-id" class="block mb-2 text-sm font-medium text-gray-900">ID</label>
+                                    <input type="text" id="modal-id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" disabled>
+                                    <input type="hidden" name="id_jenis_pengaduan" id="hidden-id" value="<?php echo $x['id_jenis_pengaduan']; ?>">
+                                </div>
+                                <div class="col-span-2">
+                                    <label for="modal-nama" class="block mb-2 text-sm font-medium text-gray-900">Nama Kategori</label>
+                                    <input type="text" name="nama_jenis_pengaduan" id="modal-nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <button type="submit" name="action" value="save" class="text-white inline-flex items-center bg-[#34C759] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1">Simpan</button>
+                                <button type="submit" name="action" value="delete" class="text-white inline-flex items-center bg-[#F12626] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">Hapus</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add New MODAL -->
+            <div id="add-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow">
+                        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                            <h3 class="text-lg font-semibold text-gray-900">Tambah Kategori Pengaduan</h3>
+                            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" onclick="closeAddModal()">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                        </div>
+                        <form class="p-4 md:p-5" action="" method="POST">
+                            <div class="grid gap-4 mb-4 grid-cols-2">                         
+                                <div class="col-span-2">
+                                    <label for="modal-nama" class="block mb-2 text-sm font-medium text-gray-900">Nama Kategori</label>
+                                    <input type="text" name="nama_jenis_pengaduan" id="modal-nama" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" required="">
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <button type="submit" name="action" value="add" class="text-white inline-flex items-center bg-[#34C759] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
   
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -421,33 +522,29 @@
         <script>
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=4' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=5' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=4' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=5' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
                 { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=8' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=9' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=10' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=11' }
             ];
-    
+
             document.getElementById('notificationButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
             });
-    
+
             document.getElementById('closeSidebarButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.add('translate-x-full');
             });
-    
+
             function filterNotifications(type) {
                 const container = document.getElementById('notifications');
                 container.innerHTML = '';
                 const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
                 filteredNotifications.forEach(notification => {
-                    const notificationElement = document.createElement('div');
-                    notificationElement.classList.add('flex', 'items-center', 'mb-4');
+                    const notificationElement = document.createElement('button');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full');
                     notificationElement.innerHTML = `
                         <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
@@ -464,7 +561,7 @@
                     `;
                     container.appendChild(notificationElement);
                 });
-    
+
                 // Update tab button styles
                 document.querySelectorAll('.tab-button').forEach(button => {
                     button.classList.remove('active');
@@ -472,24 +569,24 @@
                 });
                 document.getElementById(`tab-${type}`).classList.add('active');
             }
-    
+
             function showConfirmationDialog(action) {
                 const modal = document.getElementById('confirmationModal');
                 modal.style.display = 'block';
-    
+
                 document.getElementById('confirmYes').onclick = () => {
                     alert(`${action} berhasil!`);
                     modal.style.display = 'none';
-                };
-    
+            };
+
                 document.getElementById('confirmNo').onclick = () => {
                     modal.style.display = 'none';
                 };
             }
-    
+
             // Initialize with all notifications
             filterNotifications('semua');
-    
+
             // Close the modal when clicking outside of it
             window.onclick = function(event) {
                 const modal = document.getElementById('confirmationModal');
@@ -547,6 +644,33 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
+
+            function openEditModal(button) {
+              const id = button.getAttribute('data-id');
+              const nama = button.getAttribute('data-nama');
+              document.getElementById('modal-id').value = id;
+              document.getElementById('hidden-id').value = id;
+              document.getElementById('modal-nama').value = nama;
+              document.getElementById('crud-modal').classList.remove('hidden');
+
+              setTimeout(() => {
+                  document.getElementById('modal-nama').focus(); // Memastikan modal sudah terbuka sebelum fokus
+              }, 0);
+            }
+
+            function closeEditModal() {
+                document.getElementById('crud-modal').classList.add('hidden');
+            }
+
+            function openAddModal() {
+                document.getElementById('add-modal').classList.remove('hidden');
+            }
+
+            function closeAddModal() {
+                document.getElementById('add-modal').classList.add('hidden');
+            }
+
+
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </body>

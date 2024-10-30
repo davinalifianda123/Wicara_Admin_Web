@@ -58,22 +58,31 @@
             }
 
             .tab-button {
-            transition: color 0.3s, border-bottom 0.3s;
+                transition: background-color 0.3s, color 0.3s;
+                display: flex;
+                width: 100%;
+                align-items: center;
+                text-align: left;
             }
+            
+            .tab-button:hover {
+                background-color: #f3f4f6; /* light gray */
+            }
+
             .tab-button.active {
                 color: #fbbf24; /* yellow-500 */
                 border-bottom: 2px solid #fbbf24; /* yellow-500 */
             }
             .modal {
-                display: none;
-                position: fixed;
-                z-index: 10;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
             }
             .modal-content {
                 background-color: #fefefe;
@@ -84,6 +93,7 @@
                 max-width: 400px;
                 text-align: center;
             }
+
             #notificationSidebar {
                 z-index: 10;
             }
@@ -198,10 +208,12 @@
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
-                        <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                        <button type="button" id="notificationButton" onclick="loadPengaduan()" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                        <span id="notificationDot" class="hidden absolute top-0 right-0 mt-1 mr-1 h-2 w-2 bg-red-500 rounded-full"></span>
                             <span class="sr-only">View notifications</span>
                             <!-- Bell icon -->
                             <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>
+                            
                         </button>
                         <!-- NOTIFIKASI CONTENT -->
                         <div id="notificationSidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 overflow-y-auto">
@@ -219,7 +231,7 @@
                                     <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
                                 </div>
                             </div>
-                            <div id="notifications" class="p-4">
+                            <div id="notifications" class="p-4 flex flex-col space-y-2">
                                 <!-- Notifications will be dynamically inserted here -->
                             </div>
                         </div>
@@ -399,7 +411,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
+                                        <div class="text-[24px] font-bold text-black" id="pengaduan-count">0</div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
                                             <a href="./Pengaduan.html">
@@ -420,7 +432,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
+                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count">0</div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
                                             <a href="./Pengaduan.html">
@@ -441,8 +453,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
-                                        <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
+                                        <div class="text-[24px] font-bold text-black" id="ulasan-count">0</div>
+                                        <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
                                             <a href="./Pengaduan.html">
                                                 Detail
@@ -531,7 +543,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="mahasiswaCount" class="text-2xl px-2 py-2 font-bold text-black"></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
@@ -556,7 +568,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="dosenCount" class="text-2xl px-2 py-2 font-bold text-black">150</div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
@@ -581,7 +593,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="unitCount" class="text-2xl px-2 py-2 font-bold text-black">150</div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
@@ -606,35 +618,68 @@
         <script src="./Back-end/toast.js"></script>
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
+            async function fetchKejadianCounts() {
+                try {
+                    // Panggil API menggunakan fetch
+                    const response = await fetch('http://localhost/Wicara_Admin_Web/Back-end/api_dashboard.php');
+                    const data = await response.json();
+
+                    // Update elemen HTML berdasarkan data yang diterima
+                    data.forEach(item => {
+                        if (item.kejadian === 'Laporan Pengaduan') {
+                            document.querySelector('#pengaduan-count').textContent = item.count;
+                        } else if (item.kejadian === 'Laporan Kehilangan') {
+                            document.querySelector('#kehilangan-count').textContent = item.count;
+                        } else if (item.kejadian === 'Ulasan') {
+                            document.querySelector('#ulasan-count').textContent = item.count;
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+
+            // Jalankan fungsi fetchKejadianCounts saat halaman dimuat
+            document.addEventListener('DOMContentLoaded', fetchKejadianCounts);
+
+            // Fetch statistics data
+            fetch('http://localhost:3000/Wicara_Admin_Web/Back-end/api_dashboard.php')  // Update with the correct endpoint
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('mahasiswaCount').innerText = data.mahasiswa || 0;
+                    document.getElementById('dosenCount').innerText = data.dosen_tendik || 0;
+                    document.getElementById('unitCount').innerText = data.unit_layanan || 0;
+                })
+                .catch(error => console.error('Error fetching statistics:', error));
+        </script>
+
+
+        <script>
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=4' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=5' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=4' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=5' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
                 { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=8' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=9' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=10' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=11' }
             ];
-    
+
             document.getElementById('notificationButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
             });
-    
+
             document.getElementById('closeSidebarButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.add('translate-x-full');
             });
-    
+
             function filterNotifications(type) {
                 const container = document.getElementById('notifications');
                 container.innerHTML = '';
                 const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
                 filteredNotifications.forEach(notification => {
-                    const notificationElement = document.createElement('div');
-                    notificationElement.classList.add('flex', 'items-center', 'mb-4');
+                    const notificationElement = document.createElement('button');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full');
                     notificationElement.innerHTML = `
                         <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
@@ -651,7 +696,7 @@
                     `;
                     container.appendChild(notificationElement);
                 });
-    
+
                 // Update tab button styles
                 document.querySelectorAll('.tab-button').forEach(button => {
                     button.classList.remove('active');
@@ -659,24 +704,24 @@
                 });
                 document.getElementById(`tab-${type}`).classList.add('active');
             }
-    
+
             function showConfirmationDialog(action) {
                 const modal = document.getElementById('confirmationModal');
                 modal.style.display = 'block';
-    
+
                 document.getElementById('confirmYes').onclick = () => {
                     alert(`${action} berhasil!`);
                     modal.style.display = 'none';
-                };
-    
+            };
+
                 document.getElementById('confirmNo').onclick = () => {
                     modal.style.display = 'none';
                 };
             }
-    
+
             // Initialize with all notifications
             filterNotifications('semua');
-    
+
             // Close the modal when clicking outside of it
             window.onclick = function(event) {
                 const modal = document.getElementById('confirmationModal');
@@ -684,7 +729,35 @@
                     modal.style.display = 'none';
                 }
             };
+            
+            //fungsi if notif baru, redDot keluar
+            // let lastCheckTimestamp = new Date().toISOString();
+            // let idPengaduanTerbaru = null;
 
+            // function cekNotifikasi() {
+            //     fetch(`api_notifikasi.php?lastCheckTimestamp=${lastCheckTimestamp}`)
+            //         .then(response => response.json())
+            //         .then(data => {
+            //             const notificationDot = document.getElementById('notificationDot');
+            //             if (data.newPengaduan) {
+            //                 notificationDot.classList.remove('hidden');
+            //                 idPengaduanTerbaru = data.idPengaduanTerbaru; // Simpan ID pengaduan terbaru
+            //             } else {
+            //                 notificationDot.classList.add('hidden');
+            //             }
+            //         })
+            //         .catch(error => console.error('Error:', error));
+            // }
+
+            // setInterval(cekNotifikasi, 5000); // Cek setiap 30 detik
+
+            // function loadPengaduan() {
+            //     lastCheckTimestamp = new Date().toISOString();
+            //     cekNotifikasi();
+            //     // Contoh navigasi ke detail pengaduan dengan ID terbaru
+            //     window.location.href = "lihat_pengaduan.php?id=" + idPengaduanTerbaru;
+            // }
+            
             // Fungsi untuk menampilkan halaman read profile
             document.querySelector('[href="#profile-section"]').addEventListener('click', function () {
                 document.getElementById('profile-section-body').classList.remove('hidden');

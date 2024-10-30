@@ -1,7 +1,24 @@
-//Presentasi Aktifitas Donat
-const getChartOptions = () => {
+async function fetchDonutChartData() {
+  try {
+    const response = await fetch('http://localhost/Wicara_Admin_Web/Back-end/api_dashboard.php'); // URL endpoint baru
+    const data = await response.json();
+    
+    // Menyiapkan data untuk grafik
+    const series = data.map(item => item.percentage);
+    const labels = data.map(item => item.kejadian);
+
+    // Memperbarui opsi grafik
+    const chartOptions = getChartOptions(series, labels);
+    const chart = new ApexCharts(document.getElementById("donut-chart"), chartOptions);
+    chart.render();
+  } catch (error) {
+    console.error('Error fetching donut chart data:', error);
+  }
+}
+
+const getChartOptions = (series, labels) => {
   return {
-      series: [65, 40, 5],
+      series: series,
       colors: ["#4270C3", "#DC7274", "#CD7014"],
       chart: {
           height: "100%",
@@ -29,7 +46,7 @@ const getChartOptions = () => {
                           },
                       },
                       value: {
-                          show: true,  // Disable the value display inside the donut
+                          show: true,
                       },
                   },
                   size: "75%",
@@ -41,12 +58,12 @@ const getChartOptions = () => {
               top: -2,
           },
       },
-      labels: ["Pengaduan", "Kehilangan", "Rating"],
+      labels: labels,
       dataLabels: {
           enabled: false,
       },
       legend: {
-          position: "right",  // Move legend to the right
+          position: "right",
           markers: {
               width: 70,
               height: 10,
@@ -56,25 +73,22 @@ const getChartOptions = () => {
               vertical: 5,
           },
           formatter: function(seriesName, opts) {
-              return seriesName + ": " + opts.w.globals.series[opts.seriesIndex] + "%";
+              return seriesName + ": " + opts.w.globals.series[opts.seriesIndex].toFixed(2) + "%"; // Format dengan 2 desimal
           }
       },
       responsive: [{
           breakpoint: 768,
           options: {
               legend: {
-                  position: "bottom",  // For smaller screens, move legend to bottom
+                  position: "bottom",
               }
           }
       }]
   }
 }
 
-if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined') {
-  const chart = new ApexCharts(document.getElementById("donut-chart"), getChartOptions());
-  chart.render();
-}
-
+// Memanggil fungsi untuk mengambil data dan menampilkan grafik
+fetchDonutChartData();
 
 const options = {
     chart: {

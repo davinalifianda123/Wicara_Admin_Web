@@ -15,7 +15,7 @@ $kejadian = isset($kejadian) ? $kejadian : [];
     $db = new Database();
 ?>
 <h3>Buat Laporan Kehilangan</h3>
-    <form action="simpan_kejadian_kehilangan.php" method="POST">
+    <form action="simpan_kejadian_kehilangan.php" method="POST" enctype="multipart/form-data">
         <table>
             <tr>
                 <td>Jenis Kejadian</td>
@@ -39,8 +39,8 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 </td> 
             </tr>
             <tr>
-                <td>Nama Barang</td>
-                <td><textarea name="jenis_barang" cols="25" rows="5"></textarea></td>
+                <td>Judul</td>
+                <td><textarea name="judul" cols="25" rows="5"></textarea></td>
             </tr>
             <tr>
                 <td>Deskripsi</td>
@@ -53,6 +53,14 @@ $kejadian = isset($kejadian) ? $kejadian : [];
             <tr>
                 <td>Lokasi</td>
                 <td><input type="text" name="lokasi" placeholder="(Opsional)"></td>
+            </tr>
+            <tr>
+                <td>Lampiran</td>
+                <td><input type="file" name="lampiran" id="lampiran" accept="image/png, image/jpeg, image/jpg"></td>
+            </tr>
+            <tr>
+                <td>Jenis Barang</td>
+                <td><input type="text" name="jenis_barang"></td>
             </tr>
             <tr>
                 <td>Status Kehilangan</td>
