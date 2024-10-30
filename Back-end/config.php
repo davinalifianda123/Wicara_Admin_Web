@@ -152,10 +152,11 @@
         }
         
 //FORM KEHILANGAN
-        function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $jenis_barang, $deskripsi, $tanggal, $lokasi,  $status_kehilangan, $tanggal_kadaluwarsa)
+        function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $jenis_barang, $status_kehilangan, $tanggal_kadaluwarsa)
         {
-            mysqli_query($this->koneksi,"INSERT INTO kejadian (id_jenis_kejadian, id_user, jenis_barang, deskripsi, tanggal, lokasi,status_kehilangan, tanggal_kadaluwarsa) 
-            VALUES ('$id_jenis_kejadian','$id_user', '$jenis_barang', '$deskripsi', '$tanggal', '$lokasi', '$status_kehilangan', '$tanggal_kadaluwarsa')");
+            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, jenis_barang, status_kehilangan, tanggal_kadaluwarsa) 
+                VALUES ('$id_jenis_kejadian', '$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$jenis_barang', '$status_kehilangan', '$tanggal_kadaluwarsa')";
+            mysqli_query($this->koneksi, $query);
         }
 //FORM PENGADUAN
         function tambah_kejadian_pengaduan($id_jenis_kejadian, $id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $id_jenis_pengaduan, $status_pengaduan, $id_instansi) {
@@ -226,13 +227,13 @@
             return $hasil;
         }
 //EDIT KEHILANGAN
-        function edit_kejadian_kehilangan($id_kejadian,$id_jenis_kejadian,$id_user, $jenis_barang, $deskripsi, $tanggal, $lokasi,  $status_kehilangan, $tanggal_kadaluwarsa)
+        function edit_kejadian_kehilangan($id_kejadian, $id_jenis_kejadian, $id_user, $judul, $jenis_barang, $deskripsi, $tanggal, $lokasi, $lampiran,  $status_kehilangan, $tanggal_kadaluwarsa)
         {
-            mysqli_query($this->koneksi,"UPDATE kejadian set id_jenis_kejadian = '$id_jenis_kejadian', id_user = '$id_user', jenis_barang = '$jenis_barang', 
-                                                        deskripsi = '$deskripsi', tanggal = '$tanggal', lokasi = '$lokasi',status_kehilangan = '$status_kehilangan',
+            mysqli_query($this->koneksi,"UPDATE kejadian set id_jenis_kejadian = '$id_jenis_kejadian', id_user = '$id_user', judul = '$judul', jenis_barang = '$jenis_barang', 
+                                                        deskripsi = '$deskripsi', tanggal = '$tanggal', lokasi = '$lokasi', lampiran = '$lampiran', status_kehilangan = '$status_kehilangan',
                                                         tanggal_kadaluwarsa = '$tanggal_kadaluwarsa' Where id_kejadian = $id_kejadian");
         }
-        function edit_kejadian_pengaduan($id_kejadian,$id_jenis_kejadian,$id_user,$judul,$deskripsi, $tanggal, $lokasi, $lampiran ,$status_pengaduan, $id_jenis_pengaduan,$id_instansi)
+        function edit_kejadian_pengaduan($id_kejadian,$id_jenis_kejadian,$id_user,$judul, $deskripsi, $tanggal, $lokasi, $lampiran ,$status_pengaduan, $id_jenis_pengaduan,$id_instansi)
         {
             mysqli_query($this->koneksi,"UPDATE kejadian set id_jenis_kejadian = '$id_jenis_kejadian', id_user = '$id_user', judul = '$judul',
                                                         deskripsi = '$deskripsi', tanggal = '$tanggal', lokasi = '$lokasi',lampiran = '$lampiran', status_pengaduan = '$status_pengaduan', id_jenis_pengaduan= '$id_jenis_pengaduan',

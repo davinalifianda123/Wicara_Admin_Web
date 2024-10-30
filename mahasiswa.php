@@ -412,7 +412,62 @@
                         <p class="text-xs p-0 text-gray-500">Detail Mahasiswa</p>
                     </div>
                     <div class="ml-auto">
-                        <button class="text-sm text-gray-600 mr-4">+ Tambah</button>
+                        <!-- Button to open the popup -->
+                        <button class="text-sm text-gray-600 mr-4" onclick="togglePopup()">+ Tambah</button>
+                        <!-- Popup Form -->
+                        <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+                            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+                                <button onclick="togglePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+                                    &times;
+                                </button>
+                                <h3 class="text-lg font-semibold text-gray-700 mb-4">Tambah User</h3>
+                                <form action="Back-end/simpan_tambah_mahasiswa.php" method="POST">
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
+                                        <input type="text" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Induk</label>
+                                        <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Telepon</label>
+                                        <input type="text" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                                        <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                                        <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-gray-700 text-sm font-bold mb-2">Role</label>
+                                        <select name="role" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                            <option value=""></option>
+                                            <!-- Role options dynamically loaded from the database -->
+                                            <?php 
+                                                foreach($db->tampil_role() as $x){
+                                                    echo '<option value="'.$x['id_role'].'">'.$x['nama_role'].'</option>';
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="flex justify-end">
+                                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">Simpan</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <script>
+                            // Function to toggle popup visibility
+                            function togglePopup() {
+                                var popup = document.getElementById("popup");
+                                popup.classList.toggle("hidden");
+                            }
+                        </script>
                     </div>
                     <form class="flex-grow max-w-sm">
                         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
@@ -489,19 +544,20 @@
             <!-- Tampilan navigasi Pagination -->
             <nav aria-label="Page navigation example" class="flex justify-end">
                 <ul class="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    <li class="border border-gray-300 rounded-s-lg">
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700">Previous</a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li>
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        <li class="border border-gray-300">
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
-                    <li>
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    <li class="border border-gray-300 rounded-e-lg">
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700">Next</a>
                     </li>
                 </ul>
             </nav>
+
 
             </div>
         </div>
