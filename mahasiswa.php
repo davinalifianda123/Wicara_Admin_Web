@@ -42,7 +42,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
+        <title>User</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -215,10 +215,7 @@
             <!-- NAVBAR INII -->
             <nav class="w-full lg:px-0 pb-4">
                 <div class="flex flex-wrap justify-between items-center">
-                    <div>
-                    <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">User &gt; Mahasiswa</span>
-                    </div>                     
-  
+                        <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">User &gt; Mahasiswa</span>                  
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
                         <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
@@ -245,7 +242,6 @@
                                 <!-- Notifications will be dynamically inserted here -->
                             </div>
                         </div>
-                    
                         <div id="confirmationModal" class="modal">
                             <div class="modal-content">
                                 <p>Apakah anda yakin?</p>
@@ -255,7 +251,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- INII Profile -->
                         <button type="button" class="flex mx-2 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                             <span class="sr-only">Open user menu</span>
@@ -279,7 +274,6 @@
                     </div>
                 </div>
             </nav>
-
             <!-- PROFILE READ CONTENT -->
             <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
                 <!-- Tombol Kembali -->
@@ -325,7 +319,6 @@
                     </div>
                 </form>
             </div>
-
             <!-- PROFILE EDIT CONTENT -->
             <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
                 <div class="flex justify-between mb-4">
@@ -337,7 +330,6 @@
                         Kembali
                     </button>
                 </div>
-
                 <form action="./Back-end/update_profile.php" method="POST" enctype="multipart/form-data" class="space-y-4 flex flex-col justify-between h-full">
                     <div class="flex flex-col lg:items-center mb-4">
                         <img id="profile-preview" class="w-32 h-32 rounded-full object-cover" src="<?php echo $user_image; ?>" alt="Foto Profil">
@@ -364,7 +356,6 @@
                     <div class="relative">
                         <label for="password" class="block mb-2 text-sm font-bold text-gray-900">Kata Sandi</label>
                         <input type="password" name="password" id="password-edit" class="bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10" value="<?php echo $user['password']; ?>" required />
-                
                         <!-- Tombol untuk menampilkan/menyembunyikan password -->
                         <button type="button" id="togglePassword" class="absolute right-3 top-9 flex items-center">
                             <svg id="eyeIconClosed" class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -385,8 +376,6 @@
                         <label class="block mb-2 text-sm font-bold text-gray-900 " for="image">Foto Profile</label>
                         <input name="image" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none" id="image" type="file" accept="image/jpeg, image/png, image/jpg" onchange="previewImage(event)">
                     </div>
-                    
-
                     <!-- Tombol Simpan -->
                     <div class="flex justify-end">
                         <button type="submit" name="update" class="flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">
@@ -399,13 +388,15 @@
                 </form>
             </div>
 
-            <!-- CONTENT INII REAL CUY -->
+            <!-- ATAS TABEL -->
             <div class="flex justify-between">
-                <!-- Bagian yang tidak akan tergulir -->
                 <p class="p-2 text-gray-500" style="font-size: 10px;">Update terakhir: 1 September 2024 (20:00 WIB)</p>
                 <p class="p-2 text-gray-500" style="font-size: 10px;">Σ Jumlah: 2000 Mahasiswa</p>
             </div>
-            <div class="bg-white p-2 border-2 border-gray-200 border-dashed rounded-lg">
+
+            <!-- BAGIAN TABEL -->
+            <div class="bg-white p-2 border-2 border-gray-200 shadow-md rounded-lg">
+                <!-- ROW ATAS -->
                 <div class="flex justify-between items-center py-2">
                     <div>
                         <p class="font-bold p-0 whitespace-nowrap">Data Mahasiswa</p>
@@ -415,61 +406,9 @@
                         <!-- Button to open the popup -->
                         <button class="text-sm text-gray-600 mr-4" onclick="togglePopup()">+ Tambah</button>
                         <!-- Popup Form -->
-                        <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
-                            <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
-                                <button onclick="togglePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
-                                    &times;
-                                </button>
-                                <h3 class="text-lg font-semibold text-gray-700 mb-4">Tambah User</h3>
-                                <form action="Back-end/simpan_tambah_mahasiswa.php" method="POST">
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
-                                        <input type="text" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Induk</label>
-                                        <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Telepon</label>
-                                        <input type="text" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                                        <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                                        <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-gray-700 text-sm font-bold mb-2">Role</label>
-                                        <select name="role" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                            <option value=""></option>
-                                            <!-- Role options dynamically loaded from the database -->
-                                            <?php 
-                                                foreach($db->tampil_role() as $x){
-                                                    echo '<option value="'.$x['id_role'].'">'.$x['nama_role'].'</option>';
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="flex justify-end">
-                                        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">Simpan</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-                        <script>
-                            // Function to toggle popup visibility
-                            function togglePopup() {
-                                var popup = document.getElementById("popup");
-                                popup.classList.toggle("hidden");
-                            }
-                        </script>
                     </div>
-                    <form class="flex-grow max-w-sm">
+                    <!-- SEARCH -->
+                    <form id="search-form" class="flex-grow max-w-sm">
                         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
                         <div class="relative w-full">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -480,8 +419,53 @@
                             <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="search anything..." required onkeyup="searchTable()" />
                         </div>
                     </form>
+                    <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
+                        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
+                            <button onclick="togglePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
+                                &times;
+                            </button>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-4">Tambah User</h3>
+                            <form action="Back-end/simpan_tambah_mahasiswa.php" method="POST">
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
+                                    <input type="text" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Induk</label>
+                                    <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Telepon</label>
+                                    <input type="text" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                                    <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                                    <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Role</label>
+                                    <select name="role" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                        <option value=""></option>
+                                        <!-- Role options dynamically loaded from the database -->
+                                        <?php 
+                                            foreach($db->tampil_role() as $x){
+                                                echo '<option value="'.$x['id_role'].'">'.$x['nama_role'].'</option>';
+                                            }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <!-- Tabel -->
+                <!-- TABEL -->
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <tbody>
                     <?php 
@@ -522,7 +506,7 @@
                         </td>
                         <td>
                             <span>
-                                <button class="text-blue-500 hover:">Edit</button>
+                                <button class="text-blue-500 hover:underline">Edit</button>
                             </span>
                         </td>
                     </tr>
@@ -542,27 +526,39 @@
                 </table>
             </div>
             <!-- Tampilan navigasi Pagination -->
-            <nav aria-label="Page navigation example" class="flex justify-end">
+            <nav aria-label="Page navigation example" class="flex justify-end mt-3">
                 <ul class="inline-flex -space-x-px text-sm">
-                    <li class="border border-gray-300 rounded-s-lg">
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    <li>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li class="border border-gray-300">
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-500 bg-white'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        <li>
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
-                    <li class="border border-gray-300 rounded-e-lg">
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    <li>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
                     </li>
                 </ul>
             </nav>
-
-
             </div>
-        </div>
-
+        </div> <!-- DIV CONTENT -->
         <script>
+            // Function to toggle popup and disable/enable search
+            function togglePopup() {
+                var popup = document.getElementById("popup");
+                var searchInput = document.getElementById("default-search");
+                
+                popup.classList.toggle("hidden");
+                
+                // Toggle disabled attribute on search input
+                if (popup.classList.contains("hidden")) {
+                    searchInput.removeAttribute("disabled");
+                } else {
+                    searchInput.setAttribute("disabled", "true");
+                }
+            }
+            // Buat Searching
             function searchTable() {
                 const searchInput = document.getElementById('default-search').value.toLowerCase();
                 const tableRows = document.querySelectorAll('table tbody tr');

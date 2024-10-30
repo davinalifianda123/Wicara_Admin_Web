@@ -1,7 +1,8 @@
 <?php
     // buat update profile
     session_start();
-    include './Back-end/config.php';
+    // include './Back-end/config.php';
+    include './Back-end/api_dashboard.php';
     $db = new database();
 
     if (!isset($_SESSION['id_user'])) {
@@ -208,12 +209,12 @@
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
-                        <button type="button" id="notificationButton" onclick="loadPengaduan()" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
-                        <span id="notificationDot" class="hidden absolute top-0 right-0 mt-1 mr-1 h-2 w-2 bg-red-500 rounded-full"></span>
-                            <span class="sr-only">View notifications</span>
+                        <button type="button" id="notificationButton" onclick="loadPengaduan()" class=" realtive p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                        <span id="notificationDot" class="hidden absolute top-8 right-15 h-2 w-2 bg-red-500 rounded-full transform translate-x-1/2 -translate-y-1/2"></span>  
+                        <span class="sr-only">View notifications</span>
                             <!-- Bell icon -->
-                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>
-                            
+                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
+                                <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>     
                         </button>
                         <!-- NOTIFIKASI CONTENT -->
                         <div id="notificationSidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 overflow-y-auto">
@@ -411,7 +412,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="pengaduan-count">0</div>
+                                        <div class="text-[24px] font-bold text-black" id="pengaduan-count"><?=mysqli_num_rows($pengaduan);?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
                                             <a href="./Pengaduan.html">
@@ -432,7 +433,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count">0</div>
+                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=mysqli_num_rows($kehilangan);?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
                                             <a href="./Pengaduan.html">
@@ -453,7 +454,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="ulasan-count">0</div>
+                                        <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=mysqli_num_rows($rating);?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
                                             <a href="./Pengaduan.html">
@@ -618,43 +619,6 @@
         <script src="./Back-end/toast.js"></script>
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
-            async function fetchKejadianCounts() {
-                try {
-                    // Panggil API menggunakan fetch
-                    const response = await fetch('http://localhost/Wicara_Admin_Web/Back-end/api_dashboard.php');
-                    const data = await response.json();
-
-                    // Update elemen HTML berdasarkan data yang diterima
-                    data.forEach(item => {
-                        if (item.kejadian === 'Laporan Pengaduan') {
-                            document.querySelector('#pengaduan-count').textContent = item.count;
-                        } else if (item.kejadian === 'Laporan Kehilangan') {
-                            document.querySelector('#kehilangan-count').textContent = item.count;
-                        } else if (item.kejadian === 'Ulasan') {
-                            document.querySelector('#ulasan-count').textContent = item.count;
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error fetching data:', error);
-                }
-            }
-
-            // Jalankan fungsi fetchKejadianCounts saat halaman dimuat
-            document.addEventListener('DOMContentLoaded', fetchKejadianCounts);
-
-            // Fetch statistics data
-            fetch('http://localhost:3000/Wicara_Admin_Web/Back-end/api_dashboard.php')  // Update with the correct endpoint
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('mahasiswaCount').innerText = data.mahasiswa || 0;
-                    document.getElementById('dosenCount').innerText = data.dosen_tendik || 0;
-                    document.getElementById('unitCount').innerText = data.unit_layanan || 0;
-                })
-                .catch(error => console.error('Error fetching statistics:', error));
-        </script>
-
-
-        <script>
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
                 { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
@@ -807,7 +771,7 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-        </script>
+        </scrip>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
     </body>
 </html>
