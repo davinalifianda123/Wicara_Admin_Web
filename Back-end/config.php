@@ -247,7 +247,40 @@
         function hapus_data($id_kejadian)
         {
             mysqli_query($this->koneksi,"DELETE from kejadian where id_kejadian = '$id_kejadian'");
-        }  
+        }
+        
+        // CRUD untuk jenis_pengaduan
+        function kode_pengaduan($id_jenis_pengaduan) {
+            // Query untuk mengambil data dari tabel jenis_pengaduan
+            $data = mysqli_query($this->koneksi, "SELECT id_jenis_pengaduan, nama_jenis_pengaduan 
+                                                    FROM jenis_pengaduan 
+                                                    WHERE id_jenis_pengaduan = '$id_jenis_pengaduan'");
+            while ($row = mysqli_fetch_assoc($data)) {
+                $hasil[] = $row;
+            }
+            return isset($hasil) ? $hasil : [];
+        }
+
+        //Fungsi Tambah jenis_pengaduan
+        function tambah_jenis_pengaduan($nama_jenis_pengaduan) {
+            $stmt = $this->koneksi->prepare("INSERT INTO jenis_pengaduan (nama_jenis_pengaduan) VALUES (?)");
+            $stmt->bind_param("s", $nama_jenis_pengaduan);
+            return $stmt->execute();
+        }
+
+        // Fungsi Edit jenis_pengaduan
+        function edit_jenis_pengaduan($id_jenis_pengaduan, $nama_jenis_pengaduan) {
+            $stmt = $this->koneksi->prepare("UPDATE jenis_pengaduan SET nama_jenis_pengaduan = ? WHERE id_jenis_pengaduan = ?");
+            $stmt->bind_param("si", $nama_jenis_pengaduan, $id_jenis_pengaduan);
+            return $stmt->execute();
+        }
+
+        // Fungsi Hapus jenis_pengaduan
+        function hapus_jenis_pengaduan($id_jenis_pengaduan) {
+            $stmt = $this->koneksi->prepare("DELETE FROM jenis_pengaduan WHERE id_jenis_pengaduan = ?");
+            $stmt->bind_param("i", $id_jenis_pengaduan);
+            return $stmt->execute();
+        }
         
     }
 

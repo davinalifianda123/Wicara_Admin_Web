@@ -13,6 +13,7 @@
     <table border="1">
         <tr>
             <th>No</th>
+            <th>ID</th>
             <th>Jenis Pengaduan</th>
         </tr>
         <?php
@@ -21,7 +22,10 @@
         ?>
         <tr>
             <td><?php echo $no++; ?></td>
+            <td><?php echo $x['id_jenis_pengaduan']; ?></td>
             <td><?php echo $x['nama_jenis_pengaduan']; ?></td>
+            <td><a href="edit_jenis_pengaduan.php?id=<?php echo $x['id_jenis_pengaduan']; ?>">Edit</a></td>
+            <td><a href="hapus_jenis_pengaduan.php?id=<?php echo $x['id_jenis_pengaduan']; ?>">Hapus</a></td>
         </tr>
         <?php
         }
