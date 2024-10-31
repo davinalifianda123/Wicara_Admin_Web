@@ -382,7 +382,7 @@
                         <p class="text-xs text-gray-500">Detail Unit Layanan</p>
                     </div>
                     <div class="ml-auto">
-                        <button id="openModalBtn" class="text-sm text-gray-600 mr-4">+ Tambah</button>
+                        <button id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
                     </div>
                     <form class="flex-grow max-w-sm">
                         <div class="relative w-full">
@@ -414,7 +414,7 @@
                                                 <div class="font-semibold text-blue-950"><?php echo $x['nama_instansi']; ?></div>
                                                 <div class="text-gray-500"><?=$x['email_pic'];?></div>
                                             </div>
-                                            <button id="editModalButton" data-modal-target="editModal" data-modal-toggle="editModal" type="button" class="text-gray-600 hover:text-blue-600 ml-auto"
+                                            <button id="editModalButton" data-modal-target="editModal" data-modal-toggle="editModal" type="button" class="inline text-blue-600 hover:underline font-medium text-sm"
                                                 data-id="<?=$x['id_instansi'];?>"
                                                 data-nama="<?=$x['nama_instansi'];?>"
                                                 data-email="<?=$x['email_pic'];?>"
@@ -433,18 +433,16 @@
 
             <!-- Modal Form -->
             <div id="modal" class="fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg p-8 w-full max-w-4xl relative">
+                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative">
                     <!-- Tombol Tutup Modal -->
-                    <div class="flex justify-between items-center mb-4">
+                    <div class="flex justify-between items-center mb-4 sm:mb-5">
                         <div>
-                            <h2 class="text-2xl font-bold">Form Unit Layanan</h2>
+                            <h2 class="text-2xl font-semibold">Form Unit Layanan</h2>
                             <p class="text-gray-500">Tambah Unit Layanan</p>
                         </div>
-                        <button id="closeModalBtn" class="flex items-center text-blue-400 hover:underline">
-                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
-                            </svg> 
-                            <span>Kembali</span>
+                        <button id="closeModalBtn" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>
                         </button>
                     </div>
 
@@ -485,17 +483,15 @@
 
             <!-- Modal: Edit Form -->
             <div id="editModal" tabindex="-1" aria-hidden="true" class="hidden fixed z-50 items-center justify-center w-full md:inset-0 h-modal md:min-h-screen">
-                <div class="bg-white rounded-lg p-8 w-full max-w-4xl relative md:mih-h-screen">
+                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative md:mih-h-screen">
                     <div class="flex justify-between items-center mb-4">
                         <div>
-                            <h2 class="text-2xl font-bold">Form Unit Layanan</h2>
+                            <h2 class="text-2xl font-semibold">Form Unit Layanan</h2>
                             <p class="text-gray-500">Detail Unit Layanan</p>
                         </div>
-                        <button type="button" class="flex items-center text-blue-400 hover:underline" data-modal-toggle="editModal"> 
-                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4"/>
-                            </svg> 
-                            <span>Kembali</span>                         
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="editModal"> 
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>                         
                         </button>
                     </div>
 
@@ -533,10 +529,10 @@
 
                         <!-- Action Buttons -->
                         <div class="flex justify-end items-center mt-8 space-x-4">
-                            <button type="button" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded" onclick="openSimpanModal()">
+                            <button type="button" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded hover:bg-blue-600" onclick="openSimpanModal()">
                                 <span>Simpan</span>
                             </button>
-                            <button type="button" class="flex items-center bg-red-700 text-white px-6 py-3 rounded" onclick="openHapusModal()">
+                            <button type="button" class="flex items-center bg-red-700 text-white px-6 py-3 rounded hover:bg-red-600" onclick="openHapusModal()">
                                 <span>Hapus</span>
                             </button>
                         </div>

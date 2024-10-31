@@ -407,7 +407,7 @@
                                 <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Kategori Pengaduan</a>
                             </li>
                             <div class="flex items-center ms-auto gap-2">
-                                <button class="text-sm text-gray-600 px-5" onclick="openAddModal()">+ Tambah</button>
+                                <button class="text-sm text-gray-600 px-5 hover:text-blue-600 hover:underline" onclick="openAddModal()"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -429,16 +429,17 @@
                             <th scope="col" class="px-6 py-2 font-light"><span class="sr-only">Edit</span></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <!-- ISI KOLOM -->
+                    <tbody class="text-center">
                         <?php
                         $no = 1;
                         foreach ($db->tampil_jenis_pengaduan() as $x) {
                         ?>
                         <tr class="bg-white border-b">
-                            <th scope="row" class="px-6 py-2 text-center"><?php echo $no++; ?></th>
-                            <td class="px-6 py-4 text-center"><?php echo $x['id_jenis_pengaduan']; ?></td>
-                            <td class="px-6 py-4 text-center"><?php echo $x['nama_jenis_pengaduan']; ?></td>
-                            <td class="px-6 py-4 text-center">
+                            <th scope="row" class="px-6 py-2"><?php echo $no++; ?></th>
+                            <td class="px-6 py-4"><?php echo $x['id_jenis_pengaduan']; ?></td>
+                            <td class="px-6 py-4"><?php echo $x['nama_jenis_pengaduan']; ?></td>
+                            <td class="px-6 py-4 text-right">
                                 <button class="font-medium text-blue-600 hover:underline edit-button" 
                                         data-id="<?php echo $x['id_jenis_pengaduan']; ?>" 
                                         data-nama="<?php echo $x['nama_jenis_pengaduan']; ?>" 
