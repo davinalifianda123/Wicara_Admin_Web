@@ -431,7 +431,7 @@
                               </div>
                           </div>
                             <div class="flex justify-end mt-2">
-                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                              <a href="detail_rating.html" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
                             </div>
                           </div>
                         </div>
@@ -478,7 +478,7 @@
                               </div>
                           </div>
                             <div class="flex justify-end mt-2">
-                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                              <a href="detail.html" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
                             </div>
                           </div>
                         </div>
