@@ -187,7 +187,7 @@
                             </svg>
                         </button>
                         <a href="rating.php" class="hidden font-semibold text-xl text-[#060A47] md:inline-block mx-1">Rating ></a>
-                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block">Poliklinik</span>
+                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block"><?php echo $data_instansi['nama_instansi']; ?></span>
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
@@ -391,6 +391,7 @@
                       <!-- INI CARDNYA -->
                       <?php
                       if (isset($data_instansi)) {
+                        $id_instansi = $data_instansi['id_instansi'];
                       ?>
                       <div class="mt-5 justify-center">
                         <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
@@ -402,8 +403,9 @@
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                <p class="hidden"><?php echo $x['id_instansi']; ?></p>
                                 <p class="text-lg font-bold"><?php echo $data_instansi['nama_instansi']; ?></p>
-                                <p class="text-sm">PIC@gmail.com</p>
+                                <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
                               </figcaption>
                               </figure>
                           <div class="p-4 w-full mx-auto">
@@ -438,14 +440,18 @@
                           </div>
                         </div>
                         <!-- Review -->
+                        <?php
+                        foreach ($db->tampil_data_ulasan() as $x) {
+                          if ($x['id_instansi'] == $id_instansi) {
+                        ?>
                         <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start p-5 mt-3">
                           <article>
                             <div class="flex justify-between items-start mb-4">
                               <div class="flex items-start">
                                 <img class="w-10 h-10 me-4 rounded-full" src="assets/laptop.jpg" alt="">
                                 <div class="text-start">
-                                  <p class="text-md font-semibold">Khilda Salsabila Azka</p>
-                                  <time datetime="2024-08-20 19:00" class="block font-light text-[10px] text-gray-500">20 Agustus 2024</time>
+                                  <p class="text-md font-semibold text-gray-500"><?php echo $x['nama']; ?></p>
+                                  <time datetime="2024-08-20 19:00" class="block font-light text-[10px] text-gray-500"><?php echo $x['tanggal']; ?></time>
                                 </div>
                               </div>
                               <svg class="w-4 h-4 text-gray-500 cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -471,19 +477,27 @@
                                 <svg class="w-4 h-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                     <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
                                 </svg>
-                            </div>                            
+                              </div>                            
                             </div>
                           </article>
-                          
                           <div>
                             <p class="mt-2 text-start text-xs font-normal text-gray-500">
-                              <span id="comment-short"></span>
-                              <span id="comment-full" class="hidden"></span>
-                              <button id="show-more" class="text-blue-500">Selengkapnya</button>
-                          </p>
-                          </div>
+                                <span id="comment-short"><?php echo $x['isi_komentar']; ?></span>
+                                <span id="comment-full" class="hidden"></span>
+                                <button id="show-more" class="text-blue-500" style="display: none;">Selengkapnya</button>
+                            </p>
                         </div>
-                      </div>                        
+                        </div>
+                        <?php
+                          }
+                            }
+                          ?>
+                      </div>
+                      <?php
+                        } else {
+                              echo 'Data instansi tidak ditemukan.';
+                          }
+                      ?>                        
                     </div>
                 </table>
             </div>
@@ -511,13 +525,9 @@
                 <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
               </li>
             </ul>
-          </nav>
+            </nav>
         </div>
-        <?php
-        } else {
-            echo 'Data instansi tidak ditemukan.';
-        }
-        ?>
+                      
 
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
@@ -655,19 +665,31 @@
         </script>
         
         <script>
-          const fullComment = "Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya";
-          const maxChars = 100;
-          const commentShort = document.getElementById("comment-short");
-          const commentFull = document.getElementById("comment-full");
-          const showMoreButton = document.getElementById("show-more");
-          commentShort.textContent = fullComment.slice(0, maxChars) + (fullComment.length > maxChars ? "..." : "");
-          commentFull.textContent = fullComment;
-          showMoreButton.addEventListener("click", () => {
-              commentShort.classList.toggle("hidden");
-              commentFull.classList.toggle("hidden");
-              showMoreButton.textContent = commentShort.classList.contains("hidden") ? "Sembunyikan" : "Selengkapnya";
+          document.addEventListener("DOMContentLoaded", () => {
+              const commentShort = document.getElementById("comment-short");
+              const commentFull = document.getElementById("comment-full");
+              const showMoreButton = document.getElementById("show-more");
+              const maxChars = 100;
+
+              const fullCommentText = commentShort.textContent;
+
+              if (fullCommentText.length > maxChars) {
+                  commentShort.textContent = fullCommentText.slice(0, maxChars) + "...";
+                  commentFull.textContent = fullCommentText;
+                  
+                  showMoreButton.style.display = "inline";
+                  showMoreButton.addEventListener("click", () => {
+                      commentShort.classList.toggle("hidden");
+                      commentFull.classList.toggle("hidden");
+                      showMoreButton.textContent = commentShort.classList.contains("hidden") ? "Sembunyikan" : "Selengkapnya";
+                  });
+              } else {
+                  commentShort.textContent = fullCommentText; 
+                  showMoreButton.style.display = "none";
+                  commentFull.textContent = "";
+              }
           });
-      </script>
+        </script>
 
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 
