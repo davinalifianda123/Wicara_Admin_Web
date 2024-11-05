@@ -28,7 +28,7 @@
     $pengaduan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2"));
     $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1"));
     $rating = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
-    
+
     $presentase_pengaduan = round(($pengaduan/$total) * 100, 2);
     $presentase_kehilangan = round(($kehilangan/$total) * 100, 2);
     $presentase_rating = round(($rating/$total) * 100, 2);
@@ -481,16 +481,29 @@
                 </div>
                 <!-- INII DONUT CHART -->
                 <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <div class="grid grid-cols-1 gap-4">
+                    <div class="grid grid-cols-1 gap-4 grid-rows-1">
                     <div>
                         <p class="text-xl font-bold text-center text-gray-900">Presentase Aktivitas</p>
                         <p class="text-sm font-normal text-center text-gray-600">Presentase Aktivitas User</p>
                     </div>
-                            <div class="py-6" id="donut-chart"></div> 
+                        <div class="py-6" id="donut-chart"></div> 
+                    </div>
+                </div>
+                <!-- INII LINE CHART -->                   
+                <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
+                <div class="flex justify-between mb-5">
+                    <div class="grid grid-cols-2 gap-4 grid-rows-1">
+                        <div>
+                            <p class="text-xl font-bold text-left text-gray-900">Grafik Aktivitas</p>
+                            <p class="text-sm font-normal text-left text-gray-600">Grafik Aktivitas User</p>
+                        </div>
                         </div>
                     </div>
-                <!-- INII LINE CHART -->
+                    
                 <div id="line-chart"></div>
+                </div>
+
+
                 <!-- INII CARD STATISTIK -->
                 <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <div class="grid grid-cols-1 gap-4">
@@ -656,14 +669,14 @@
                     yaxis: {
                         labels: {
                             formatter: function (value) {
-                                return value;
+                                return value + " Laporan";
                             },
                         },
                     },
                     xaxis: {
                         labels: {
                             formatter: function (value) {
-                                return value;
+                                return value + " Laporan";
                             },
                         },
                         axisTicks: {
@@ -682,7 +695,7 @@
             }
         </script>
 
-        <script>            
+        <script>         
         const options = {
         chart: {
             height: "100%",
@@ -695,6 +708,9 @@
             toolbar: {
             show: false,
             },
+        },
+        legend: {
+            show: true
         },
         tooltip: {
             enabled: true,
@@ -712,47 +728,44 @@
             show: true,
             strokeDashArray: 4,
             padding: {
-            left: 2,
+            left: 10,
             right: 2,
             top: -26
             },
         },
         series: [
             {
-            name: "Clicks",
-            data: [6500, 6418, 6456, 6526, 6356, 6456],
-            color: "#1A56DB",
+            name: "Pengaduan",
+            data: [<?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>],
+            color: "#4270C3",
             },
             {
-            name: "CPC",
-            data: [6456, 6356, 6526, 6332, 6418, 6500],
-            color: "#7E3AF2",
+            name: "Laporan Kehilangan",
+            data: [<?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>],
+            color: "#DC7274",
             },
         ],
-        legend: {
-            show: false
-        },
         stroke: {
             curve: 'smooth'
         },
         xaxis: {
-            categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
+            categories: ['Senin', 'Selasa', 'Rabu','Kamis', 'Jum\'at', 'Sabtu', 'Minggu'],
             labels: {
             show: true,
             style: {
                 fontFamily: "Inter, sans-serif",
-                cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                cssClass: 'text-xs font-normal fill-gray-500'
             }
             },
             axisBorder: {
-            show: false,
+            show: true,
             },
             axisTicks: {
-            show: false,
+            show: true,
             },
         },
         yaxis: {
-            show: false,
+            show: true,
         },
         }
 
