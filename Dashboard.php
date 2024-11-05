@@ -737,7 +737,7 @@
         series: [
             {
             name: "Pengaduan",
-            data: $pengaduan_harian
+            data: $pengaduan_harian,
             color: "#4270C3",
             },
             {
