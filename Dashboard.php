@@ -2,14 +2,13 @@
     // buat update profile
     session_start();
     include './Back-end/api_dashboard.php';
-    $db = new database();
-
+    
     if (!isset($_SESSION['id_user'])) {
         header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
     }
 
     $id_user = $_SESSION['id_user'];
-    $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
+    $user_data = mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
 
@@ -24,6 +23,20 @@
         </script>
         ";
     }
+
+    $total = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian"));
+    $pengaduan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2"));
+    $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1"));
+    $rating = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
+    
+    $presentase_pengaduan = round(($pengaduan/$total) * 100, 2);
+    $presentase_kehilangan = round(($kehilangan/$total) * 100, 2);
+    $presentase_rating = round(($rating/$total) * 100, 2);
+
+    $mahasiswaCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM user WHERE role = 3"));
+    $dosenTendikCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM user WHERE role = 2 and 4"));
+    $unitLayananCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM instansi"));
+    
 ?>
 
 
@@ -411,7 +424,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="pengaduan-count"><?=mysqli_num_rows($pengaduan);?></div>
+                                        <div class="text-[24px] font-bold text-black"><?=$pengaduan;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
                                             <a href="./Pengaduan.html">
@@ -432,7 +445,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=mysqli_num_rows($kehilangan);?></div>
+                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=$kehilangan;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
                                             <a href="./Pengaduan.html">
@@ -453,7 +466,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=mysqli_num_rows($rating);?></div>
+                                        <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=$rating;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
                                             <a href="./Pengaduan.html">
@@ -467,63 +480,17 @@
                     </div>
                 </div>
                 <!-- INII DONUT CHART -->
-                <div class="max-w py-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <div class="text-xl text-center font-bold text-gray-900 mb-2">Persentase Aktivitas</div>
-                    <div class="py-2" id="donut-chart"></div>
-                    <div class="grid grid-cols-2 text-center">
-                    </div>
-                </div>
-                <!-- INII LINE CHART -->
                 <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <div class="flex justify-between mb-5">
-                    <div class="grid gap-4 grid-cols-2">
-                        <div>
-                        <h5>
-                            <div class="text-xl font-bold text-gray-900">Grafik Aduan & Rating
-                            </div>
-                        </h5>
-                        </div>
-                    </div>
+                    <div class="grid grid-cols-1 gap-4">
                     <div>
-                        <button id="dropdownDefaultButton"
-                        data-dropdown-toggle="lastDaysdropdown"
-                        data-dropdown-placement="bottom" type="button" class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-[#4270C3] focus:z-10 focus:ring-4 focus:ring-gray-200">Last week <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                    </svg></button>
-                    <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                            <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Yesterday</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Today</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 7 days</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 30 days</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 90 days</a>
-                            </li>
-                            </ul>
+                        <p class="text-xl font-bold text-center text-gray-900">Presentase Aktivitas</p>
+                        <p class="text-sm font-normal text-center text-gray-600">Presentase Aktivitas User</p>
+                    </div>
+                            <div class="py-6" id="donut-chart"></div> 
                         </div>
                     </div>
-                    </div>
-                    <div id="line-chart"></div>
-                    <div class="grid grid-cols-1 items-center border-gray-200 border-t justify-between mt-2.5">
-                    <div class="pt-5">      
-                        <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center">
-                        <svg class="w-3.5 h-3.5 text-white me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                            <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2Zm-3 15H4.828a1 1 0 0 1 0-2h6.238a1 1 0 0 1 0 2Zm0-4H4.828a1 1 0 0 1 0-2h6.238a1 1 0 1 1 0 2Z"/>
-                            <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
-                        </svg>
-                        View full report
-                        </a>
-                    </div>
-                    </div>
-                </div>  
+                <!-- INII LINE CHART -->
+                <div id="line-chart"></div>
                 <!-- INII CARD STATISTIK -->
                 <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <div class="grid grid-cols-1 gap-4">
@@ -543,7 +510,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div id="mahasiswaCount" class="text-2xl px-2 py-2 font-bold text-black"><?=mysqli_num_rows($mahasiswaCount);?></div>
+                                        <div class="text-2xl px-2 py-2 font-bold text-black"><?=$mahasiswaCount;?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
@@ -568,7 +535,7 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div id="dosenCount" class="text-2xl px-2 py-2 font-bold text-black"><?=mysqli_num_rows($dosenTendikCount);?></div>
+                                        <div id="dosenCount" class="text-2xl px-2 py-2 font-bold text-black"><?=$dosenTendikCount;?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
@@ -593,7 +560,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div id="unitCount" class="text-2xl px-2 py-2 font-bold text-black"><?=mysqli_num_rows($unitLayananCount);?></div>
+                                        <div id="unitCount" class="text-2xl px-2 py-2 font-bold text-black"><?=$unitLayananCount;?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
@@ -610,13 +577,190 @@
             </div>
         </div>
 
-  
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-        <script src="main.js"></script>
         <script src="./Back-end/toast.js"></script>
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+        <script>
+            const getChartOptions = () => {
+                return {
+                    series: [<?=$pengaduan?>, <?=$kehilangan?>, <?=$rating?>],
+                    colors: ["#4270C3", "#DC7274", "#CD7014"],
+                    chart: {
+                        height: 320,
+                        width: "100%",
+                        type: "donut",
+                    },
+                    stroke: {
+                        colors: ["transparent"],
+                        lineCap: "",
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                labels: {
+                                    show: true,
+                                    name: {
+                                        show: true,
+                                        fontFamily: "Inter, sans-serif",
+                                        offsetY: 7,
+                                    },
+                                    total: {
+                                        showAlways: true,
+                                        show: true,
+                                        label: "WICARA",
+                                        fontFamily: "Inter, sans-serif",
+                                        offsetY: 0,
+                                        offsetX: 0,
+                                    },
+                                    value: {
+                                        show: false,
+                                        fontFamily: "Inter, sans-serif",
+                                        offsetY: -20,
+                                    },
+                                },
+                                size: "80%",
+                            },
+                        },
+                    },
+                    labels: [
+                        `Pengaduan - <?=$presentase_pengaduan?>%`,
+                        `Kehilangan - <?=$presentase_kehilangan?>%`,
+                        `Rating - <?=$presentase_rating?>%`
+                    ],
+                    dataLabels: {
+                        enabled: false,
+                        formatter: function (val, opts) {
+                            return opts.w.globals.labels[opts.seriesIndex];
+                        },
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            colors: ['#333']
+                        },
+                    },
+                    legend: {
+                        position: "right",
+                        fontFamily: "Inter, sans-serif",
+                        formatter: function(seriesName, opts) {
+                            return seriesName;
+                        },
+                    },
+                    grid: {
+                        padding: {
+                            top: -2,
+                        },
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: function (value) {
+                                return value;
+                            },
+                        },
+                    },
+                    xaxis: {
+                        labels: {
+                            formatter: function (value) {
+                                return value;
+                            },
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        axisBorder: {
+                            show: false,
+                        },
+                    },
+                }
+            }
+
+            if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined') {
+                const chart = new ApexCharts(document.getElementById("donut-chart"), getChartOptions());
+                chart.render();
+            }
+        </script>
+
+        <script>            
+        const options = {
+        chart: {
+            height: "100%",
+            maxWidth: "100%",
+            type: "line",
+            fontFamily: "Inter, sans-serif",
+            dropShadow: {
+            enabled: false,
+            },
+            toolbar: {
+            show: false,
+            },
+        },
+        tooltip: {
+            enabled: true,
+            x: {
+            show: false,
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            width: 6,
+        },
+        grid: {
+            show: true,
+            strokeDashArray: 4,
+            padding: {
+            left: 2,
+            right: 2,
+            top: -26
+            },
+        },
+        series: [
+            {
+            name: "Clicks",
+            data: [6500, 6418, 6456, 6526, 6356, 6456],
+            color: "#1A56DB",
+            },
+            {
+            name: "CPC",
+            data: [6456, 6356, 6526, 6332, 6418, 6500],
+            color: "#7E3AF2",
+            },
+        ],
+        legend: {
+            show: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories: ['01 Feb', '02 Feb', '03 Feb', '04 Feb', '05 Feb', '06 Feb', '07 Feb'],
+            labels: {
+            show: true,
+            style: {
+                fontFamily: "Inter, sans-serif",
+                cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+            }
+            },
+            axisBorder: {
+            show: false,
+            },
+            axisTicks: {
+            show: false,
+            },
+        },
+        yaxis: {
+            show: false,
+        },
+        }
+
+        if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("line-chart"), options);
+        chart.render();
+        }
+        </script>
         <script>
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
