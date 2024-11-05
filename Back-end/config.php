@@ -1,4 +1,14 @@
 <?php
+$mysqli = new mysqli("localhost", "root", "", "wicara");
+
+// Periksa koneksi
+if ($mysqli->connect_error) {
+    die("Koneksi gagal: " . $mysqli->connect_error);
+}
+?>
+
+
+<?php
     class database{
         var $host = "localhost:3306";
         var $username = "root";
@@ -11,7 +21,7 @@
                 echo "Koneksi database gagal : " . mysqli_connect_error();
             }
         }
-        
+
         function tampil_data()
         {
             $data = mysqli_query($this->koneksi, "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
@@ -178,10 +188,9 @@
             VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image')");
         }
         
-        function edit_user($id_user, $nama, $nomor_induk, $nomor_telepon, $email, $role)
-        {
-            mysqli_query($this->koneksi,"UPDATE user set id_user = '$id_user', nama = '$nama', nomor_induk = '$nomor_induk',
-                                                        nomor_telepon = '$nomor_telepon', email = '$email', role = $role Where id_user = $id_user");
+        public function edit_user($id_user, $nama, $nomor_induk, $nomor_telepon) {
+            $query = "UPDATE user SET nama = '$nama', nomor_induk = '$nomor_induk', nomor_telepon = '$nomor_telepon' WHERE id_user = " . intval($id_user);
+            return mysqli_query($this->koneksi, $query);
         }
 
         function edit_user_with_image($id_user, $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path) {

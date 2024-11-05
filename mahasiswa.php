@@ -35,7 +35,11 @@
     // Display the users in the table
     $no = $offset + 1; // Start numbering from the current offset
 
-
+    // Query untuk mengambil waktu update terakhir dan jumlah mahasiswa dengan role 3
+    $result = $mysqli->query("SELECT MAX(updated_at) AS last_update, COUNT(*) AS total_mahasiswa FROM user WHERE role = 3");
+    $row = $result->fetch_assoc();
+    $lastUpdate = $row['last_update'];
+    $totalMahasiswa = $row['total_mahasiswa'];
 
 ?>
 
@@ -392,8 +396,12 @@
 
             <!-- ATAS TABEL -->
             <div class="flex justify-between">
-                <p class="p-2 text-gray-500" style="font-size: 10px;">Update terakhir: 1 September 2024 (20:00 WIB)</p>
-                <p class="p-2 text-gray-500" style="font-size: 10px;">Σ Jumlah: 2000 Mahasiswa</p>
+                <p class="p-2 text-gray-500" style="font-size: 10px;">
+                    Update terakhir: <?php echo date("j F Y (H:i T)", strtotime($lastUpdate)); ?>
+                </p>
+                <p class="p-2 text-gray-500" style="font-size: 10px;">
+                    Σ Jumlah: <?php echo $totalMahasiswa; ?> Mahasiswa
+                </p>
             </div>
 
             <!-- BAGIAN TABEL -->
@@ -511,9 +519,13 @@
                             </span>
                         </td>
                         <td>
-                            <span>
-                                <button class="text-blue-500 hover:underline">Edit</button>
-                            </span>
+                        <span>
+                            <button 
+                                class="text-blue-500 hover:underline"
+                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['password']); ?>')">
+                                Edit
+                            </button>
+                        </span>
                         </td>
                     </tr>
                     <?php 
@@ -530,6 +542,36 @@
                     ?>
                     </tbody>
                 </table>
+                <!-- Popup Form untuk Edit User -->
+                <div id="editPopup" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                    <div class="bg-white p-6 rounded-lg w-96">
+                        <h2 class="text-lg font-semibold mb-4">Edit User</h2>
+                        <form id="editForm" action="./Back-end/edit_mahasiswa.php" method="POST">
+                            <input type="hidden" name="id_user" id="editUserId">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Nama</label>
+                                <input type="text" name="nama" id="editNama" class="w-full border px-3 py-2 rounded" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Nomor Induk</label>
+                                <input type="text" name="nomor_induk" id="editNomorInduk" class="w-full border px-3 py-2 rounded" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
+                                <input type="text" name="nomor_telepon" id="editNomorTelepon" class="w-full border px-3 py-2 rounded" required>
+                            </div>
+                            <!-- Checkbox Reset Password -->
+                            <div class="mb-4 flex items-center">
+                                <input type="checkbox" name="reset_password" id="resetPasswordCheckbox" class="mr-2">
+                                <label for="resetPasswordCheckbox" class="text-sm font-medium text-gray-700">Reset Password to Default</label>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="button" onclick="closePopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>             
             </div>
             <!-- Tampilan navigasi Pagination -->
             <nav aria-label="Page navigation example" class="flex justify-end mt-3">
@@ -548,8 +590,24 @@
                 </ul>
             </nav>
             </div>
-        </div> <!-- DIV CONTENT -->
+        </div> 
+        <!-- DIV CONTENT -->
         <script>
+            
+            // Fungsi untuk membuka popup dan mengisi data
+            function openEditPopup(userId, nama, nomorInduk, nomorTelepon) {
+                document.getElementById('editUserId').value = userId;
+                document.getElementById('editNama').value = nama;
+                document.getElementById('editNomorInduk').value = nomorInduk;
+                document.getElementById('editNomorTelepon').value = nomorTelepon;
+                document.getElementById('editPopup').classList.remove('hidden');
+            }
+
+            // Fungsi untuk menutup popup
+            function closePopup() {
+                document.getElementById('editPopup').classList.add('hidden');
+            }
+
             // Function to toggle popup and disable/enable search
             function togglePopup() {
                 var popup = document.getElementById("popup");
