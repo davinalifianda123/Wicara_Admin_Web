@@ -12,6 +12,10 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    $instansi_data = mysqli_query($db->koneksi, "SELECT * FROM instansi");
+    $instansi = mysqli_fetch_assoc($instansi_data);
+    $instansi_image = $instansi['image_instansi'] ? './Back-end'.$instansi['image_instansi'] : './assets/Frame 1000003401.png';
 ?>
 
 <!DOCTYPE html>
@@ -406,7 +410,7 @@
                                     <!-- Kartu Poliklinik -->
                                     <div class="bg-white shadow-md overflow-hidden">
                                         <div class="relative">
-                                            <img src="assets/data_rating.png" alt="Poliklinik" class="w-full h-52 object-cover">
+                                            <img src="<?=$x['image_instansi'] == null ? "assets/data_rating.png" : "./Back-end".$x['image_instansi'];?>" alt="Poliklinik" class="w-full h-52 object-cover">
                                             <div class="absolute inset-0 bg-gradient-to-t from-blue-900 opacity-35"></div>
                                         </div>
                                         <div class="p-4 flex justify-between items-center">
@@ -418,7 +422,9 @@
                                                 data-id="<?=$x['id_instansi'];?>"
                                                 data-nama="<?=$x['nama_instansi'];?>"
                                                 data-email="<?=$x['email_pic'];?>"
-                                                data-image="<?=$x['image_instansi'];?>">
+                                                data-image="<?=$x['image_instansi'];?>"
+                                                data-qrcode = "<?=$x['qr_code_url'];?>"
+                                                data-jeda-rating = "<?=$x['jeda_waktu_rating'];?>">
                                                 Edit
                                             </button>
                                         </div>
@@ -446,38 +452,37 @@
                         </button>
                     </div>
 
-                    <!-- Gambar Form -->
-                    <div class="md flex justify-center items-center mb-4">
-                        <img src="assets/Frame 1000003401.png" alt="Gambar" class="w-full h-40">
-                    </div>
-
+                    
                     <!-- Input Fields -->
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <label class="w-1/3">ID Unit Layanan</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="09000647839" />
+                    <form action="Back-end/tambah_instansi.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                        <!-- Gambar Form -->
+                        <div class="md flex justify-center items-center mb-4">
+                            <img id="unit-layanan-preview" src="<?=$instansi_image;?>" alt="Gambar" class="w-full h-40 rounded-md">
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Nama Unit Layanan</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="Poliklinik" />
+                            <input type="text" name="nama_instansi" class="w-full border border-gray-300 rounded-md p-2" required/>
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Email PIC</label>
-                            <input type="email" class="w-full border border-gray-300 rounded-md p-2" value="PIC@gmail.com" />
+                            <input type="email" name="email_pic" class="w-full border border-gray-300 rounded-md p-2" required/>
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Jeda Waktu Rating</label>
-                            <div class="flex space-x-2">
-                                <input type="number" class="border border-gray-300 rounded-md p-2" value="1" />
-                                <span>Kali / Bulan</span>
+                            <div class="flex space-x-2 items-center w-full">
+                                <input type="number" name="jeda_waktu_rating" class="border border-gray-300 rounded-md p-2" required/>
+                                <span>Hari</span>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Tombol Tambah -->
-                    <div class="mt-6 flex justify-end">
-                        <button class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">+ Tambah</button>
-                    </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Gambar Banner</label>
+                            <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded-md" onchange="previewImageUnitLayanan(event)" required/>
+                        </div>
+                        <!-- Tombol Tambah -->
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">+ Tambah</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -498,10 +503,10 @@
                     <!-- Image Section -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="flex items-center justify-center border rounded-lg p-4">
-                            <img name="image-unit" src="assets/folder-cuate.png" alt="Unit Image" class="w-48 h-auto object-contain">
+                            <img name="image-unit" alt="Unit Image" class="w-48 h-auto object-contain">
                         </div>
                         <div class="flex items-center justify-center border rounded-lg p-4">
-                            <img src="assets/QR.png" alt="QR Code" class="w-32 h-auto object-contain">
+                            <img name="qr-code" alt="QR Code" class="w-32 h-auto object-contain">
                         </div>
                     </div>
 
@@ -522,8 +527,8 @@
                             </div>
                             <div class="flex items-center space-x-2">
                                 <label for="ratingJeda" class="block text-gray-700 text-sm flex-grow">Jeda Waktu Rating</label>
-                                <input type="number" id="ratingJeda" value="1" class="w-16 p-3 border border-gray-300 rounded" />
-                                <span class="text-gray-700">Kali / Bulan</span>
+                                <input type="text" name="rating-jeda" id="ratingJeda" class="w-full p-3 border border-gray-300 rounded" />
+                                <span class="text-gray-700">Hari</span>
                             </div>
                         </div>
 
@@ -748,6 +753,15 @@
                 reader.readAsDataURL(event.target.files[0]);
             }
 
+            function previewImageUnitLayanan(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('unit-layanan-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
             document.addEventListener('DOMContentLoaded', function() {
                 const updateButtons = document.querySelectorAll('#editModalButton');
                 
@@ -757,12 +771,16 @@
                         const nama = button.getAttribute('data-nama');
                         const emailPIC = button.getAttribute('data-email');
                         const image = button.getAttribute('data-image');
+                        const qrcode = button.getAttribute('data-qrcode');
+                        const jedaRating = button.getAttribute('data-jeda-rating');
 
                         // Populate modal fields
                         document.querySelector('#editModal input[name="id-layanan"]').value = id;
                         document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
                         document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
-                        document.querySelector('#editModal img[name="image-unit"]').value = image;
+                        document.querySelector('#editModal img[name="image-unit"]').src = "./Back-end"+image;
+                        document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
+                        document.querySelector('#editModal input[name="rating-jeda"]').value = jedaRating;
                     });
                 });
             });
