@@ -2,6 +2,7 @@
     // buat update profile
     session_start();
     include './Back-end/api_dashboard.php';
+    include 'coba.php';
     
     if (!isset($_SESSION['id_user'])) {
         header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
@@ -24,9 +25,13 @@
         ";
     }
 
+    $pengaduanCard = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2 AND status_pengaduan = 1"));
+    $kehilanganCard = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1 AND status_kehilangan = 4"));
+    $ratingCard = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
+
     $total = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian"));
-    $pengaduan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2 AND status_pengaduan = 1"));
-    $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1 AND status_kehilangan = 4"));
+    $pengaduan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2"));
+    $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1"));
     $rating = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
 
     $presentase_pengaduan = round(($pengaduan/$total) * 100, 2);
@@ -424,7 +429,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black"><?=$pengaduan;?></div>
+                                        <div class="text-[24px] font-bold text-black"><?=$pengaduanCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
                                             <a href="./Pengaduan.html">
@@ -445,7 +450,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=$kehilangan;?></div>
+                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=$kehilanganCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
                                             <a href="./Pengaduan.html">
@@ -466,7 +471,7 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=$rating;?></div>
+                                        <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=$ratingCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
                                             <a href="./Pengaduan.html">
@@ -695,7 +700,10 @@
             }
         </script>
 
-        <script>         
+        <script>  
+        var pengaduan =  <?php echo json_encode($pengaduan_harian);?>;      
+        var kehilangan =  <?php echo json_encode($kehilangan_harian);?>;      
+        var rating =  <?php echo json_encode($rating_harian);?>;      
         const options = {
         chart: {
             height: "100%",
@@ -736,17 +744,17 @@
         series: [
             {
             name: "Pengaduan",
-            data: [<?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>, <?=$pengaduan?>],
+            data: pengaduan,
             color: "#4270C3",
             },
             {
             name: "Laporan Kehilangan",
-            data: [<?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>],
+            data: kehilangan,
             color: "#DC7274",
             },
             {
             name: "Rating",
-            data: [<?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>],
+            data: rating,
             color: "#CD7014",
             },
         ],
