@@ -2,7 +2,6 @@
     // buat update profile
     session_start();
     include './Back-end/api_dashboard.php';
-    include 'coba.php';
     
     if (!isset($_SESSION['id_user'])) {
         header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
@@ -704,6 +703,7 @@
         var pengaduan =  <?php echo json_encode($pengaduan_harian);?>;      
         var kehilangan =  <?php echo json_encode($kehilangan_harian);?>;      
         var rating =  <?php echo json_encode($rating_harian);?>;      
+        var tanggal =  <?php echo json_encode($tanggal_array);?>;      
         const options = {
         chart: {
             height: "100%",
@@ -762,7 +762,7 @@
             curve: 'smooth'
         },
         xaxis: {
-            categories: ['Senin', 'Selasa', 'Rabu','Kamis', 'Jum\'at', 'Sabtu', 'Minggu'],
+            categories: tanggal,
             labels: {
             show: true,
             style: {
