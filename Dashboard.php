@@ -696,7 +696,10 @@
             }
         </script>
 
-        <script>         
+        <script>  
+        var pengaduan =  <?php echo json_encode($pengaduan_harian);?>;      
+        var kehilangan =  <?php echo json_encode($kehilangan_harian);?>;      
+        var rating =  <?php echo json_encode($rating_harian);?>;      
         const options = {
         chart: {
             height: "100%",
@@ -737,17 +740,17 @@
         series: [
             {
             name: "Pengaduan",
-            data: $pengaduan_harian,
+            data: pengaduan,
             color: "#4270C3",
             },
             {
             name: "Laporan Kehilangan",
-            data: [<?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>],
+            data: kehilangan,
             color: "#DC7274",
             },
             {
             name: "Rating",
-            data: [<?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>],
+            data: rating,
             color: "#CD7014",
             },
         ],
