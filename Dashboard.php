@@ -25,8 +25,8 @@
     }
 
     $total = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian"));
-    $pengaduan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2"));
-    $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1"));
+    $pengaduan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2 AND status_pengaduan = 1"));
+    $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1 AND status_kehilangan = 4"));
     $rating = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
 
     $presentase_pengaduan = round(($pengaduan/$total) * 100, 2);
@@ -743,6 +743,11 @@
             name: "Laporan Kehilangan",
             data: [<?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>, <?=$kehilangan?>],
             color: "#DC7274",
+            },
+            {
+            name: "Rating",
+            data: [<?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>, <?=$rating?>],
+            color: "#CD7014",
             },
         ],
         stroke: {
