@@ -401,6 +401,7 @@
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                              <p class="hidden"><?php echo $x['id_instansi']; ?></p>
                                 <p class="text-lg font-bold"><?php echo $x['nama_instansi']; ?></p>
                                 <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
                               </figcaption>
@@ -435,7 +436,7 @@
                               </div>
                           </div>
                             <div class="flex justify-end mt-2">
-                              <a href="detail_rating.html?judul=<?php $x['nama_instansi']; ?>&email=<?php $x['email_instansi']; ?>m" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            <a href="detail_rating.php?id=<?php echo $x['id_instansi']; ?>" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
                             </div>
                           </div>
                         </div>

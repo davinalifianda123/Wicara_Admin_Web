@@ -1,5 +1,4 @@
-<!-- 
- <?php
+<?php
     // buat update profile
     session_start();
     include './Back-end/config.php';
@@ -13,8 +12,16 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    // Ambil id_instansi dari URL
+    $id_instansi = $_GET['id'];
+
+    // Cek apakah id_instansi ada
+    if (isset($id_instansi)) {
+        // Panggil fungsi yang sudah ada untuk mendapatkan data detail
+        $data_instansi = $db->tampil_instansi_by_id($id_instansi);
+    }
 ?>
- -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -243,7 +250,7 @@
             </nav>
 
             <!-- PROFILE READ CONTENT -->
-            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
+            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <!-- Tombol Kembali -->
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
@@ -289,7 +296,7 @@
             </div>
 
             <!-- PROFILE EDIT CONTENT -->
-            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
+            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
                     <button onclick="goBack2()" class="flex items-center text-sm text-blue-500 hover:underline">
@@ -382,6 +389,9 @@
                         </div>
                       </ul>
                       <!-- INI CARDNYA -->
+                      <?php
+                      if (isset($data_instansi)) {
+                      ?>
                       <div class="mt-5 justify-center">
                         <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
                               <figure class="relative max-w-full">
@@ -392,7 +402,7 @@
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
+                                <p class="text-lg font-bold"><?php echo $data_instansi['nama_instansi']; ?></p>
                                 <p class="text-sm">PIC@gmail.com</p>
                               </figcaption>
                               </figure>
@@ -503,7 +513,12 @@
             </ul>
           </nav>
         </div>
-        
+        <?php
+        } else {
+            echo 'Data instansi tidak ditemukan.';
+        }
+        ?>
+
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- INII SCRIPT NOTIF -->
