@@ -407,15 +407,13 @@
             <!-- BAGIAN TABEL -->
             <div class="bg-white p-2 border-2 border-gray-200 shadow-md rounded-lg">
                 <!-- ROW ATAS -->
-                <div class="flex justify-between items-center py-2">
+                <div class="flex justify-between items-center mb-2">
                     <div>
-                        <p class="font-bold p-0 whitespace-nowrap">Data Mahasiswa</p>
-                        <p class="text-xs p-0 text-gray-500">Detail Mahasiswa</p>
+                        <p class="font-bold p-0 text-lg">Data Mahasiswa</p>
+                        <p class="text-xs text-gray-500">Detail Mahasiswa</p>
                     </div>
                     <div class="ml-auto">
-                        <!-- Button to open the popup -->
-                        <button class="text-sm text-gray-600 mr-4" onclick="togglePopup()">+ Tambah</button>
-                        <!-- Popup Form -->
+                        <button onclick="togglePopup()" id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
                     </div>
                     <!-- SEARCH -->
                     <form id="search-form" class="flex-grow max-w-sm">
@@ -522,7 +520,7 @@
                         <span>
                             <button 
                                 class="text-blue-500 hover:underline"
-                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['password']); ?>')">
+                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>')">
                                 Edit
                             </button>
                         </span>
@@ -548,32 +546,46 @@
                         <h2 class="text-lg font-semibold mb-4">Edit User</h2>
                         <form id="editForm" action="./Back-end/edit_mahasiswa.php" method="POST">
                             <input type="hidden" name="id_user" id="editUserId">
+                            
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Nama</label>
                                 <input type="text" name="nama" id="editNama" class="w-full border px-3 py-2 rounded" required>
                             </div>
+
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Nomor Induk</label>
                                 <input type="text" name="nomor_induk" id="editNomorInduk" class="w-full border px-3 py-2 rounded" required>
                             </div>
+
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
                                 <input type="text" name="nomor_telepon" id="editNomorTelepon" class="w-full border px-3 py-2 rounded" required>
                             </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="editEmail" name="email" class="w-full border px-3 py-2 rounded bg-gray-100" readonly>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Password</label>
+                                <input type="password" name="password" id="editPassword" class="w-full border px-3 py-2 rounded bg-gray-100" readonly>
+                            </div>
+
                             <!-- Checkbox Reset Password -->
                             <div class="mb-4 flex items-center">
                                 <input type="checkbox" name="reset_password" id="resetPasswordCheckbox" class="mr-2">
                                 <label for="resetPasswordCheckbox" class="text-sm font-medium text-gray-700">Reset Password to Default</label>
                             </div>
+
                             <div class="flex justify-end">
                                 <button type="button" onclick="closePopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
                                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
                             </div>
                         </form>
                     </div>
-                </div>             
-            </div>
-            <!-- Tampilan navigasi Pagination -->
+                </div>
+                            <!-- Tampilan navigasi Pagination -->
             <nav aria-label="Page navigation example" class="flex justify-end mt-3">
                 <ul class="inline-flex -space-x-px text-sm">
                     <li>
@@ -594,16 +606,28 @@
         <!-- DIV CONTENT -->
         <script>
             
-            // Fungsi untuk membuka popup dan mengisi data
-            function openEditPopup(userId, nama, nomorInduk, nomorTelepon) {
+           // Fungsi untuk menampilkan popup dan mengisi data yang benar
+            function openEditPopup(userId, nama, nomorInduk, nomorTelepon, email, password) {
+                // Debugging: Log each parameter to check if values are correct
+                console.log("User ID:", userId);
+                console.log("Nama:", nama);
+                console.log("Nomor Induk:", nomorInduk);
+                console.log("Nomor Telepon:", nomorTelepon);
+                console.log("Email:", email);   // Pastikan ini berisi email
+                console.log("Password:", password); // Pastikan ini berisi password
+
+                // Set each input field with the corresponding value
                 document.getElementById('editUserId').value = userId;
                 document.getElementById('editNama').value = nama;
                 document.getElementById('editNomorInduk').value = nomorInduk;
                 document.getElementById('editNomorTelepon').value = nomorTelepon;
+                document.getElementById('editEmail').value = email;
+                document.getElementById('editPassword').value = password;
+
+                // Display the popup
                 document.getElementById('editPopup').classList.remove('hidden');
             }
 
-            // Fungsi untuk menutup popup
             function closePopup() {
                 document.getElementById('editPopup').classList.add('hidden');
             }

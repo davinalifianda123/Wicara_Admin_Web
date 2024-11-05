@@ -414,28 +414,26 @@
             <!-- BAGIAN TABEL -->
             <div class="bg-white p-2 border-2 border-gray-200 shadow-md rounded-lg">
                 <!-- ROW ATAS -->
-                <div class="flex justify-between items-center py-2">
-                    <div>
-                        <p class="font-bold p-0 whitespace-nowrap">Data Dosen</p>
-                        <p class="text-xs p-0 text-gray-500">Detail Dosen</p>
-                    </div>
-                    <div class="ml-auto">
-                        <!-- Button to open the popup -->
-                        <button class="text-sm text-gray-600 mr-4" onclick="togglePopup()">+ Tambah</button>
-                        <!-- Popup Form -->
-                    </div>
-                    <!-- SEARCH -->
-                    <form id="search-form" class="flex-grow max-w-sm">
-                        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-                        <div class="relative w-full">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                </svg>
-                            </div>
-                            <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="search anything..." required onkeyup="searchTable()" />
+                <div class="flex justify-between items-center mb-2">
+                        <div>
+                            <p class="font-bold p-0 text-lg">Data Dosen</p>
+                            <p class="text-xs text-gray-500">Detail Dosen</p>
                         </div>
-                    </form>
+                        <div class="ml-auto">
+                            <button onclick="togglePopup()" id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
+                        </div>
+                        <!-- SEARCH -->
+                        <form id="search-form" class="flex-grow max-w-sm">
+                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </div>
+                                <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="search anything..." required onkeyup="searchTable()" />
+                            </div>
+                        </form>
                     <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
                     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
                         <button onclick="togglePopup()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600">
@@ -465,6 +463,7 @@
                         </form>
                     </div>
                 </div>
+
                 </div>
                 <!-- TABEL -->
                 <table class="w-full">
@@ -529,7 +528,7 @@
                         <span>
                             <button 
                                 class="text-blue-500 hover:underline"
-                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['password']); ?>')">
+                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>')">
                                 Edit
                             </button>
                         </span>
@@ -553,32 +552,47 @@
                 <div id="editPopup" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
                     <div class="bg-white p-6 rounded-lg w-96">
                         <h2 class="text-lg font-semibold mb-4">Edit User</h2>
-                        <form id="editForm" action="./Back-end/edit_dosen.php" method="POST">
+                        <form id="editForm" action="./Back-end/edit_mahasiswa.php" method="POST">
                             <input type="hidden" name="id_user" id="editUserId">
+                            
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Nama</label>
                                 <input type="text" name="nama" id="editNama" class="w-full border px-3 py-2 rounded" required>
                             </div>
+
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Nomor Induk</label>
                                 <input type="text" name="nomor_induk" id="editNomorInduk" class="w-full border px-3 py-2 rounded" required>
                             </div>
+
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700">Nomor Telepon</label>
                                 <input type="text" name="nomor_telepon" id="editNomorTelepon" class="w-full border px-3 py-2 rounded" required>
                             </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" id="editEmail" name="email" class="w-full border px-3 py-2 rounded bg-gray-100" readonly>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Password</label>
+                                <input type="password" name="password" id="editPassword" class="w-full border px-3 py-2 rounded bg-gray-100" readonly>
+                            </div>
+
                             <!-- Checkbox Reset Password -->
                             <div class="mb-4 flex items-center">
                                 <input type="checkbox" name="reset_password" id="resetPasswordCheckbox" class="mr-2">
                                 <label for="resetPasswordCheckbox" class="text-sm font-medium text-gray-700">Reset Password to Default</label>
                             </div>
+
                             <div class="flex justify-end">
                                 <button type="button" onclick="closePopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
                                 <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
                             </div>
                         </form>
                     </div>
-                </div>             
+                </div>            
             </div>
             <!-- Tampilan navigasi Pagination -->
             <nav aria-label="Page navigation example" class="flex justify-end mt-3">
@@ -601,16 +615,28 @@
         <!-- DIV CONTENT -->
         <script>
             
-            // Fungsi untuk membuka popup dan mengisi data
-            function openEditPopup(userId, nama, nomorInduk, nomorTelepon) {
+             // Fungsi untuk menampilkan popup dan mengisi data yang benar
+             function openEditPopup(userId, nama, nomorInduk, nomorTelepon, email, password) {
+                // Debugging: Log each parameter to check if values are correct
+                console.log("User ID:", userId);
+                console.log("Nama:", nama);
+                console.log("Nomor Induk:", nomorInduk);
+                console.log("Nomor Telepon:", nomorTelepon);
+                console.log("Email:", email);   // Pastikan ini berisi email
+                console.log("Password:", password); // Pastikan ini berisi password
+
+                // Set each input field with the corresponding value
                 document.getElementById('editUserId').value = userId;
                 document.getElementById('editNama').value = nama;
                 document.getElementById('editNomorInduk').value = nomorInduk;
                 document.getElementById('editNomorTelepon').value = nomorTelepon;
+                document.getElementById('editEmail').value = email;
+                document.getElementById('editPassword').value = password;
+
+                // Display the popup
                 document.getElementById('editPopup').classList.remove('hidden');
             }
 
-            // Fungsi untuk menutup popup
             function closePopup() {
                 document.getElementById('editPopup').classList.add('hidden');
             }
