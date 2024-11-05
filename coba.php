@@ -30,5 +30,6 @@ if ($hasil_pengaduanline->num_rows > 0) {
     }
 }
 
-print_r($pengaduan_harian);
-echo "{" . implode(", ", $pengaduan_harian) . "}";
+//buat coba ngetest api
+// print_r($pengaduan_harian);
+// echo "{" . implode(", ", $pengaduan_harian) . "}";
