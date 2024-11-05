@@ -2,9 +2,7 @@
 include('config.php');
 $koneksi = new database();
 
-// Mengambil NIM dari input dan menggabungkannya dengan string "polines"
-$nim = $_POST['nomor_induk'];
-$password = "polines" . $nim; // Password default
+$password = "Polines123*"; // Password default
 
 // Role 2 (dosen) diatur langsung
 $role = 2;

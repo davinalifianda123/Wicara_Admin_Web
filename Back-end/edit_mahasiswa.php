@@ -8,8 +8,8 @@ $nomor_telepon = $_POST['nomor_telepon'];
 
 // Cek apakah password perlu di-reset
 if (isset($_POST['reset_password'])) {
-    // Set password default menjadi "polines{NIM}" sesuai NIM pengguna
-    $default_password = "polines{$nomor_induk}";
+    // Set password default menjadi "polines123*" sesuai NIM pengguna
+    $default_password = "Polines123*";
 
     // Query untuk update data dengan reset password
     $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, password=? WHERE id_user=?";
