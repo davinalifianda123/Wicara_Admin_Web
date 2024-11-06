@@ -47,7 +47,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pengaduan</title>
+        <title>Rating</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -466,7 +466,7 @@
                           <article>
                             <div class="flex justify-between items-start mb-4">
                               <div class="flex items-start">
-                                <img class="w-10 h-10 me-4 rounded-full" src="assets/laptop.jpg" alt="">
+                                <img class="w-10 h-10 me-4 rounded-full" src="<?=$x['image'] == null ? "./Back-end/foto-profile/default-profile.png" : "/Wicara_Admin_Web".$x['image'];?>" alt="">
                                 <div class="text-start">
                                   <p class="user-reivew text-md font-semibold text-gray-500"><?php echo $x['nama']; ?></p>
                                   <time datetime="2024-08-20 19:00" class="block font-light text-[10px] text-gray-500"><?php echo $x['tanggal']; ?></time>
