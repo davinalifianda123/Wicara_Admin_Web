@@ -676,10 +676,12 @@
             function filterNotifications(type) {
                 const container = document.getElementById('notifications');
                 container.innerHTML = '';
+
                 const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
+
                 filteredNotifications.forEach(notification => {
                     const notificationElement = document.createElement('button');
-                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
                     notificationElement.innerHTML = `
                         <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
@@ -694,6 +696,18 @@
                             ` : ''}
                         </div>
                     `;
+
+                    // Add click event to navigate based on notification type
+                    notificationElement.addEventListener('click', () => {
+                        if (notification.type === 'pengaduan') {
+                            window.location.href = 'lihat_pengaduan.php';
+                        } else if (notification.type === 'rating') {
+                            window.location.href = 'rating.php';
+                        } else if (notification.type === 'kehilangan') {
+                            window.location.href = 'kehilangan.php'; // Replace with the correct page
+                        }
+                    });
+
                     container.appendChild(notificationElement);
                 });
 
