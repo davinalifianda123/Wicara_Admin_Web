@@ -13,7 +13,7 @@ if (isset($_POST['update'])) {
     $role = $_POST['role'];
 
     // Tentukan folder untuk menyimpan gambar
-    $upload_dir = './foto-profile/';
+    $upload_dir = '../Back-end/foto-profile/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
