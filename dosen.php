@@ -221,7 +221,15 @@
             <!-- NAVBAR INII -->
             <nav class="w-full lg:px-0 pb-4">
                 <div class="flex flex-wrap justify-between items-center">
-                        <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">User &gt; Dosen</span>                  
+                <div class="flex items-center">
+                        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 hover:text-yellow-400">
+                            <span class="sr-only">Open sidebar</span>
+                            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
+                            </svg>
+                        </button>
+                        <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">User &gt; Dosen</span>
+                    </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
                         <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
@@ -412,7 +420,7 @@
             </div>
 
             <!-- BAGIAN TABEL -->
-            <div class="bg-white p-2 border-2 border-gray-200 shadow-md rounded-lg">
+            <div class="bg-white p-4 border-2 border-gray-200 shadow-md rounded-lg">
                 <!-- ROW ATAS -->
                 <div class="flex justify-between items-center mb-2">
                         <div>
@@ -473,17 +481,16 @@
                 <table class="w-full">
                 <thead class="text-[#858585] text-xs bg-gray-50">
                         <tr>
-                            <th scope="col" class="text-center px-2.5 py-2">
+                            <th scope="col" class="text-center px-2.5 py-2 font-light">
                                 No
                             </th>
-                            <th scope="col" class="text-center px-2 py-2">
+                            <th scope="col" class="text-center px-2 py-2 font-light">
                                 Profile
                             </th>
-                            <th scope="col" class="px-4 text-left">
+                            <th scope="col" class="px-4 text-left font-light">
                                 Informasi Dosen
                             </th>
-                            <th class="text-left">
-                                Aksi
+                            <th scope="col" class="px-4 text-right font-light">
                             </th>
                         </tr>
                     </thead>
@@ -513,7 +520,7 @@
                             <?php echo $no++;?>
                         </th>
                         <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
-                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>">
                         </td>
                         <td class="px-4 py-2" style="height: 3rem;">
                             <span class="text-base font-semibold text-blue-950">
@@ -528,14 +535,12 @@
                                 <?php echo $x['nomor_telepon']; ?>
                             </span>
                         </td>
-                        <td>
-                        <span>
+                        <td class="py-2 px-6 text-right">
                             <button 
                                 class="text-blue-500 hover:underline"
                                 onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>')">
                                 Edit
                             </button>
-                        </span>
                         </td>
                     </tr>
                     <?php 
