@@ -411,7 +411,7 @@
                               <figure class="relative max-w-full">
                               <a href="#">
                                 <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? $x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "/Wicara_Admin_Web/Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                 </div>
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>

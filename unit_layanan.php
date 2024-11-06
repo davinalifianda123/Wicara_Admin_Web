@@ -409,10 +409,14 @@
                                 <div class="space-y-4">
                                     <!-- Kartu Poliklinik -->
                                     <div class="bg-white shadow-md overflow-hidden">
-                                        <div class="relative">
-                                            <img src="<?=$x['image_instansi'] == null ? "assets/data_rating.png" : "./Back-end".$x['image_instansi'];?>" alt="Poliklinik" class="w-full h-52 object-cover">
-                                            <div class="absolute inset-0 bg-gradient-to-t from-blue-900 opacity-35"></div>
-                                        </div>
+                                        <figure class="relative max-w-full">
+                                            <a href="#">
+                                                <div class="relative w-full h-0 pb-[20%] overflow-hidden">
+                                                <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "/Wicara_Admin_Web/Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
+                                                </div>
+                                            </a>
+                                            <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                                        </figure>
                                         <div class="p-4 flex justify-between items-center">
                                             <div>
                                                 <div class="font-semibold text-blue-950"><?php echo $x['nama_instansi']; ?></div>
