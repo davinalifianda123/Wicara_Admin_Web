@@ -11,7 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? '/Wicara_Admin_Web'.$user['image'] : './assets/default-profile.png';
 
     // Get the selected status from the query parameter, default to 'semua'
     $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'semua';

@@ -11,7 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? '/Wicara_Admin_Web'.$user['image'] : './assets/default-profile.png';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'save') {
       if (isset($_POST['id_jenis_pengaduan']) && isset($_POST['nama_jenis_pengaduan'])) {
