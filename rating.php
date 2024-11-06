@@ -431,7 +431,13 @@
                               </div>
                             </div>
                               <div class="flex text-start mt-1">
-                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                              <?php
+                                  $id_instansi = $x['id_instansi'];
+                                  $review_count_query = "SELECT COUNT(*) AS total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+                                  $review_count_result = mysqli_query($db->koneksi, $review_count_query);
+                                  $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
+                              ?>
+                                <p class="ms-1 text-sm font-medium text-gray-500"><?php echo $review_count; ?></p>
                                 <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
                               </div>
                           </div>

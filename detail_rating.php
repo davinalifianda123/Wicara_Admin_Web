@@ -21,7 +21,7 @@
         $data_instansi = $db->tampil_instansi_by_id($id_instansi);
 
         // Hitung jumlah review untuk instansi ini
-        $review_count_query = "SELECT COUNT(*) as total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+        $review_count_query = "SELECT COUNT(*) AS total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
         $review_count_result = mysqli_query($db->koneksi, $review_count_query);
         $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
     }
