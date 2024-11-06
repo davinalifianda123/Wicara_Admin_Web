@@ -454,6 +454,9 @@
                                 Status
                             </th>
                             <th scope="col" class="px-6 py-2 font-light">
+                                Tanggal Kadaluwarsa
+                            </th>
+                            <th scope="col" class="px-6 py-2 font-light">
                                 <span class="sr-only">Edit</span>
                             </th>
                         </tr>
@@ -509,6 +512,9 @@
                                             echo '<span class="bg-red-200 text-red-600 text-xs font-medium px-3 py-1 rounded">Hilang</span>';
                                         }
                                     ?>
+                                </td>
+                                <td class="px-6 py-4 text-center">
+                                    <?php echo $x['tanggal_kadaluwarsa']; ?>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <button id="updateProductButton" data-modal-target="updateProductModal" data-modal-toggle="updateProductModal" class="inline text-blue-600 hover:underline font-medium text-sm" type="button" 
