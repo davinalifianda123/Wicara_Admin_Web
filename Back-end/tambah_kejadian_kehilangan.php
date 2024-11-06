@@ -47,8 +47,10 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 <td><textarea name="deskripsi" cols="30" rows="10"></textarea></td>
             </tr>
             <tr>
-                <td>Tanggal</td>
-                <td><input type="datetime-local" name="tanggal" ></td>
+                <td>
+                    <label for="tanggal">Tanggal</label>
+                </td>
+                <td><input type="date" name="tanggal" id="tanggal" onchange="setTanggalKadaluwarsa()" required></td>
             </tr>
             <tr>
                 <td>Lokasi</td>
@@ -80,8 +82,10 @@ $kejadian = isset($kejadian) ? $kejadian : [];
             </tr>
 
             <tr>
-                <td>Tanggal Kadaluwarsa</td>
-                <td><input type="datetime-local" name="tanggal_kadaluwarsa" ></td>
+                <td>
+                    <label for="tanggal_kadaluwarsa">Tanggal Kadaluwarsa</label>
+                </td>
+                <td><input type="date" id="tanggal_kadaluwarsa" name="tanggal_kadaluwarsa" readonly></td>
             </tr>
             <tr>
                 <td></td>
@@ -89,5 +93,18 @@ $kejadian = isset($kejadian) ? $kejadian : [];
             </tr>   
         </table>
     </form>
+    <script>
+    function setTanggalKadaluwarsa() {
+        const tanggal = new Date(document.getElementById("tanggal").value);
+        if (!isNaN(tanggal)) {
+            // Tambahkan 7 hari (1 minggu)
+            tanggal.setDate(tanggal.getDate() + 7);
+            
+            // Format ke input date
+            const tanggalKadaluwarsa = tanggal.toISOString().split('T')[0];
+            document.getElementById("tanggal_kadaluwarsa").value = tanggalKadaluwarsa;
+        }
+    }
+    </script>
 </body>
 </html>
