@@ -58,3 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image_instansi'])) {
 } else {
     echo json_encode(["success" => false, "message" => "Invalid request method or missing image"]);
 }
+
+// Redirect ke halaman tampilan
+header('Location: ../unit_layanan.php');
