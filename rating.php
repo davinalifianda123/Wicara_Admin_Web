@@ -382,7 +382,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required />
+                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
                             </div>
                         </div>
                       </ul>
@@ -392,7 +392,7 @@
                         $no = 1;
                         foreach ($db->tampil_instansi() as $x) {
                         ?>
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                        <div class="card w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
                               <figure class="relative max-w-full">
                               <a href="#">
                                 <div class="relative w-full h-0 pb-[50%] overflow-hidden">
@@ -402,7 +402,7 @@
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
                                 <p class="hidden"><?php echo $x['id_instansi']; ?></p>
-                                <p class="text-lg font-bold"><?php echo $x['nama_instansi']; ?></p>
+                                <p class="nama-instansi text-lg font-bold"><?php echo $x['nama_instansi']; ?></p>
                                 <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
                               </figcaption>
                               </figure>
@@ -498,6 +498,22 @@
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
+            function searchCard() {
+                const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+                const cards = document.querySelectorAll('.card'); 
+                let visibleRowIndex = 0;
+
+                cards.forEach(card => {
+                    const instansiName = card.querySelector('.nama-instansi'); 
+                    if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
+                        card.style.display = ''; 
+                        visibleRowIndex++;
+                    } else {
+                        card.style.display = 'none'; 
+                    }
+                });
+            }
+
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
                 { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },

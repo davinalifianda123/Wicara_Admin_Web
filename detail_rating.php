@@ -397,7 +397,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required />
+                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
                             </div>
                         </div>
                       </ul>
@@ -454,13 +454,13 @@
                         foreach ($db->tampil_data_ulasan() as $x) {
                           if ($x['id_instansi'] == $id_instansi) {
                         ?>
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start p-5 mt-3">
+                        <div class="card #fbbf24w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start p-5 mt-3">
                           <article>
                             <div class="flex justify-between items-start mb-4">
                               <div class="flex items-start">
                                 <img class="w-10 h-10 me-4 rounded-full" src="assets/laptop.jpg" alt="">
                                 <div class="text-start">
-                                  <p class="text-md font-semibold text-gray-500"><?php echo $x['nama']; ?></p>
+                                  <p class="user-reivew text-md font-semibold text-gray-500"><?php echo $x['nama']; ?></p>
                                   <time datetime="2024-08-20 19:00" class="block font-light text-[10px] text-gray-500"><?php echo $x['tanggal']; ?></time>
                                 </div>
                               </div>
@@ -542,6 +542,22 @@
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
+            function searchCard() {
+                const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+                const cards = document.querySelectorAll('.card'); 
+                let visibleRowIndex = 0;
+
+                cards.forEach(card => {
+                    const instansiName = card.querySelector('.user-reivew'); 
+                    if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
+                        card.style.display = ''; 
+                        visibleRowIndex++;
+                    } else {
+                        card.style.display = 'none'; 
+                    }
+                });
+            }
+
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
                 { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
