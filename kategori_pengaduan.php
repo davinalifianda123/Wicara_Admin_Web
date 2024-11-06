@@ -667,12 +667,12 @@
             }
 
             function openAddModal() {
-              document.getElementById('crud-modal').classList.remove('hidden');
+              document.getElementById('add-modal').classList.remove('hidden');
               document.getElementById('add-modal').classList.add('flex');
             }
 
             function closeAddModal() {
-              document.getElementById('crud-modal').classList.remove('flex');
+              document.getElementById('add-modal').classList.remove('flex');
               document.getElementById('add-modal').classList.add('hidden');
 
             }

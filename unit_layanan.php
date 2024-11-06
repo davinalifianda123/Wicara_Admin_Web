@@ -476,7 +476,7 @@
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Gambar Banner</label>
-                            <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded-md" onchange="previewImageUnitLayanan(event)" required/>
+                            <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded-md" onchange="previewImageUnitLayanan(event)"/>
                         </div>
                         <!-- Tombol Tambah -->
                         <div class="mt-6 flex justify-end">
@@ -503,7 +503,7 @@
                     <!-- Image Section -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="flex items-center justify-center border rounded-lg p-4">
-                            <img name="image-unit" alt="Unit Image" class="w-48 h-auto object-contain">
+                            <img name="image-unit" alt="Unit Image" class="w-full h-auto object-contain">
                         </div>
                         <div class="flex items-center justify-center border rounded-lg p-4">
                             <img name="qr-code" alt="QR Code" class="w-32 h-auto object-contain">
@@ -598,11 +598,19 @@
                         const qrcode = button.getAttribute('data-qrcode');
                         const jedaRating = button.getAttribute('data-jeda-rating');
 
+                        const imageElement = document.querySelector('#editModal img[name="image-unit"]');
+                        // Periksa apakah ada gambar
+                        if (image && image !== "assets/data_rating.png") {
+                            // Jika gambar ada dan bukan gambar default
+                            imageElement.src = "./Back-end" + image;
+                        } else {
+                            // Jika gambar tidak ada atau gambar default
+                            imageElement.src = "assets/data_rating.png";
+                        }
                         // Populate modal fields
                         document.querySelector('#editModal input[name="id-layanan"]').value = id;
                         document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
                         document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
-                        document.querySelector('#editModal img[name="image-unit"]').src = "./Back-end"+image;
                         document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
                         document.querySelector('#editModal input[name="rating-jeda"]').value = jedaRating;
                     });
