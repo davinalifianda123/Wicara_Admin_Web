@@ -502,24 +502,22 @@
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
             function searchCard() {
-    const searchInput = document.getElementById('default-search').value.toLowerCase(); 
-    const cards = document.querySelectorAll('.card'); 
-    let visibleRowIndex = 0;
+            const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+            const cards = document.querySelectorAll('.card'); 
+            let visibleRowIndex = 0;
 
-    // Sembunyikan semua card terlebih dahulu
-    cards.forEach(card => {
-        card.style.display = 'none'; 
-    });
+            cards.forEach(card => {
+                card.style.display = 'none'; 
+            });
 
-    // Tampilkan card yang sesuai dengan pencarian
-    cards.forEach(card => {
-        const instansiName = card.querySelector('.nama-instansi'); 
-        if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
-            card.style.display = ''; 
-            visibleRowIndex++;
+            cards.forEach(card => {
+                const instansiName = card.querySelector('.nama-instansi'); 
+                if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
+                    card.style.display = ''; 
+                    visibleRowIndex++;
+                }
+            });
         }
-    });
-}
 
 
             const notifications = [
