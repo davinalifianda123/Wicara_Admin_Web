@@ -424,7 +424,7 @@
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
                                 <p class="hidden"><?php echo $x['id_instansi']; ?></p>
                                 <p class="text-lg font-bold"><?php echo $data_instansi['nama_instansi']; ?></p>
-                                <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
+                                <p class="text-sm"><?php echo isset($data_instansi['email_pic']) && !empty($data_instansi['email_pic']) ? $data_instansi['email_pic'] : '-'; ?></p>
                               </figcaption>
                               </figure>
                           <div class="p-4 w-full mx-auto">
@@ -515,21 +515,6 @@
                     </div>
                 </table>
             </div>
-            <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
-                <ul class="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                    </li>
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li>
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
-                        </li>
-                    <?php endfor; ?>
-                    <li>
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
                       
 

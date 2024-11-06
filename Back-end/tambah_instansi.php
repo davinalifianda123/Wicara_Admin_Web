@@ -67,5 +67,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Redirect ke halaman tampilan
-header('Location: ../unit_layanan.php');
+header('Location: ../rating.php');
 ?>

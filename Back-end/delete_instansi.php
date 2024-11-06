@@ -17,5 +17,5 @@
     }
 
     // Redirect ke halaman tampilan
-    header('Location: ../unit_layanan.php');
+    header('Location: ../rating.php');
 ?>
