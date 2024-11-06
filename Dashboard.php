@@ -54,7 +54,6 @@
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="import" href="read_profile.html">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
         <style>
@@ -431,7 +430,7 @@
                                         <div class="text-[24px] font-bold text-black"><?=$pengaduanCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./lihat_pengaduan.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -452,7 +451,7 @@
                                         <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=$kehilanganCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./kehilangan.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -473,7 +472,7 @@
                                         <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=$ratingCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./rating.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -531,7 +530,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./mahasiswa.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -556,7 +555,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./dosen.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -581,7 +580,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./unit_layanan.php">
                                                 Detail
                                             </a>
                                         </button>

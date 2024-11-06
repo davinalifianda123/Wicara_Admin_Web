@@ -97,4 +97,3 @@ for ($i = 0; $i < 7; $i++) {
     $tanggal_array[] = $tanggal_format;
 }
 $tanggal_array = array_reverse($tanggal_array);
-
