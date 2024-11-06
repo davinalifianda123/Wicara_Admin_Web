@@ -12,7 +12,7 @@ $db = new database(); // Membuat instance database
 // Fungsi untuk menghasilkan QR Code
 function generateQRCode($unit_id) {
     // URL yang akan dimasukkan dalam QR Code
-    $url = "https://6977-103-214-229-137.ngrok-free.app/Wicara_Admin_Web/Back-end/tambah_kejadian_ulasan.php?unit_id=" . $unit_id; // Gantilah dengan URL yang sesuai
+    $url = "https://9210-103-214-229-136.ngrok-free.app/Wicara_Admin_Web/Back-end/tambah_kejadian_ulasan.php?unit_id=" . $unit_id; // Gantilah dengan URL yang sesuai
     $file_path = "../qrcodes/unit_" . $unit_id . ".png"; // Tentukan lokasi penyimpanan QR Code
     
     // Membuat QR Code
