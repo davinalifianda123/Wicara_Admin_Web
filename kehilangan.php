@@ -525,6 +525,7 @@
                                         data-tanggal="<?php echo $x['tanggal']; ?>"
                                         data-status="<?php echo $x['nama_status_kehilangan']; ?>"
                                         data-lokasi="<?php echo $x['lokasi']; ?>"
+                                        data-tanggal-kadaluwarsa="<?php echo $x['tanggal_kadaluwarsa']; ?>"
                                         data-lampiran="<?php echo $x['lampiran']; ?>"
                                         data-deskripsi="<?php echo $x['deskripsi']; ?>">
                                         Edit
@@ -609,6 +610,10 @@
                             <div>
                                 <label for="lokasi" class="block mb-2 text-sm font-medium text-gray-900">Lokasi</label>
                                 <input type="text" name="lokasi" id="lokasi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                            </div>
+                            <div>
+                                <label for="tanggal_kadaluwarsa" class="block mb-2 text-sm font-medium text-gray-900">tanggal kadaluwarsa</label>
+                                <input type="text" name="tanggal_kadaluwarsa" id="tanggal_kadaluwarsa" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900">Deskripsi</label>
@@ -813,6 +818,7 @@
                         const tanggal = button.getAttribute('data-tanggal');
                         const status = button.getAttribute('data-status').toLowerCase();
                         const lokasi = button.getAttribute('data-lokasi');
+                        const tanggal_kadaluwarsa = button.getAttribute('data-tanggal-kadaluwarsa');
                         const lampiran = button.getAttribute('data-lampiran');
                         const deskripsi = button.getAttribute('data-deskripsi');
 
@@ -824,6 +830,7 @@
                         document.querySelector('#updateProductModal input[name="tanggal"]').value = tanggal;
                         document.querySelector('#updateProductModal input[name="status"]').value = status;
                         document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
+                        document.querySelector('#updateProductModal input[name="tanggal_kadaluwarsa"]').value = tanggal_kadaluwarsa;
 
                         const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
                         if (deskripsiField) deskripsiField.value = deskripsi;
