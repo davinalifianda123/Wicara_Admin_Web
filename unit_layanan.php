@@ -15,7 +15,7 @@
 
     $instansi_data = mysqli_query($db->koneksi, "SELECT * FROM instansi");
     $instansi = mysqli_fetch_assoc($instansi_data);
-    $instansi_image = $instansi['image_instansi'] ? './Back-end'.$instansi['image_instansi'] : './assets/Frame 1000003401.png';
+    $instansi_image = $instansi['image_instansi'] ? './Back-end'.$instansi['image_instansi'] : './assets/folder-cuate.png';
 ?>
 
 <!DOCTYPE html>
@@ -456,8 +456,8 @@
                     <!-- Input Fields -->
                     <form action="Back-end/tambah_instansi.php" method="POST" enctype="multipart/form-data" class="space-y-4">
                         <!-- Gambar Form -->
-                        <div class="md flex justify-center items-center mb-4">
-                            <img id="unit-layanan-preview" src="<?=$instansi_image;?>" alt="Gambar" class="w-full h-40 rounded-md">
+                        <div class="flex justify-center items-center mb-4">
+                            <img id="unit-layanan-preview" src="<?=$instansi_image;?>" alt="Gambar" class="w-auto h-40 rounded-md">
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Nama Unit Layanan</label>
@@ -511,12 +511,9 @@
                     </div>
 
                     <!-- Form Fields -->
-                    <form>
+                    <form id="editForm" action="./Back-end/update_instansi.php" method="POST">
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label for="idLayanan" class="block text-gray-700 text-sm">ID Unit Layanan</label>
-                                <input type="text" name="id-layanan" id="idLayanan" class="w-full p-3 border border-gray-300 rounded" />
-                            </div>
+                            <input type="hidden" name="id-layanan" id="idLayanan" class="w-full p-3 border border-gray-300 rounded" />
                             <div>
                                 <label for="namaLayanan" class="block text-gray-700 text-sm">Nama Unit Layanan</label>
                                 <input type="text" name="nama-layanan" id="namaLayanan" class="w-full p-3 border border-gray-300 rounded" />
@@ -530,41 +527,20 @@
                                 <input type="text" name="rating-jeda" id="ratingJeda" class="w-full p-3 border border-gray-300 rounded" />
                                 <span class="text-gray-700">Hari</span>
                             </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="flex justify-end items-center mt-8 space-x-4">
-                            <button type="button" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded hover:bg-blue-600" onclick="openSimpanModal()">
-                                <span>Simpan</span>
-                            </button>
-                            <button type="button" class="flex items-center bg-red-700 text-white px-6 py-3 rounded hover:bg-red-600" onclick="openHapusModal()">
-                                <span>Hapus</span>
-                            </button>
+                            <!-- Action Buttons -->
+                            <div class="flex justify-end items-center col-span-2 mt-8 space-x-4">
+                                <button type="submit" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded hover:bg-blue-600" onclick="submitEditForm()">
+                                    <span>Simpan</span>
+                                </button>
+                                <button type="submit" class="flex items-center bg-red-700 text-white px-6 py-3 rounded hover:bg-red-600" onclick="confirmHapus()">
+                                    <span>Hapus</span>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
-
-            <!-- Modal: Simpan Confirmation -->
-            <div id="simpanModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-                    <div class="text-green-500 text-4xl mb-4">&#10004;</div>
-                    <p class="text-gray-800 font-medium">Data anda telah <span class="font-semibold">Berhasil</span> disimpan</p>
-                    <button class="mt-6 bg-green-600 text-white px-6 py-2 rounded" onclick="closeSimpanModal()">OK</button>
-                </div>
-            </div>
-
-            <!-- Modal: Hapus Confirmation -->
-            <div id="hapusModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-                    <div class="text-red-500 text-4xl mb-4">&#9888;</div>
-                    <p class="text-gray-800">Anda yakin akan <span class="font-semibold">menghapus</span> data ini?</p>
-                    <div class="flex justify-center space-x-4 mt-6">
-                        <button class="bg-gray-300 text-gray-800 px-4 py-2 rounded" onclick="closeHapusModal()">Batal</button>
-                        <button class="bg-red-600 text-white px-4 py-2 rounded" onclick="confirmHapus()">Hapus</button>
-                    </div>
-                </div>
-            </div>
+        </div>
   
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script>
@@ -596,34 +572,77 @@
                 });
             }
 
+            function previewImageUnitLayanan(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('unit-layanan-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+            
             // Fungsi untuk menampilkan modal update product
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.getElementById('editModalButton').click();
             });
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                const updateButtons = document.querySelectorAll('#editModalButton');
+                
+                updateButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = button.getAttribute('data-id');
+                        const nama = button.getAttribute('data-nama');
+                        const emailPIC = button.getAttribute('data-email');
+                        const image = button.getAttribute('data-image');
+                        const qrcode = button.getAttribute('data-qrcode');
+                        const jedaRating = button.getAttribute('data-jeda-rating');
 
-            function openSimpanModal() {
-                document.getElementById('simpanModal').classList.remove('hidden');
-                document.getElementById('simpanModal').classList.add('flex');
-            }
-            function closeSimpanModal() {
-                document.getElementById('simpanModal').classList.add('hidden');
-                document.getElementById('simpanModal').classList.remmove('flex');
-            }
+                        // Populate modal fields
+                        document.querySelector('#editModal input[name="id-layanan"]').value = id;
+                        document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
+                        document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
+                        document.querySelector('#editModal img[name="image-unit"]').src = "./Back-end"+image;
+                        document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
+                        document.querySelector('#editModal input[name="rating-jeda"]').value = jedaRating;
+                    });
+                });
+            });
 
-            function openHapusModal() {
-                document.getElementById('hapusModal').classList.remove('hidden');
-                document.getElementById('hapusModal').classList.add('flex');
-            }
-            function closeHapusModal() {
-                document.getElementById('hapusModal').classList.add('hidden');
-                document.getElementById('hapusModal').classList.remove('flex');
+            function submitEditForm() {
+                const form = document.getElementById('editForm');
+                const formData = new FormData(form);
+
+                fetch('./Back-end/update_instansi.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Tambahkan kode untuk memperbarui UI jika perlu
+                    } else {
+                        alert("Gagal menyimpan data: " + data.message);
+                    }
+                })
             }
 
             function confirmHapus() {
-                closeHapusModal();
-                alert("Data berhasil dihapus.");
+                const id = document.querySelector('#editForm input[name="id-layanan"]').value;
+
+                fetch('./Back-end/delete_instansi.php?id=' + id, {
+                    method: 'GET',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Data berhasil dihapus.");
+                        // Tambahkan kode untuk menghapus data dari UI jika perlu
+                    } else {
+                        alert("Gagal menghapus data: " + data.message);
+                    }
+                })
             }
-            
         </script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
@@ -752,38 +771,6 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-
-            function previewImageUnitLayanan(event) {
-                var reader = new FileReader();
-                reader.onload = function() {
-                    var output = document.getElementById('unit-layanan-preview');
-                    output.src = reader.result;
-                }
-                reader.readAsDataURL(event.target.files[0]);
-            }
-
-            document.addEventListener('DOMContentLoaded', function() {
-                const updateButtons = document.querySelectorAll('#editModalButton');
-                
-                updateButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const id = button.getAttribute('data-id');
-                        const nama = button.getAttribute('data-nama');
-                        const emailPIC = button.getAttribute('data-email');
-                        const image = button.getAttribute('data-image');
-                        const qrcode = button.getAttribute('data-qrcode');
-                        const jedaRating = button.getAttribute('data-jeda-rating');
-
-                        // Populate modal fields
-                        document.querySelector('#editModal input[name="id-layanan"]').value = id;
-                        document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
-                        document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
-                        document.querySelector('#editModal img[name="image-unit"]').src = "./Back-end"+image;
-                        document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
-                        document.querySelector('#editModal input[name="rating-jeda"]').value = jedaRating;
-                    });
-                });
-            });
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 
