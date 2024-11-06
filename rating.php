@@ -411,7 +411,7 @@
                               <figure class="relative max-w-full">
                               <a href="#">
                                 <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?php echo $x['image_instansi']; ?>" alt="image description">
+                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? $x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                 </div>
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
@@ -540,12 +540,10 @@
             function filterNotifications(type) {
                 const container = document.getElementById('notifications');
                 container.innerHTML = '';
-
                 const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
-
                 filteredNotifications.forEach(notification => {
                     const notificationElement = document.createElement('button');
-                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full');
                     notificationElement.innerHTML = `
                         <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
@@ -560,18 +558,6 @@
                             ` : ''}
                         </div>
                     `;
-
-                    // Add click event to navigate based on notification type
-                    notificationElement.addEventListener('click', () => {
-                        if (notification.type === 'pengaduan') {
-                            window.location.href = 'lihat_pengaduan.php';
-                        } else if (notification.type === 'rating') {
-                            window.location.href = 'rating.php';
-                        } else if (notification.type === 'kehilangan') {
-                            window.location.href = 'kehilangan.php'; // Replace with the correct page
-                        }
-                    });
-
                     container.appendChild(notificationElement);
                 });
 
