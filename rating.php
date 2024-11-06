@@ -12,6 +12,7 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+    
 ?>
 
 <!DOCTYPE html>
@@ -386,11 +387,25 @@
                             </div>
                         </div>
                       </ul>
+                      <?php
+                      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                      $itemsPerPage = 6;
+                      $offset = ($currentPage - 1) * $itemsPerPage;
+
+                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM instansi"; 
+                      $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
+                      $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
+                      $totalPages = ceil($totalItems / $itemsPerPage);
+
+                      $query = "SELECT * FROM instansi LIMIT $itemsPerPage OFFSET $offset"; 
+                      $results = mysqli_query($db->koneksi, $query);
+                      ?>
+
                       <!-- INI CARDNYA -->
                       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5 justify-center">
                         <?php
                         $no = 1;
-                        foreach ($db->tampil_instansi() as $x) {
+                        while ($x = mysqli_fetch_assoc($results)) {
                         ?>
                         <div class="card w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
                               <figure class="relative max-w-full">
@@ -464,55 +479,48 @@
                     </div>
                 </table>
             </div>
-          <nav aria-label="Page navigation example" class="flex justify-end mt-2">
-            <ul class="inline-flex -space-x-px text-sm">
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-              </li>
-              <li>
-                <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-              </li>
-            </ul>
-          </nav>
+            <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
+                <ul class="inline-flex -space-x-px text-sm">
+                    <li>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        
-        
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
             function searchCard() {
-                const searchInput = document.getElementById('default-search').value.toLowerCase(); 
-                const cards = document.querySelectorAll('.card'); 
-                let visibleRowIndex = 0;
+    const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+    const cards = document.querySelectorAll('.card'); 
+    let visibleRowIndex = 0;
 
-                cards.forEach(card => {
-                    const instansiName = card.querySelector('.nama-instansi'); 
-                    if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
-                        card.style.display = ''; 
-                        visibleRowIndex++;
-                    } else {
-                        card.style.display = 'none'; 
-                    }
-                });
-            }
+    // Sembunyikan semua card terlebih dahulu
+    cards.forEach(card => {
+        card.style.display = 'none'; 
+    });
+
+    // Tampilkan card yang sesuai dengan pencarian
+    cards.forEach(card => {
+        const instansiName = card.querySelector('.nama-instansi'); 
+        if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
+            card.style.display = ''; 
+            visibleRowIndex++;
+        }
+    });
+}
+
 
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
