@@ -160,6 +160,14 @@ if ($mysqli->connect_error) {
             }
             return $hasil;
         }
+
+        function tampil_instansi_by_id($id_instansi)
+        {
+            $data = mysqli_query($this->koneksi, "SELECT * FROM instansi WHERE id_instansi = '$id_instansi'");
+            $row = mysqli_fetch_array($data);
+            return $row;
+        }
+
         
 //FORM KEHILANGAN
         function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $jenis_barang, $status_kehilangan, $tanggal_kadaluwarsa)

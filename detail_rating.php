@@ -1,5 +1,4 @@
-<!-- 
- <?php
+<?php
     // buat update profile
     session_start();
     include './Back-end/config.php';
@@ -13,8 +12,29 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    // Ambil id_instansi dari URL
+    $id_instansi = $_GET['id'];
+
+    // Cek apakah id_instansi ada
+    if (isset($id_instansi)) {
+      $data_instansi = $db->tampil_instansi_by_id($id_instansi);
+  
+      // Hitung jumlah review untuk instansi ini
+      $review_count_query = "SELECT COUNT(*) AS total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+      $review_count_result = mysqli_query($db->koneksi, $review_count_query);
+      $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
+  
+      // Hitung total skala_bintang untuk instansi ini
+      $total_rating_query = "SELECT SUM(skala_bintang) AS total_rating FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+      $total_rating_result = mysqli_query($db->koneksi, $total_rating_query);
+      $total_rating = mysqli_fetch_assoc($total_rating_result)['total_rating'];
+  }
+
+  $rata_review = $review_count > 0 ? round($total_rating / $review_count, 2) : 0;
+  $display_review = $review_count > 0 ? $rata_review . "/5" : "Belum ada review";
+  $bulat_review = $review_count > 0 ? floor($total_rating / $review_count) : 0;
 ?>
- -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -180,7 +200,7 @@
                             </svg>
                         </button>
                         <a href="rating.php" class="hidden font-semibold text-xl text-[#060A47] md:inline-block mx-1">Rating ></a>
-                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block">Poliklinik</span>
+                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block"><?php echo $data_instansi['nama_instansi']; ?></span>
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
@@ -243,7 +263,7 @@
             </nav>
 
             <!-- PROFILE READ CONTENT -->
-            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
+            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <!-- Tombol Kembali -->
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
@@ -289,7 +309,7 @@
             </div>
 
             <!-- PROFILE EDIT CONTENT -->
-            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 md:p-8 z-10">
+            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
                     <button onclick="goBack2()" class="flex items-center text-sm text-blue-500 hover:underline">
@@ -377,11 +397,15 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required />
+                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
                             </div>
                         </div>
                       </ul>
                       <!-- INI CARDNYA -->
+                      <?php
+                      if (isset($data_instansi)) {
+                        $id_instansi = $data_instansi['id_instansi'];
+                      ?>
                       <div class="mt-5 justify-center">
                         <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
                               <figure class="relative max-w-full">
@@ -392,50 +416,52 @@
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
-                                <p class="text-sm">PIC@gmail.com</p>
+                                <p class="hidden"><?php echo $x['id_instansi']; ?></p>
+                                <p class="text-lg font-bold"><?php echo $data_instansi['nama_instansi']; ?></p>
+                                <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
                               </figcaption>
                               </figure>
                           <div class="p-4 w-full mx-auto">
                           <div class="flex flex-col justify-between items-start">
                             <div class="flex items-center flex-nowrap">
-                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                              <p class="ms-1 text-sm font-medium text-black">/</p>
-                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                              <p class="ms-1 text-lg font-semibold text-black mr-4"><?php echo $display_review; ?></p>
                               <div class="flex ">
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-gray-300 me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
+                              <?php
+                                //bintang kuning
+                                for ($i = 0; $i < $bulat_review; $i++) {
+                                    echo '<svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                //bintang abu-abu
+                                for ($i = $bulat_review; $i < 5; $i++) {
+                                    echo '<svg class="w-4 h-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                ?>
                               </div>
                             </div>
                             <div class="flex text-start mt-1">
-                              <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                              <p class="ms-1 text-sm font-medium text-gray-500"><?php echo $review_count; ?></p>
                               <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
                             </div>
                           </div>
                           </div>
                         </div>
                         <!-- Review -->
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start p-5 mt-3">
+                        <?php
+                        foreach ($db->tampil_data_ulasan() as $x) {
+                          if ($x['id_instansi'] == $id_instansi) {
+                        ?>
+                        <div class="card #fbbf24w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start p-5 mt-3">
                           <article>
                             <div class="flex justify-between items-start mb-4">
                               <div class="flex items-start">
                                 <img class="w-10 h-10 me-4 rounded-full" src="assets/laptop.jpg" alt="">
                                 <div class="text-start">
-                                  <p class="text-md font-semibold">Khilda Salsabila Azka</p>
-                                  <time datetime="2024-08-20 19:00" class="block font-light text-[10px] text-gray-500">20 Agustus 2024</time>
+                                  <p class="user-reivew text-md font-semibold text-gray-500"><?php echo $x['nama']; ?></p>
+                                  <time datetime="2024-08-20 19:00" class="block font-light text-[10px] text-gray-500"><?php echo $x['tanggal']; ?></time>
                                 </div>
                               </div>
                               <svg class="w-4 h-4 text-gray-500 cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -445,35 +471,41 @@
                         
                             <!-- Rating Stars -->
                             <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-                              <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-                                <svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                </svg>
-                                <svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                </svg>
-                                <svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                </svg>
-                                <svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                </svg>
-                                <svg class="w-4 h-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                </svg>
-                            </div>                            
+                                <?php
+                                $skala_bintang = $x['skala_bintang']; 
+                                //bintang kuning
+                                for ($i = 0; $i < $skala_bintang; $i++) {
+                                    echo '<svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                //bintang abu-abu
+                                for ($i = $skala_bintang; $i < 5; $i++) {
+                                    echo '<svg class="w-4 h-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                ?>
                             </div>
                           </article>
-                          
                           <div>
                             <p class="mt-2 text-start text-xs font-normal text-gray-500">
-                              <span id="comment-short"></span>
-                              <span id="comment-full" class="hidden"></span>
-                              <button id="show-more" class="text-blue-500">Selengkapnya</button>
-                          </p>
-                          </div>
+                                <span id="comment-short"><?php echo $x['isi_komentar']; ?></span>
+                                <span id="comment-full" class="hidden"></span>
+                                <button id="show-more" class="text-blue-500" style="display: none;">Selengkapnya</button>
+                            </p>
                         </div>
-                      </div>                        
+                        </div>
+                        <?php
+                          }
+                            }
+                          ?>
+                      </div>
+                      <?php
+                        } else {
+                              echo 'Data instansi tidak ditemukan.';
+                          }
+                      ?>                        
                     </div>
                 </table>
             </div>
@@ -501,14 +533,31 @@
                 <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
               </li>
             </ul>
-          </nav>
+            </nav>
         </div>
-        
+                      
+
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
+            function searchCard() {
+                const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+                const cards = document.querySelectorAll('.card'); 
+                let visibleRowIndex = 0;
+
+                cards.forEach(card => {
+                    const instansiName = card.querySelector('.user-reivew'); 
+                    if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
+                        card.style.display = ''; 
+                        visibleRowIndex++;
+                    } else {
+                        card.style.display = 'none'; 
+                    }
+                });
+            }
+
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
                 { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
@@ -640,19 +689,31 @@
         </script>
         
         <script>
-          const fullComment = "Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya Poliklinik Hayya";
-          const maxChars = 100;
-          const commentShort = document.getElementById("comment-short");
-          const commentFull = document.getElementById("comment-full");
-          const showMoreButton = document.getElementById("show-more");
-          commentShort.textContent = fullComment.slice(0, maxChars) + (fullComment.length > maxChars ? "..." : "");
-          commentFull.textContent = fullComment;
-          showMoreButton.addEventListener("click", () => {
-              commentShort.classList.toggle("hidden");
-              commentFull.classList.toggle("hidden");
-              showMoreButton.textContent = commentShort.classList.contains("hidden") ? "Sembunyikan" : "Selengkapnya";
+          document.addEventListener("DOMContentLoaded", () => {
+              const commentShort = document.getElementById("comment-short");
+              const commentFull = document.getElementById("comment-full");
+              const showMoreButton = document.getElementById("show-more");
+              const maxChars = 100;
+
+              const fullCommentText = commentShort.textContent;
+
+              if (fullCommentText.length > maxChars) {
+                  commentShort.textContent = fullCommentText.slice(0, maxChars) + "...";
+                  commentFull.textContent = fullCommentText;
+                  
+                  showMoreButton.style.display = "inline";
+                  showMoreButton.addEventListener("click", () => {
+                      commentShort.classList.toggle("hidden");
+                      commentFull.classList.toggle("hidden");
+                      showMoreButton.textContent = commentShort.classList.contains("hidden") ? "Sembunyikan" : "Selengkapnya";
+                  });
+              } else {
+                  commentShort.textContent = fullCommentText; 
+                  showMoreButton.style.display = "none";
+                  commentFull.textContent = "";
+              }
           });
-      </script>
+        </script>
 
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 

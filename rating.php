@@ -12,6 +12,7 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+    
 ?>
 
 <!DOCTYPE html>
@@ -382,13 +383,31 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required />
+                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
                             </div>
                         </div>
                       </ul>
+                      <?php
+                      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                      $itemsPerPage = 6;
+                      $offset = ($currentPage - 1) * $itemsPerPage;
+
+                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM instansi"; 
+                      $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
+                      $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
+                      $totalPages = ceil($totalItems / $itemsPerPage);
+
+                      $query = "SELECT * FROM instansi LIMIT $itemsPerPage OFFSET $offset"; 
+                      $results = mysqli_query($db->koneksi, $query);
+                      ?>
+
                       <!-- INI CARDNYA -->
                       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5 justify-center">
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                        <?php
+                        $no = 1;
+                        while ($x = mysqli_fetch_assoc($results)) {
+                        ?>
+                        <div class="card w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
                               <figure class="relative max-w-full">
                               <a href="#">
                                 <div class="relative w-full h-0 pb-[50%] overflow-hidden">
@@ -397,317 +416,110 @@
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
-                                <p class="text-sm">PIC@gmail.com</p>
+                                <p class="hidden"><?php echo $x['id_instansi']; ?></p>
+                                <p class="nama-instansi text-lg font-bold"><?php echo $x['nama_instansi']; ?></p>
+                                <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
                               </figcaption>
                               </figure>
                           <div class="p-4 w-full mx-auto">
                           <div class="flex flex-col justify-between items-start">
                             <div class="flex items-center flex-nowrap">
-                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                              <p class="ms-1 text-sm font-medium text-black">/</p>
-                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
+                            <?php
+                                $id_instansi = $x['id_instansi']; 
+                                $review_count_query = "SELECT COUNT(*) AS total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+                                $review_count_result = mysqli_query($db->koneksi, $review_count_query);
+                                $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
+
+                                $total_rating_query = "SELECT SUM(skala_bintang) AS total_rating FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+                                $total_rating_result = mysqli_query($db->koneksi, $total_rating_query);
+                                $total_rating = mysqli_fetch_assoc($total_rating_result)['total_rating'];
+
+                                $rata_review = $review_count > 0 ? round($total_rating / $review_count, 2) : 0;
+                                $display_review = $review_count > 0 ? $rata_review . "/5" : "-";
+                                $bulat_review = $review_count > 0 ? floor($total_rating / $review_count) : 0;
+                            ?>
+                              <p class="ms-1 text-lg font-semibold text-black mr-4"><?php echo $display_review; ?></p>
                               <div class="flex ">
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
+                              <?php
+                                //bintang kuning
+                                for ($i = 0; $i < $bulat_review; $i++) {
+                                    echo '<svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                //bintang abu-abu
+                                for ($i = $bulat_review; $i < 5; $i++) {
+                                    echo '<svg class="w-4 h-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                ?>
                               </div>
                             </div>
                               <div class="flex text-start mt-1">
-                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                              <?php
+                                  $id_instansi = $x['id_instansi'];
+                                  $review_count_query = "SELECT COUNT(*) AS total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+                                  $review_count_result = mysqli_query($db->koneksi, $review_count_query);
+                                  $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
+                              ?>
+                                <p class="ms-1 text-sm font-medium text-gray-500"><?php echo $review_count; ?></p>
                                 <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
                               </div>
                           </div>
                             <div class="flex justify-end mt-2">
-                              <a href="detail_rating.html" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            <a href="detail_rating.php?id=<?php echo $x['id_instansi']; ?>" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
                             </div>
                           </div>
                         </div>
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
-                              <figure class="relative max-w-full">
-                              <a href="#">
-                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
-                                </div>
-                              </a>
-                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
-                                <p class="text-sm">PIC@gmail.com</p>
-                              </figcaption>
-                              </figure>
-                          <div class="p-4 w-full mx-auto">
-                          <div class="flex flex-col justify-between items-start">
-                            <div class="flex items-center flex-nowrap">
-                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                              <p class="ms-1 text-sm font-medium text-black">/</p>
-                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                              <div class="flex ">
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              </div>
-                            </div>
-                              <div class="flex text-start mt-1">
-                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                              </div>
-                          </div>
-                            <div class="flex justify-end mt-2">
-                              <a href="detail.html" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
-                              <figure class="relative max-w-full">
-                              <a href="#">
-                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
-                                </div>
-                              </a>
-                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
-                                <p class="text-sm">PIC@gmail.com</p>
-                              </figcaption>
-                              </figure>
-                          <div class="p-4 w-full mx-auto">
-                          <div class="flex flex-col justify-between items-start">
-                            <div class="flex items-center flex-nowrap">
-                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                              <p class="ms-1 text-sm font-medium text-black">/</p>
-                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                              <div class="flex">
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              </div>
-                            </div>
-                              <div class="flex text-start mt-1">
-                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                              </div>
-                          </div>
-                            <div class="flex justify-end mt-2">
-                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
-                              <figure class="relative max-w-full">
-                              <a href="#">
-                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
-                                </div>
-                              </a>
-                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
-                                <p class="text-sm">PIC@gmail.com</p>
-                              </figcaption>
-                              </figure>
-                          <div class="p-4 w-full mx-auto">
-                          <div class="flex flex-col justify-between items-start">
-                            <div class="flex items-center flex-nowrap">
-                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                              <p class="ms-1 text-sm font-medium text-black">/</p>
-                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                              <div class="flex ">
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              </div>
-                            </div>
-                              <div class="flex text-start mt-1">
-                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                              </div>
-                          </div>
-                            <div class="flex justify-end mt-2">
-                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
-                              <figure class="relative max-w-full">
-                              <a href="#">
-                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
-                                </div>
-                              </a>
-                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
-                                <p class="text-sm">PIC@gmail.com</p>
-                              </figcaption>
-                              </figure>
-                          <div class="p-4 w-full mx-auto">
-                          <div class="flex flex-col justify-between items-start">
-                            <div class="flex items-center flex-nowrap">
-                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                              <p class="ms-1 text-sm font-medium text-black">/</p>
-                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                              <div class="flex ">
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              </div>
-                            </div>
-                              <div class="flex text-start mt-1">
-                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                              </div>
-                          </div>
-                            <div class="flex justify-end mt-2">
-                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
-                              <figure class="relative max-w-full">
-                              <a href="#">
-                                <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                  <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
-                                </div>
-                              </a>
-                              <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                              <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="text-lg font-bold">POLIKLINIK</p>
-                                <p class="text-sm">PIC@gmail.com</p>
-                              </figcaption>
-                              </figure>
-                          <div class="p-4 w-full mx-auto">
-                          <div class="flex flex-col justify-between items-start">
-                            <div class="flex items-center flex-nowrap">
-                              <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                              <p class="ms-1 text-sm font-medium text-black">/</p>
-                              <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                              <div class="flex ">
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                  <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                              </svg>
-                              </div>
-                            </div>
-                              <div class="flex text-start mt-1">
-                                <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                              </div>
-                          </div>
-                            <div class="flex justify-end mt-2">
-                              <a href="#" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
-                            </div>
-                          </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                       </div>                        
                     </div>
                 </table>
             </div>
-          <nav aria-label="Page navigation example" class="flex justify-end mt-2">
-            <ul class="inline-flex -space-x-px text-sm">
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">1</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">2</a>
-              </li>
-              <li>
-                <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">3</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">4</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">5</a>
-              </li>
-              <li>
-                <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-              </li>
-            </ul>
-          </nav>
+            <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
+                <ul class="inline-flex -space-x-px text-sm">
+                    <li>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
-        
-        
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
+            function searchCard() {
+            const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+            const cards = document.querySelectorAll('.card'); 
+            let visibleRowIndex = 0;
+
+            cards.forEach(card => {
+                card.style.display = 'none'; 
+            });
+
+            cards.forEach(card => {
+                const instansiName = card.querySelector('.nama-instansi'); 
+                if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
+                    card.style.display = ''; 
+                    visibleRowIndex++;
+                }
+            });
+        }
+
+
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
                 { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },

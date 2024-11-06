@@ -12,6 +12,10 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+
+    $instansi_data = mysqli_query($db->koneksi, "SELECT * FROM instansi");
+    $instansi = mysqli_fetch_assoc($instansi_data);
+    $instansi_image = $instansi['image_instansi'] ? './Back-end'.$instansi['image_instansi'] : './assets/folder-cuate.png';
 ?>
 
 <!DOCTYPE html>
@@ -406,7 +410,7 @@
                                     <!-- Kartu Poliklinik -->
                                     <div class="bg-white shadow-md overflow-hidden">
                                         <div class="relative">
-                                            <img src="assets/data_rating.png" alt="Poliklinik" class="w-full h-52 object-cover">
+                                            <img src="<?=$x['image_instansi'] == null ? "assets/data_rating.png" : "./Back-end".$x['image_instansi'];?>" alt="Poliklinik" class="w-full h-52 object-cover">
                                             <div class="absolute inset-0 bg-gradient-to-t from-blue-900 opacity-35"></div>
                                         </div>
                                         <div class="p-4 flex justify-between items-center">
@@ -418,7 +422,9 @@
                                                 data-id="<?=$x['id_instansi'];?>"
                                                 data-nama="<?=$x['nama_instansi'];?>"
                                                 data-email="<?=$x['email_pic'];?>"
-                                                data-image="<?=$x['image_instansi'];?>">
+                                                data-image="<?=$x['image_instansi'];?>"
+                                                data-qrcode = "<?=$x['qr_code_url'];?>"
+                                                data-jeda-rating = "<?=$x['jeda_waktu_rating'];?>">
                                                 Edit
                                             </button>
                                         </div>
@@ -446,38 +452,37 @@
                         </button>
                     </div>
 
-                    <!-- Gambar Form -->
-                    <div class="md flex justify-center items-center mb-4">
-                        <img src="assets/Frame 1000003401.png" alt="Gambar" class="w-full h-40">
-                    </div>
-
+                    
                     <!-- Input Fields -->
-                    <div class="space-y-4">
-                        <div class="flex items-center space-x-4">
-                            <label class="w-1/3">ID Unit Layanan</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="09000647839" />
+                    <form action="Back-end/tambah_instansi.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                        <!-- Gambar Form -->
+                        <div class="flex justify-center items-center mb-4">
+                            <img id="unit-layanan-preview" src="<?=$instansi_image;?>" alt="Gambar" class="w-auto h-40 rounded-md">
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Nama Unit Layanan</label>
-                            <input type="text" class="w-full border border-gray-300 rounded-md p-2" value="Poliklinik" />
+                            <input type="text" name="nama_instansi" class="w-full border border-gray-300 rounded-md p-2" required/>
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Email PIC</label>
-                            <input type="email" class="w-full border border-gray-300 rounded-md p-2" value="PIC@gmail.com" />
+                            <input type="email" name="email_pic" class="w-full border border-gray-300 rounded-md p-2" required/>
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Jeda Waktu Rating</label>
-                            <div class="flex space-x-2">
-                                <input type="number" class="border border-gray-300 rounded-md p-2" value="1" />
-                                <span>Kali / Bulan</span>
+                            <div class="flex space-x-2 items-center w-full">
+                                <input type="number" name="jeda_waktu_rating" class="border border-gray-300 rounded-md p-2" required/>
+                                <span>Hari</span>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Tombol Tambah -->
-                    <div class="mt-6 flex justify-end">
-                        <button class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">+ Tambah</button>
-                    </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Gambar Banner</label>
+                            <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded-md" onchange="previewImageUnitLayanan(event)"/>
+                        </div>
+                        <!-- Tombol Tambah -->
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">+ Tambah</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -498,20 +503,17 @@
                     <!-- Image Section -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="flex items-center justify-center border rounded-lg p-4">
-                            <img name="image-unit" src="assets/folder-cuate.png" alt="Unit Image" class="w-48 h-auto object-contain">
+                            <img name="image-unit" alt="Unit Image" class="w-full h-auto object-contain">
                         </div>
                         <div class="flex items-center justify-center border rounded-lg p-4">
-                            <img src="assets/QR.png" alt="QR Code" class="w-32 h-auto object-contain">
+                            <img name="qr-code" alt="QR Code" class="w-32 h-auto object-contain">
                         </div>
                     </div>
 
                     <!-- Form Fields -->
-                    <form>
+                    <form id="editForm" action="./Back-end/update_instansi.php" method="POST">
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <label for="idLayanan" class="block text-gray-700 text-sm">ID Unit Layanan</label>
-                                <input type="text" name="id-layanan" id="idLayanan" class="w-full p-3 border border-gray-300 rounded" />
-                            </div>
+                            <input type="hidden" name="id-layanan" id="idLayanan" class="w-full p-3 border border-gray-300 rounded" />
                             <div>
                                 <label for="namaLayanan" class="block text-gray-700 text-sm">Nama Unit Layanan</label>
                                 <input type="text" name="nama-layanan" id="namaLayanan" class="w-full p-3 border border-gray-300 rounded" />
@@ -522,44 +524,23 @@
                             </div>
                             <div class="flex items-center space-x-2">
                                 <label for="ratingJeda" class="block text-gray-700 text-sm flex-grow">Jeda Waktu Rating</label>
-                                <input type="number" id="ratingJeda" value="1" class="w-16 p-3 border border-gray-300 rounded" />
-                                <span class="text-gray-700">Kali / Bulan</span>
+                                <input type="text" name="rating-jeda" id="ratingJeda" class="w-full p-3 border border-gray-300 rounded" />
+                                <span class="text-gray-700">Hari</span>
                             </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="flex justify-end items-center mt-8 space-x-4">
-                            <button type="button" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded hover:bg-blue-600" onclick="openSimpanModal()">
-                                <span>Simpan</span>
-                            </button>
-                            <button type="button" class="flex items-center bg-red-700 text-white px-6 py-3 rounded hover:bg-red-600" onclick="openHapusModal()">
-                                <span>Hapus</span>
-                            </button>
+                            <!-- Action Buttons -->
+                            <div class="flex justify-end items-center col-span-2 mt-8 space-x-4">
+                                <button type="submit" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded hover:bg-blue-600" onclick="submitEditForm()">
+                                    <span>Simpan</span>
+                                </button>
+                                <button type="submit" class="flex items-center bg-red-700 text-white px-6 py-3 rounded hover:bg-red-600" onclick="confirmHapus()">
+                                    <span>Hapus</span>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
-
-            <!-- Modal: Simpan Confirmation -->
-            <div id="simpanModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-                    <div class="text-green-500 text-4xl mb-4">&#10004;</div>
-                    <p class="text-gray-800 font-medium">Data anda telah <span class="font-semibold">Berhasil</span> disimpan</p>
-                    <button class="mt-6 bg-green-600 text-white px-6 py-2 rounded" onclick="closeSimpanModal()">OK</button>
-                </div>
-            </div>
-
-            <!-- Modal: Hapus Confirmation -->
-            <div id="hapusModal" class="fixed inset-0 items-center justify-center bg-gray-900 bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm text-center">
-                    <div class="text-red-500 text-4xl mb-4">&#9888;</div>
-                    <p class="text-gray-800">Anda yakin akan <span class="font-semibold">menghapus</span> data ini?</p>
-                    <div class="flex justify-center space-x-4 mt-6">
-                        <button class="bg-gray-300 text-gray-800 px-4 py-2 rounded" onclick="closeHapusModal()">Batal</button>
-                        <button class="bg-red-600 text-white px-4 py-2 rounded" onclick="confirmHapus()">Hapus</button>
-                    </div>
-                </div>
-            </div>
+        </div>
   
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script>
@@ -591,34 +572,85 @@
                 });
             }
 
+            function previewImageUnitLayanan(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('unit-layanan-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+            
             // Fungsi untuk menampilkan modal update product
             document.addEventListener("DOMContentLoaded", function(event) {
                 document.getElementById('editModalButton').click();
             });
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                const updateButtons = document.querySelectorAll('#editModalButton');
+                
+                updateButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = button.getAttribute('data-id');
+                        const nama = button.getAttribute('data-nama');
+                        const emailPIC = button.getAttribute('data-email');
+                        const image = button.getAttribute('data-image');
+                        const qrcode = button.getAttribute('data-qrcode');
+                        const jedaRating = button.getAttribute('data-jeda-rating');
 
-            function openSimpanModal() {
-                document.getElementById('simpanModal').classList.remove('hidden');
-                document.getElementById('simpanModal').classList.add('flex');
-            }
-            function closeSimpanModal() {
-                document.getElementById('simpanModal').classList.add('hidden');
-                document.getElementById('simpanModal').classList.remmove('flex');
-            }
+                        const imageElement = document.querySelector('#editModal img[name="image-unit"]');
+                        // Periksa apakah ada gambar
+                        if (image && image !== "assets/data_rating.png") {
+                            // Jika gambar ada dan bukan gambar default
+                            imageElement.src = "./Back-end" + image;
+                        } else {
+                            // Jika gambar tidak ada atau gambar default
+                            imageElement.src = "assets/data_rating.png";
+                        }
+                        // Populate modal fields
+                        document.querySelector('#editModal input[name="id-layanan"]').value = id;
+                        document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
+                        document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
+                        document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
+                        document.querySelector('#editModal input[name="rating-jeda"]').value = jedaRating;
+                    });
+                });
+            });
 
-            function openHapusModal() {
-                document.getElementById('hapusModal').classList.remove('hidden');
-                document.getElementById('hapusModal').classList.add('flex');
-            }
-            function closeHapusModal() {
-                document.getElementById('hapusModal').classList.add('hidden');
-                document.getElementById('hapusModal').classList.remove('flex');
+            function submitEditForm() {
+                const form = document.getElementById('editForm');
+                const formData = new FormData(form);
+
+                fetch('./Back-end/update_instansi.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Tambahkan kode untuk memperbarui UI jika perlu
+                    } else {
+                        alert("Gagal menyimpan data: " + data.message);
+                    }
+                })
             }
 
             function confirmHapus() {
-                closeHapusModal();
-                alert("Data berhasil dihapus.");
+                const id = document.querySelector('#editForm input[name="id-layanan"]').value;
+
+                fetch('./Back-end/delete_instansi.php?id=' + id, {
+                    method: 'GET',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Data berhasil dihapus.");
+                        // Tambahkan kode untuk menghapus data dari UI jika perlu
+                    } else {
+                        alert("Gagal menghapus data: " + data.message);
+                    }
+                })
             }
-            
         </script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
@@ -747,25 +779,6 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-
-            document.addEventListener('DOMContentLoaded', function() {
-                const updateButtons = document.querySelectorAll('#editModalButton');
-                
-                updateButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const id = button.getAttribute('data-id');
-                        const nama = button.getAttribute('data-nama');
-                        const emailPIC = button.getAttribute('data-email');
-                        const image = button.getAttribute('data-image');
-
-                        // Populate modal fields
-                        document.querySelector('#editModal input[name="id-layanan"]').value = id;
-                        document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
-                        document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
-                        document.querySelector('#editModal img[name="image-unit"]').value = image;
-                    });
-                });
-            });
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 

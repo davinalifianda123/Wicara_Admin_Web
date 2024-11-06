@@ -119,7 +119,7 @@
                     <span class="text-2xl self-center font-bold whitespace-nowrap">WICARA</span>
                 </a>
                 <hr>
-                <ul class="space-y-2 font-medium">
+                <ul class="space-y-2 font-mexdium">
                     <li>
                         <p class="ms-5 text-gray-50 font-semibold my-4">Menu</p>
                     </li>
@@ -454,7 +454,7 @@
             </div>
 
             <!--Edit Delete MODAL-->
-            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
                 <div class="relative p-4 w-full max-w-md max-h-full">
                     <div class="relative bg-white rounded-lg shadow">
                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
@@ -488,7 +488,7 @@
             </div>
 
             <!-- Add New MODAL -->
-            <div id="add-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div id="add-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
                 <div class="relative p-4 w-full max-w-md max-h-full">
                     <div class="relative bg-white rounded-lg shadow">
                         <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
@@ -653,6 +653,7 @@
               document.getElementById('hidden-id').value = id;
               document.getElementById('modal-nama').value = nama;
               document.getElementById('crud-modal').classList.remove('hidden');
+              document.getElementById("crud-modal").classList.add("flex");
 
               setTimeout(() => {
                   document.getElementById('modal-nama').focus(); // Memastikan modal sudah terbuka sebelum fokus
@@ -660,15 +661,20 @@
             }
 
             function closeEditModal() {
-                document.getElementById('crud-modal').classList.add('hidden');
+              document.getElementById('crud-modal').classList.remove('flex');
+              document.getElementById('crud-modal').classList.add('hidden');
+
             }
 
             function openAddModal() {
-                document.getElementById('add-modal').classList.remove('hidden');
+              document.getElementById('add-modal').classList.remove('hidden');
+              document.getElementById('add-modal').classList.add('flex');
             }
 
             function closeAddModal() {
-                document.getElementById('add-modal').classList.add('hidden');
+              document.getElementById('add-modal').classList.remove('flex');
+              document.getElementById('add-modal').classList.add('hidden');
+
             }
 
 
