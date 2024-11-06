@@ -18,8 +18,12 @@
 
     // Cek apakah id_instansi ada
     if (isset($id_instansi)) {
-        // Panggil fungsi yang sudah ada untuk mendapatkan data detail
         $data_instansi = $db->tampil_instansi_by_id($id_instansi);
+
+        // Hitung jumlah review untuk instansi ini
+        $review_count_query = "SELECT COUNT(*) as total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+        $review_count_result = mysqli_query($db->koneksi, $review_count_query);
+        $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
     }
 ?>
 
@@ -433,7 +437,7 @@
                               </div>
                             </div>
                             <div class="flex text-start mt-1">
-                              <p class="ms-1 text-sm font-medium text-gray-500">273</p>
+                              <p class="ms-1 text-sm font-medium text-gray-500"><?php echo $review_count; ?></p>
                               <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
                             </div>
                           </div>
