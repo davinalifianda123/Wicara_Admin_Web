@@ -611,7 +611,7 @@
                         document.querySelector('#editModal input[name="id-layanan"]').value = id;
                         document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
                         document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
-                        document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
+                        document.querySelector('#editModal img[name="qr-code"]').src = "/Wicara_Admin_Web"+qrcode;
                         document.querySelector('#editModal input[name="rating-jeda"]').value = jedaRating;
                     });
                 });
