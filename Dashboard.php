@@ -430,7 +430,7 @@
                                         <div class="text-[24px] font-bold text-black"><?=$pengaduanCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./lihat_pengaduan.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -451,7 +451,7 @@
                                         <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=$kehilanganCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./kehilangan.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -472,7 +472,7 @@
                                         <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=$ratingCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./rating.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -530,7 +530,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./mahasiswa.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -555,7 +555,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./dosen.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -580,7 +580,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./unit_layanan.php">
                                                 Detail
                                             </a>
                                         </button>
