@@ -4,6 +4,7 @@ include '../api/phpqrcode/qrlib.php'; // Include library QR Code
 
 $db = new database();
 
+
 // Fungsi untuk menghasilkan QR Code
 function generateQRCode($unit_id) {
     // URL yang akan dimasukkan dalam QR Code
@@ -16,7 +17,7 @@ function generateQRCode($unit_id) {
     return $file_path;
 }
 
-function saveUnitLayanan($db, $nama_instansi, $email_pic, $jeda_waktu_rating, $image_instansi = null) {
+function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_instansi = null) {
     // Inisialisasi path gambar jika tidak ada gambar yang diunggah
     $image_path = null;
 
@@ -36,7 +37,7 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $jeda_waktu_rating, $i
     }
 
     // Simpan data ke database, termasuk gambar jika ada
-    $query = "INSERT INTO instansi (nama_instansi, email_pic, jeda_waktu_rating, image_instansi) VALUES ('$nama_instansi', '$email_pic', '$jeda_waktu_rating', " . ($image_path ? "'$image_path'" : "NULL") . ")";
+    $query = "INSERT INTO instansi (nama_instansi, email_pic, password, image_instansi) VALUES ('$nama_instansi', '$email_pic', '$password', " . ($image_path ? "'$image_path'" : "NULL") . ")";
     
     if (mysqli_query($db->koneksi, $query)) {
         // Ambil ID dari instansi yang baru disimpan
@@ -57,10 +58,10 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $jeda_waktu_rating, $i
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_instansi = $_POST['nama_instansi'];
     $email_pic = $_POST['email_pic'];
-    $jeda_waktu_rating = $_POST['jeda_waktu_rating'];
+    $password = "Polines123*"; // Password default
     $image_instansi = isset($_FILES['image_instansi']) ? $_FILES['image_instansi'] : null;
     
-    $response = saveUnitLayanan($db, $nama_instansi, $email_pic, $jeda_waktu_rating, $image_instansi);
+    $response = saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_instansi);
     echo json_encode($response);
 } else {
     echo json_encode(["success" => false, "message" => "Invalid request method"]);

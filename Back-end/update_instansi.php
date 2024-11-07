@@ -5,17 +5,41 @@
     $db = new database();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $id = $_POST['id-layanan'];
-        $nama = $_POST['nama-layanan'];
-        $email = $_POST['email-pic'];
-        $ratingJeda = $_POST['rating-jeda'];
+        $id_instansi = $_POST['id_instansi'];
+        $nama_instansi = $_POST['nama_instansi'];
+        $email_pic = $_POST['email_pic'];
+        $password = $_POST['password'];
 
-        $query = "UPDATE instansi SET nama_instansi='$nama', email_pic='$email', jeda_waktu_rating='$ratingJeda' WHERE id_instansi='$id'";
+        // Tentukan folder untuk menyimpan gambar
+        $upload_dir = './foto-instansi/';
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
 
-        if (mysqli_query($db->koneksi, $query)) {
-            echo json_encode(["success" => true]);
+        // Ambil nama file gambar lama dari database
+        $old_image = $db->get_instansi_image($id_instansi);
+
+        // Cek apakah ada file gambar yang diupload
+        if (isset($_FILES['image_instansi']) && $_FILES['image_instansi']['error'] == 0) {
+            // Buat nama file unik
+            $image_name = basename($_FILES['image_instansi']['name']);
+            $target_file = $upload_dir . $image_name;
+            
+            // Pindahkan file ke server
+            if (move_uploaded_file($_FILES['image_instansi']['tmp_name'], $target_file)) {
+                // Hapus gambar lama jika ada
+                if ($old_image && file_exists($old_image)) {
+                    unlink($old_image);
+                }
+
+                // Update data user dengan gambar baru
+                $db->edit_instansi_with_image($id_instansi, $nama_instansi, $email_pic, $password, $target_file);
+            } else {
+                echo "Gagal mengunggah file.";
+            }
         } else {
-            echo json_encode(["success" => false, "message" => "Gagal mengupdate data"]);
+            // Update data user tanpa gambar
+            $db->edit_instansi_with_image($id_instansi, $nama_instansi, $email_pic, $password, null);
         }
     }
 

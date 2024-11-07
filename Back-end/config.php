@@ -306,5 +306,38 @@ if ($mysqli->connect_error) {
             $stmt->bind_param("i", $id_jenis_pengaduan);
             return $stmt->execute();
         }
+
+    // Instansi
+        function edit_instansi_with_image($id_instansi, $nama_instansi, $email_pic, $password, $image_instansi) {
+            if ($image_instansi) {
+                // Jika ada gambar baru yang diunggah, perbarui juga kolom 'image'
+                $stmt = $this->koneksi->prepare("UPDATE instansi SET nama_instansi=?, email_pic=?, password=?, image_instansi=? WHERE id_instansi=?");
+                $stmt->bind_param("ssssi", $nama_instansi, $email_pic, $password, $image_instansi, $id_instansi);
+            } else {
+                // Jika tidak ada gambar baru, update data kecuali kolom 'image'
+                $stmt = $this->koneksi->prepare("UPDATE instansi SET nama_instansi=?, email_pic=?, password=? WHERE id_instansi=?");
+                $stmt->bind_param("sssi", $nama_instansi, $email_pic, $password, $id_instansi);
+            }
+        
+            // Eksekusi query
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        
+            // Tutup statement
+            $stmt->close();
+        }
+        public function get_instansi_image($id_instansi) {
+            $query = "SELECT image_instansi FROM instansi WHERE id_instansi = ?";
+            $stmt = $this->koneksi->prepare($query);
+            $stmt->bind_param("i", $id_instansi);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $instansi = $result->fetch_assoc();
+    
+            return $instansi ? $instansi['image_instansi'] : null;
+        }
         
     }

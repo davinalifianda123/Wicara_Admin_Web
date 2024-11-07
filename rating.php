@@ -412,9 +412,9 @@
                                         data-id="<?=$x['id_instansi'];?>"
                                         data-nama="<?=$x['nama_instansi'];?>"
                                         data-email="<?=$x['email_pic'];?>"
+                                        data-password="<?=$x['password'];?>"
                                         data-image="<?=$x['image_instansi'];?>"
-                                        data-qrcode = "<?=$x['qr_code_url'];?>"
-                                        data-jeda-rating = "<?=$x['jeda_waktu_rating'];?>">
+                                        data-qrcode = "<?=$x['qr_code_url'];?>">
                                         <div class="relative w-full h-0 pb-[50%] overflow-hidden">
                                             <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "/Wicara_Admin_Web/Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                         </div>
@@ -484,6 +484,7 @@
                     </div>
                 </table>
             </div>
+            <!-- Pagination -->
             <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
                 <ul class="inline-flex -space-x-px text-sm">
                     <li>
@@ -500,9 +501,9 @@
                 </ul>
             </nav>
 
-            <!-- Modal Tambha Form -->
+            <!-- Modal Tambah Form -->
             <div id="modal" class="fixed inset-0 z-50 px-4 items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative">
+                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative overflow-y-auto">
                     <!-- Tombol Tutup Modal -->
                     <div class="flex justify-between items-center mb-4 sm:mb-5">
                         <div>
@@ -531,15 +532,12 @@
                             <input type="email" name="email_pic" class="w-full border border-gray-300 rounded-md p-2" required/>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <label class="w-1/3">Jeda Waktu Rating</label>
-                            <div class="flex space-x-2 items-center w-full">
-                                <input type="number" name="jeda_waktu_rating" class="border border-gray-300 rounded-md p-2" required/>
-                                <span>Hari</span>
-                            </div>
+                            <label class="w-1/3">Password (Default)</label>
+                            <input type="password" name="password" class="w-full border border-gray-300 rounded-md p-2" placeholder="Polines123*" readonly/>
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Gambar Banner</label>
-                            <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded-md" onchange="previewImageUnitLayanan(event)"/>
+                            <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded-md" onchange="previewImageUnitLayanan1(event)"/>
                         </div>
                         <!-- Tombol Tambah -->
                         <div class="mt-6 flex justify-end">
@@ -551,7 +549,7 @@
 
             <!-- Modal: Edit Form -->
             <div id="editModal" tabindex="-1" aria-hidden="true" class="hidden fixed z-50 px-4 items-center justify-center w-full inset-0">
-                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative md:mih-h-screen">
+                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative overflow-y-auto md:mih-h-screen">
                     <div class="flex justify-between items-center mb-4">
                         <div>
                             <h2 class="text-2xl font-semibold">Form Unit Layanan</h2>
@@ -566,7 +564,7 @@
                     <!-- Image Section -->
                     <div class="grid md:grid-cols-2 gap-4 mb-6">
                         <div class="flex items-center justify-center border rounded-lg p-4">
-                            <img name="image-unit" alt="Unit Image" class="w-full h-auto object-contain">
+                            <img id="unit-layanan2-preview" name="image-unit" alt="Unit Image" class="w-32 h-auto object-contain">
                         </div>
                         <div class="flex items-center justify-center border rounded-lg p-4">
                             <img name="qr-code" alt="QR Code" class="w-32 h-auto object-contain">
@@ -574,20 +572,37 @@
                     </div>
 
                     <!-- Form Fields -->
-                    <form id="editForm" action="./Back-end/update_instansi.php" method="POST">
+                    <form id="editForm" action="./Back-end/update_instansi.php" method="POST" enctype="multipart/form-data">
                         <div class="grid md:grid-cols-2 gap-4 mb-4">
-                            <input type="hidden" name="id-layanan" id="idLayanan" class="w-full p-3 border border-gray-300 rounded" />
+                            <input type="hidden" name="id_instansi" id="idLayanan" class="w-full px-3 border border-gray-300 rounded" />
                             <div>
                                 <label for="namaLayanan" class="block text-gray-700 text-sm">Nama Unit Layanan</label>
-                                <input type="text" name="nama-layanan" id="namaLayanan" class="w-full p-3 border border-gray-300 rounded" />
+                                <input type="text" name="nama_instansi" id="namaLayanan" class="w-full px-3 border border-gray-300 rounded" />
                             </div>
                             <div>
                                 <label for="emailPIC" class="block text-gray-700 text-sm">Email PIC</label>
-                                <input type="email" name="email-pic" id="emailPIC" class="w-full p-3 border border-gray-300 rounded" />
+                                <input type="email" name="email_pic" id="emailPIC" class="w-full px-3 border border-gray-300 rounded" />
+                            </div>
+                            <div class="relative">
+                                <label for="password" class="block text-gray-700 text-sm">Password</label>
+                                <input type="password" name="password" id="password-instansi" class="w-full px-3 border border-gray-300 rounded" />
+
+                                <!-- Tombol untuk menampilkan/menyembunyikan password -->
+                                <button type="button" id="togglePasswordInstansi" class="absolute right-3 top-7 flex items-center">
+                                    <svg id="eyeIconClosed2" class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <!-- Icon mata tertutup -->
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                    </svg>
+                                    <svg id="eyeIconOpen2" class="hidden w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <!-- Icon mata terbuka -->
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                    </svg>
+                                </button>
                             </div>
                             <div>
-                                <label for="ratingJeda" class="block text-gray-700 text-sm flex-grow">Jeda Waktu Rating (Hari)</label>
-                                <input type="text" name="rating-jeda" id="ratingJeda" class="w-full p-3 border border-gray-300 rounded" />
+                                <label for="image_instansi" class="block text-gray-700 text-sm">Ganti Banner</label>
+                                <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded" onchange="previewImageUnitLayanan2(event)"/>
                             </div>
                         </div>
                         <!-- Action Buttons -->
@@ -742,11 +757,46 @@
                 eyeIconOpen.classList.toggle('hidden', !isPasswordVisible);
             });
 
+            const passwordInputInstansi = document.getElementById('password-instansi');
+            const togglePasswordButtonInstansi = document.getElementById('togglePasswordInstansi');
+            const eyeIconOpen2 = document.getElementById('eyeIconOpen2');
+            const eyeIconClosed2 = document.getElementById('eyeIconClosed2');
+
+            togglePasswordButtonInstansi.addEventListener('click', function () {
+                const isPasswordVisible2 = passwordInputInstansi.type === 'password';
+
+                // Toggle password visibility
+                passwordInputInstansi.type = isPasswordVisible2 ? 'text' : 'password';
+
+                // Toggle icons
+                eyeIconClosed2.classList.toggle('hidden', isPasswordVisible2);
+                eyeIconOpen2.classList.toggle('hidden', !isPasswordVisible2);
+            });
+
             // Fungsi untuk menampilkan gambar preview profile
             function previewImage(event) {
                 var reader = new FileReader();
                 reader.onload = function() {
                     var output = document.getElementById('profile-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
+            // Fungsi untuk menampilkan gambar preview unit layanan
+            function previewImageUnitLayanan1(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('unit-layanan-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
+            function previewImageUnitLayanan2(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('unit-layanan2-preview');
                     output.src = reader.result;
                 }
                 reader.readAsDataURL(event.target.files[0]);
@@ -780,25 +830,25 @@
                         const id = button.getAttribute('data-id');
                         const nama = button.getAttribute('data-nama');
                         const emailPIC = button.getAttribute('data-email');
+                        const password = button.getAttribute('data-password');
                         const image = button.getAttribute('data-image');
                         const qrcode = button.getAttribute('data-qrcode');
-                        const jedaRating = button.getAttribute('data-jeda-rating');
 
                         const imageElement = document.querySelector('#editModal img[name="image-unit"]');
                         // Periksa apakah ada gambar
-                        if (image && image !== "assets/data_rating.png") {
+                        if (image && image !== "assets/laptop.jpg") {
                             // Jika gambar ada dan bukan gambar default
                             imageElement.src = "./Back-end" + image;
                         } else {
                             // Jika gambar tidak ada atau gambar default
-                            imageElement.src = "assets/data_rating.png";
+                            imageElement.src = "assets/laptop.jpg";
                         }
                         // Populate modal fields
-                        document.querySelector('#editModal input[name="id-layanan"]').value = id;
-                        document.querySelector('#editModal input[name="nama-layanan"]').value = nama;
-                        document.querySelector('#editModal input[name="email-pic"]').value = emailPIC;
+                        document.querySelector('#editModal input[name="id_instansi"]').value = id;
+                        document.querySelector('#editModal input[name="nama_instansi"]').value = nama;
+                        document.querySelector('#editModal input[name="email_pic"]').value = emailPIC;
+                        document.querySelector('#editModal input[name="password"]').value = password;
                         document.querySelector('#editModal img[name="qr-code"]').src = "/Wicara_Admin_Web"+qrcode;
-                        document.querySelector('#editModal input[name="rating-jeda"]').value = jedaRating;
                     });
                 });
             });
@@ -822,7 +872,7 @@
             }
 
             function confirmHapus() {
-                const id = document.querySelector('#editForm input[name="id-layanan"]').value;
+                const id = document.querySelector('#editForm input[name="id_instansi"]').value;
 
                 fetch('./Back-end/delete_instansi.php?id=' + id, {
                     method: 'GET',
