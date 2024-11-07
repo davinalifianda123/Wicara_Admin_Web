@@ -11,12 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? '/Wicara_Admin_Web'.$user['image'] : './assets/default-profile.png';
-
-    $instansi_data = mysqli_query($db->koneksi, "SELECT * FROM instansi");
-    $instansi = mysqli_fetch_assoc($instansi_data);
-    $instansi_image = $instansi['image_instansi'] ? './Back-end'.$instansi['image_instansi'] : './assets/folder-cuate.png';
-    
+    $user_image = $user['image'] ? '/Wicara_Admin_Web'.$user['image'] : './assets/default-profile.png';    
 ?>
 
 <!DOCTYPE html>
@@ -521,7 +516,7 @@
                     <form action="Back-end/tambah_instansi.php" method="POST" enctype="multipart/form-data" class="space-y-4">
                         <!-- Gambar Form -->
                         <div class="flex justify-center items-center mb-4">
-                            <img id="unit-layanan-preview" src="<?=$instansi_image;?>" alt="Gambar" class="w-auto h-40 rounded-md">
+                            <img id="unit-layanan-preview" src="assets/folder-cuate.png" alt="Gambar" class="w-auto h-40 rounded-md">
                         </div>
                         <div class="flex items-center space-x-4">
                             <label class="w-1/3">Nama Unit Layanan</label>
