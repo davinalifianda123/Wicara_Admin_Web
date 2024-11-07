@@ -417,12 +417,12 @@
                               <figure class="relative max-w-full">
                               <a href="#">
                                 <div class="relative w-full h-0 pb-[20%] overflow-hidden">
-                                  <img class="absolute bottom-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                                  <img class="absolute bottom-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$data_instansi['image_instansi'] != null ? "/Wicara_Admin_Web/Back-end".$data_instansi['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                 </div>
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                               <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                                <p class="hidden"><?php echo $x['id_instansi']; ?></p>
+                                <p class="hidden"><?php echo $id_instansi; ?></p>
                                 <p class="text-lg font-bold"><?php echo $data_instansi['nama_instansi']; ?></p>
                                 <p class="text-sm"><?php echo isset($data_instansi['email_pic']) && !empty($data_instansi['email_pic']) ? $data_instansi['email_pic'] : '-'; ?></p>
                               </figcaption>
