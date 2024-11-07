@@ -11,7 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? '/Wicara_Admin_Web'.$user['image'] : './assets/default-profile.png';    
+    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';    
 ?>
 
 <!DOCTYPE html>
@@ -411,7 +411,7 @@
                                         data-image="<?=$x['image_instansi'];?>"
                                         data-qrcode = "<?=$x['qr_code_url'];?>">
                                         <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                            <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "/Wicara_Admin_Web/Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
+                                            <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                         </div>
                                         <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                                         <figcaption class="absolute px-4 text-white bottom-4 text-left">

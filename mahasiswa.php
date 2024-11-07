@@ -11,7 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? '/Wicara_Admin_Web'.$user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
 
     // Get the current page number, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
