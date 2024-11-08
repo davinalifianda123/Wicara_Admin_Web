@@ -183,12 +183,24 @@ if ($mysqli->connect_error) {
             mysqli_query($this->koneksi, $query);
         }
 
+        public function update_status_pengaduan($id_kejadian, $status) {
+            $query = "UPDATE kejadian SET nama_status_pengaduan = '$status' WHERE id_kejadian = '$id_kejadian'";
+            return mysqli_query($this->koneksi, $query);
+        }
+
+        public function hapus_pengaduan($id_kejadian) {
+            $query = "DELETE FROM kejadian WHERE id_kejadian = '$id_kejadian'";
+            return mysqli_query($this->koneksi, $query);
+        }
+        
+
 //FORM ULASAN
         function tambah_kejadian_ulasan($id_jenis_kejadian,$id_user, $id_instansi, $isi_komentar, $tanggal, $skala_bintang)
         { 
             mysqli_query($this->koneksi,"INSERT INTO kejadian (id_jenis_kejadian, id_user, id_instansi,isi_komentar, tanggal, skala_bintang) 
             VALUES ('$id_jenis_kejadian','$id_user', '$id_instansi', '$isi_komentar', '$tanggal', '$skala_bintang')");
         }
+
 //FORM USER
         function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image)
         { 

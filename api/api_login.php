@@ -26,7 +26,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        echo json_encode(["success" => true, "message" => "Login berhasil"]);
+        $user = $result->fetch_assoc();
+        echo json_encode([
+            "success" => true,
+            "message" => "Login berhasil",
+            "id_user" => $user['id_user'],
+            "nama" => $user['nama'],
+            "email" => $user['email'],
+            "password" => $user['password'],
+            "image" => $user['image']
+        ]);
     } else {
         echo json_encode(["success" => false, "message" => "Email, password, atau role tidak sesuai"]);
     }
