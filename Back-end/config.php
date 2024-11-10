@@ -89,6 +89,32 @@ if ($mysqli->connect_error) {
             
         }
 
+        function tampil_data_ulasan_by_id($idInstansi = null)
+        {
+            $query = "SELECT a.*, b.*, c.*, d.*, e.*, f.*, g.* 
+                    FROM kejadian a
+                    LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+                    LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
+                    INNER JOIN user c ON c.id_user = a.id_user
+                    LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
+                    LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
+                    LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
+                    WHERE a.id_jenis_kejadian = 3";
+
+            // Tambahkan filter id_instansi jika ada
+            if ($idInstansi !== null) {
+                $query .= " AND d.id_instansi = '$idInstansi'";
+            }
+
+            $data = mysqli_query($this->koneksi, $query);
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
+                $hasil[] = $row;
+            }
+            return $hasil;
+        }
+                
+
         function tampil_jenis_pengaduan()
         {
             $data = mysqli_query($this->koneksi, "select * from jenis_pengaduan");
@@ -175,6 +201,16 @@ if ($mysqli->connect_error) {
             $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, jenis_barang, status_kehilangan, tanggal_kadaluwarsa) 
                 VALUES ('$id_jenis_kejadian', '$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$jenis_barang', '$status_kehilangan', '$tanggal_kadaluwarsa')";
             mysqli_query($this->koneksi, $query);
+        }
+
+        public function update_status_kehilangan($id_kejadian, $status) {
+            $query = "UPDATE kejadian SET nama_status_kehilangan = '$status' WHERE id_kejadian = '$id_kejadian'";
+            return mysqli_query($this->koneksi, $query);
+        }
+
+        public function hapus_kehilangan($id_kejadian) {
+            $query = "DELETE FROM kejadian WHERE id_kejadian = '$id_kejadian'";
+            return mysqli_query($this->koneksi, $query);
         }
 //FORM PENGADUAN
         function tambah_kejadian_pengaduan($id_jenis_kejadian, $id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $id_jenis_pengaduan, $status_pengaduan, $id_instansi) {
