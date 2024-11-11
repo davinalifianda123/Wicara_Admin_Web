@@ -843,7 +843,7 @@
                         document.querySelector('#editModal input[name="nama_instansi"]').value = nama;
                         document.querySelector('#editModal input[name="email_pic"]').value = emailPIC;
                         document.querySelector('#editModal input[name="password"]').value = password;
-                        document.querySelector('#editModal img[name="qr-code"]').src = "/Wicara_Admin_Web"+qrcode;
+                        document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
                     });
                 });
             });
