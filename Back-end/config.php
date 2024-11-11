@@ -142,6 +142,17 @@
             return $hasil;
         }
 
+        function tampil_user_instansi()
+        {
+            $data = mysqli_query($this->koneksi, "select a.,b.,c.* from user a 
+                                                        INNER JOIN role b ON b.id_role = a.role
+                                                        INNER JOIN instansi c ON c.id_instansi = a.id_instansi");
+            while($row = mysqli_fetch_array($data)){
+                $hasil[] = $row;
+            }
+            return $hasil;
+        }
+
         function tampil_status_pengaduan()
         {
             $data = mysqli_query($this->koneksi, "select * from status_pengaduan");
