@@ -403,13 +403,7 @@
                         ?>
                         <div class="card w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
                                 <figure class="relative max-w-full">
-                                    <button id="editModalButton" data-modal-target="editModal" data-modal-toggle="editModal" type="button" class="w-full h-0 pb-[50%] overflow-hidden"
-                                        data-id="<?=$x['id_instansi'];?>"
-                                        data-nama="<?=$x['nama_instansi'];?>"
-                                        data-email="<?=$x['email_pic'];?>"
-                                        data-password="<?=$x['password'];?>"
-                                        data-image="<?=$x['image_instansi'];?>"
-                                        data-qrcode = "<?=$x['qr_code_url'];?>">
+                                    <a href="detail_rating.php?id=<?= $x['id_instansi'];?>" class="w-full h-0 pb-[50%] overflow-hidden">
                                         <div class="relative w-full h-0 pb-[50%] overflow-hidden">
                                             <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                         </div>
@@ -419,7 +413,7 @@
                                             <p class="nama-instansi text-lg font-bold"><?php echo $x['nama_instansi']; ?></p>
                                             <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
                                         </figcaption>
-                                    </button>
+                                    </a>
                                 </figure>
                           <div class="p-4 w-full mx-auto">
                           <div class="flex flex-col justify-between items-start">
@@ -468,7 +462,15 @@
                               </div>
                           </div>
                             <div class="flex justify-end mt-2">
-                            <a href="detail_rating.php?id=<?php echo $x['id_instansi']; ?>" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            <button id="editModalButton" data-modal-target="editModal" data-modal-toggle="editModal" type="button" class="text-sm font-medium text-blue-600 hover:underline align-start"
+                                data-id="<?=$x['id_instansi'];?>"
+                                data-nama="<?=$x['nama_instansi'];?>"
+                                data-email="<?=$x['email_pic'];?>"
+                                data-password="<?=$x['password'];?>"
+                                data-image="<?=$x['image_instansi'];?>"
+                                data-qrcode = "<?=$x['qr_code_url'];?>">
+                                Edit
+                            </button>
                             </div>
                           </div>
                         </div>
