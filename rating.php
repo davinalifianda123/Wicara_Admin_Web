@@ -11,7 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';    
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pengaduan</title>
+        <title>Rating</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +40,15 @@
             }
 
             .tab-button {
-            transition: color 0.3s, border-bottom 0.3s;
+                transition: background-color 0.3s, color 0.3s;
+                display: flex;
+                width: 100%;
+                align-items: center;
+                text-align: left;
+            }
+            
+            .tab-button:hover {
+                background-color: #f3f4f6; /* light gray */
             }
             .tab-button.active {
                 color: #fbbf24; /* yellow-500 */
@@ -74,10 +82,10 @@
     </head>
     <body>
         <!-- SIDEBAR INII -->
-        <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+        <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full md:translate-x-0" aria-label="Sidebar">
             <div class="h-full px-3 py-4 overflow-y-auto color-linear">
                 <a href="#" class="flex items-center ps-2.5 mb-4 text-gray-50">
-                    <img src="assets/logo-polines.png" class="h-6 me-3 sm:h-7" alt="Polines Logo" />
+                    <img src="assets/logo-polines.png" class="h-6 me-3 md:h-7" alt="Polines Logo" />
                     <span class="text-2xl self-center font-bold whitespace-nowrap">WICARA</span>
                 </a>
                 <hr>
@@ -153,31 +161,23 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="./unit_layanan.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
-                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7 3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V9a5 5 0 1 1 10 0v7.083A2.919 2.919 0 0 1 14.083 19H14a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 1.732-1h.351a4.917 4.917 0 0 0 4.83-4H19a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3 7 7 0 0 0-7-7Zm1.45 3.275a4 4 0 0 0-4.352.976 1 1 0 0 0 1.452 1.376 2.001 2.001 0 0 1 2.836-.067 1 1 0 1 0 1.386-1.442 4 4 0 0 0-1.321-.843Z" clip-rule="evenodd"/>
-                            </svg>                               
-                            <span class="ms-3 group-hover:text-yellow-400">Unit Layanan</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </aside>
         
         <!-- CONTENT INII -->
-        <div class="py-4 px-4 sm:ml-64">
+        <div class="py-4 px-4 md:ml-64">
             <!-- NAVBAR INII -->
             <nav class="w-full bg-transparent lg:px-0 pb-4">
                 <div class="flex flex-wrap justify-between items-center">
                     <div class="flex items-center">
-                        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 hover:text-yellow-400">
+                        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 hover:text-yellow-400">
                             <span class="sr-only">Open sidebar</span>
                             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                             </svg>
                         </button>
-                        <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">Rating</span>
+                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block">Rating</span>
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
@@ -201,7 +201,7 @@
                                     <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
                                 </div>
                             </div>
-                            <div id="notifications" class="p-4">
+                            <div id="notifications" class="p-4 flex flex-col space-y-2">
                                 <!-- Notifications will be dynamically inserted here -->
                             </div>
                         </div>
@@ -240,7 +240,7 @@
             </nav>
 
             <!-- PROFILE READ CONTENT -->
-            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
+            <div id="profile-section-body" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <!-- Tombol Kembali -->
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
@@ -286,7 +286,7 @@
             </div>
 
             <!-- PROFILE EDIT CONTENT -->
-            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 z-10">
+            <div id="profile-section-edit" class="hidden absolute right-0 mt-2 w-56 lg:w-full max-w-lg p-4 bg-white border border-gray-200 rounded-lg shadow md:p-6 z-10">
                 <div class="flex justify-between mb-4">
                     <h5 class="text-xl font-bold text-gray-900">Profil</h5>
                     <button onclick="goBack2()" class="flex items-center text-sm text-blue-500 hover:underline">
@@ -359,7 +359,7 @@
             </div>
 
             <!-- CONTENT INII REAL CUY -->
-            <div class="relative overflow-x-auto bg-white p-3 drop-shadow-md sm:rounded-lg">
+            <div class="relative overflow-x-auto bg-white p-3 drop-shadow-md md:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <!-- INII TABS STATUS -->
                     <div class="text-sm font-medium text-center bg-white text-gray-500 border-b border-gray-200">
@@ -367,147 +367,301 @@
                         <li class="me-2">
                           <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Rating Layanan</a>
                         </li>
+                        <div class="flex items-center ms-auto gap-2">
+                            <div class="ml-auto">
+                                <button id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
+                            </div>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                    </svg>
+                                </div>
+                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
+                            </div>
+                        </div>
                       </ul>
+                      <?php
+                      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                      $itemsPerPage = 6;
+                      $offset = ($currentPage - 1) * $itemsPerPage;
+
+                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM instansi"; 
+                      $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
+                      $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
+                      $totalPages = ceil($totalItems / $itemsPerPage);
+
+                      $query = "SELECT * FROM instansi LIMIT $itemsPerPage OFFSET $offset"; 
+                      $results = mysqli_query($db->koneksi, $query);
+                      ?>
+
                       <!-- INI CARDNYA -->
-                      <div class="grid grid-cols-2 mt-5">
-                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow items-start">
-                          <figure class="relative max-w-sm">
-                            <a href="#">
-                              <div class="relative w-full h-0 pb-[56.25%] overflow-hidden">
-                                <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
+                      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5 justify-center">
+                        <?php
+                        $no = 1;
+                        while ($x = mysqli_fetch_assoc($results)) {
+                        ?>
+                        <div class="card w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
+                                <figure class="relative max-w-full">
+                                    <button id="editModalButton" data-modal-target="editModal" data-modal-toggle="editModal" type="button" class="w-full h-0 pb-[50%] overflow-hidden"
+                                        data-id="<?=$x['id_instansi'];?>"
+                                        data-nama="<?=$x['nama_instansi'];?>"
+                                        data-email="<?=$x['email_pic'];?>"
+                                        data-password="<?=$x['password'];?>"
+                                        data-image="<?=$x['image_instansi'];?>"
+                                        data-qrcode = "<?=$x['qr_code_url'];?>">
+                                        <div class="relative w-full h-0 pb-[50%] overflow-hidden">
+                                            <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
+                                        </div>
+                                        <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
+                                        <figcaption class="absolute px-4 text-white bottom-4 text-left">
+                                            <p class="hidden"><?php echo $x['id_instansi']; ?></p>
+                                            <p class="nama-instansi text-lg font-bold"><?php echo $x['nama_instansi']; ?></p>
+                                            <p class="text-sm"><?php echo isset($x['email_pic']) && !empty($x['email_pic']) ? $x['email_pic'] : '-'; ?></p>
+                                        </figcaption>
+                                    </button>
+                                </figure>
+                          <div class="p-4 w-full mx-auto">
+                          <div class="flex flex-col justify-between items-start">
+                            <div class="flex items-center flex-nowrap">
+                            <?php
+                                $id_instansi = $x['id_instansi']; 
+                                $review_count_query = "SELECT COUNT(*) AS total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+                                $review_count_result = mysqli_query($db->koneksi, $review_count_query);
+                                $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
+
+                                $total_rating_query = "SELECT SUM(skala_bintang) AS total_rating FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+                                $total_rating_result = mysqli_query($db->koneksi, $total_rating_query);
+                                $total_rating = mysqli_fetch_assoc($total_rating_result)['total_rating'];
+
+                                $rata_review = $review_count > 0 ? round($total_rating / $review_count, 2) : 0;
+                                $display_review = $review_count > 0 ? $rata_review . "/5" : "-";
+                                $bulat_review = $review_count > 0 ? floor($total_rating / $review_count) : 0;
+                            ?>
+                              <p class="ms-1 text-lg font-semibold text-black mr-4"><?php echo $display_review; ?></p>
+                              <div class="flex ">
+                              <?php
+                                //bintang kuning
+                                for ($i = 0; $i < $bulat_review; $i++) {
+                                    echo '<svg class="w-4 h-4 text-[#F7B633]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                //bintang abu-abu
+                                for ($i = $bulat_review; $i < 5; $i++) {
+                                    echo '<svg class="w-4 h-4 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                          </svg>';
+                                }
+                                ?>
                               </div>
-                            </a>
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                            <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                              <p class="text-lg font-bold">POLIKLINIK</p>
-                              <p class="text-sm">PIC@gmail.com</p>
-                            </figcaption>
-                          </figure>
-                          <div class="p-4">
-                            <!--Rate-->
-                            <div class="flex justify-between items-start">
-                              <div>
-                                  <div class="flex items-center">
-                                      <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                                      <p class="ms-1 text-sm font-medium text-black">/</p>
-                                      <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                  </div>
-                                  <div class="flex text-start mt-1">
-                                      <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                      <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                                  </div>
+                            </div>
+                              <div class="flex text-start mt-1">
+                              <?php
+                                  $id_instansi = $x['id_instansi'];
+                                  $review_count_query = "SELECT COUNT(*) AS total_reviews FROM kejadian WHERE id_instansi = '$id_instansi' AND skala_bintang IS NOT NULL";
+                                  $review_count_result = mysqli_query($db->koneksi, $review_count_query);
+                                  $review_count = mysqli_fetch_assoc($review_count_result)['total_reviews'];
+                              ?>
+                                <p class="ms-1 text-sm font-medium text-gray-500"><?php echo $review_count; ?></p>
+                                <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
                               </div>
-                              <div class="flex items-center justify-center h-12">
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:underline ali-center">Detail</a>
-                              </div>
-                          </div>                          
-                          <!-- Batas Rate -->
+                          </div>
+                            <div class="flex justify-end mt-2">
+                            <a href="detail_rating.php?id=<?php echo $x['id_instansi']; ?>" class="text-sm font-medium text-blue-600 hover:underline align-start">Detail</a>
+                            </div>
                           </div>
                         </div>
-                        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow items-end">
-                          <figure class="relative max-w-sm">
-                            <a href="#">
-                              <div class="relati   ve w-full h-0 pb-[56.25%] overflow-hidden">
-                                <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="assets/laptop.jpg" alt="image description">
-                              </div>
-                            </a>
-                            <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
-                            <figcaption class="absolute px-4 text-white bottom-4 text-left">
-                              <p class="text-lg font-bold">POLIKLINIK</p>
-                              <p class="text-sm">PIC@gmail.com</p>
-                            </figcaption>
-                          </figure>
-                          <div class="p-4">
-                            <!--Rate-->
-                            <div class="flex justify-between items-start">
-                              <div>
-                                  <div class="flex items-center">
-                                      <p class="ms-1 text-lg font-semibold text-black">4.95</p>
-                                      <p class="ms-1 text-sm font-medium text-black">/</p>
-                                      <p class="ms-1 mr-3 text-lg font-semibold text-black">5</p>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-[#F7B633] me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                      <svg class="w-4 h-4 text-gray-300 me-1 dark:text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                          <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                                      </svg>
-                                  </div>
-                                  <div class="flex text-start mt-1">
-                                      <p class="ms-1 text-sm font-medium text-gray-500">273</p>
-                                      <p class="ms-1 mr-3 text-sm font-medium text-gray-500">Review</p>
-                                  </div>
-                              </div>
-                              <div class="flex items-center justify-center h-12">
-                                <a href="#" class="text-sm font-medium text-blue-600 hover:underline ali-center">Detail</a>
-                              </div>
-                          </div>                          
-                          <!-- Batas Rate -->
-                          </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                       </div>                        
                     </div>
                 </table>
             </div>
+            <!-- Pagination -->
+            <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
+                <ul class="inline-flex -space-x-px text-sm">
+                    <li>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Modal Tambah Form -->
+            <div id="modal" class="fixed inset-0 z-50 px-4 items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative overflow-y-auto">
+                    <!-- Tombol Tutup Modal -->
+                    <div class="flex justify-between items-center mb-4 sm:mb-5">
+                        <div>
+                            <h2 class="text-2xl font-semibold">Form Unit Layanan</h2>
+                            <p class="text-gray-500">Tambah Unit Layanan</p>
+                        </div>
+                        <button id="closeModalBtn" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+
+                    
+                    <!-- Input Fields -->
+                    <form action="Back-end/tambah_instansi.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                        <!-- Gambar Form -->
+                        <div class="flex justify-center items-center mb-4">
+                            <img id="unit-layanan-preview" src="assets/folder-cuate.png" alt="Gambar" class="w-auto h-40 rounded-md">
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Nama Unit Layanan</label>
+                            <input type="text" name="nama_instansi" class="w-full border border-gray-300 rounded-md p-2" required/>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Email PIC</label>
+                            <input type="email" name="email_pic" class="w-full border border-gray-300 rounded-md p-2" required/>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Password (Default)</label>
+                            <input type="password" name="password" class="w-full border border-gray-300 rounded-md p-2" placeholder="Polines123*" readonly/>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <label class="w-1/3">Gambar Banner</label>
+                            <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded-md" onchange="previewImageUnitLayanan1(event)"/>
+                        </div>
+                        <!-- Tombol Tambah -->
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 hover:bg-blue-600">+ Tambah</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal: Edit Form -->
+            <div id="editModal" tabindex="-1" aria-hidden="true" class="hidden fixed z-50 px-4 items-center justify-center w-full inset-0">
+                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative overflow-y-auto md:mih-h-screen">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h2 class="text-2xl font-semibold">Form Unit Layanan</h2>
+                            <p class="text-gray-500">Detail Unit Layanan</p>
+                        </div>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="editModal"> 
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                            <span class="sr-only">Close modal</span>                         
+                        </button>
+                    </div>
+
+                    <!-- Image Section -->
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div class="flex items-center justify-center border rounded-lg p-4">
+                            <img id="unit-layanan2-preview" name="image-unit" alt="Unit Image" class="w-32 h-auto object-contain">
+                        </div>
+                        <div class="flex items-center justify-center border rounded-lg p-4">
+                            <img name="qr-code" alt="QR Code" class="w-32 h-auto object-contain">
+                        </div>
+                    </div>
+
+                    <!-- Form Fields -->
+                    <form id="editForm" action="./Back-end/update_instansi.php" method="POST" enctype="multipart/form-data">
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <input type="hidden" name="id_instansi" id="idLayanan" class="w-full px-3 border border-gray-300 rounded" />
+                            <div>
+                                <label for="namaLayanan" class="block text-gray-700 text-sm">Nama Unit Layanan</label>
+                                <input type="text" name="nama_instansi" id="namaLayanan" class="w-full px-3 border border-gray-300 rounded" />
+                            </div>
+                            <div>
+                                <label for="emailPIC" class="block text-gray-700 text-sm">Email PIC</label>
+                                <input type="email" name="email_pic" id="emailPIC" class="w-full px-3 border border-gray-300 rounded" />
+                            </div>
+                            <div class="relative">
+                                <label for="password" class="block text-gray-700 text-sm">Password</label>
+                                <input type="password" name="password" id="password-instansi" class="w-full px-3 border border-gray-300 rounded" />
+
+                                <!-- Tombol untuk menampilkan/menyembunyikan password -->
+                                <button type="button" id="togglePasswordInstansi" class="absolute right-3 top-7 flex items-center">
+                                    <svg id="eyeIconClosed2" class="w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <!-- Icon mata tertutup -->
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                    </svg>
+                                    <svg id="eyeIconOpen2" class="hidden w-6 h-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <!-- Icon mata terbuka -->
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div>
+                                <label for="image_instansi" class="block text-gray-700 text-sm">Ganti Banner</label>
+                                <input type="file" name="image_instansi" accept="image/jpeg, image/png, image/jpg" class="w-full border border-gray-300 rounded" onchange="previewImageUnitLayanan2(event)"/>
+                            </div>
+                        </div>
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end items-center col-span-2 mt-8 space-x-4">
+                            <button type="submit" class="flex items-center bg-blue-700 text-white px-6 py-3 rounded hover:bg-blue-600" onclick="submitEditForm()">
+                                <span>Simpan</span>
+                            </button>
+                            <button type="submit" class="flex items-center bg-red-700 text-white px-6 py-3 rounded hover:bg-red-600" onclick="confirmHapus()">
+                                <span>Hapus</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        
+
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
+            function searchCard() {
+                const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+                const cards = document.querySelectorAll('.card'); 
+                let visibleRowIndex = 0;
+
+                cards.forEach(card => {
+                    card.style.display = 'none'; 
+                });
+
+                cards.forEach(card => {
+                    const instansiName = card.querySelector('.nama-instansi'); 
+                    if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
+                        card.style.display = ''; 
+                        visibleRowIndex++;
+                    }
+                });
+            }
+
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=4' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=5' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=4' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=5' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
                 { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=8' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=9' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=10' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=11' }
             ];
-    
+
             document.getElementById('notificationButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
             });
-    
+
             document.getElementById('closeSidebarButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.add('translate-x-full');
             });
-    
+
             function filterNotifications(type) {
                 const container = document.getElementById('notifications');
                 container.innerHTML = '';
                 const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
                 filteredNotifications.forEach(notification => {
-                    const notificationElement = document.createElement('div');
-                    notificationElement.classList.add('flex', 'items-center', 'mb-4');
+                    const notificationElement = document.createElement('button');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full');
                     notificationElement.innerHTML = `
                         <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
@@ -524,7 +678,7 @@
                     `;
                     container.appendChild(notificationElement);
                 });
-    
+
                 // Update tab button styles
                 document.querySelectorAll('.tab-button').forEach(button => {
                     button.classList.remove('active');
@@ -532,24 +686,24 @@
                 });
                 document.getElementById(`tab-${type}`).classList.add('active');
             }
-    
+
             function showConfirmationDialog(action) {
                 const modal = document.getElementById('confirmationModal');
                 modal.style.display = 'block';
-    
+
                 document.getElementById('confirmYes').onclick = () => {
                     alert(`${action} berhasil!`);
                     modal.style.display = 'none';
-                };
-    
+            };
+
                 document.getElementById('confirmNo').onclick = () => {
                     modal.style.display = 'none';
                 };
             }
-    
+
             // Initialize with all notifications
             filterNotifications('semua');
-    
+
             // Close the modal when clicking outside of it
             window.onclick = function(event) {
                 const modal = document.getElementById('confirmationModal');
@@ -598,6 +752,22 @@
                 eyeIconOpen.classList.toggle('hidden', !isPasswordVisible);
             });
 
+            const passwordInputInstansi = document.getElementById('password-instansi');
+            const togglePasswordButtonInstansi = document.getElementById('togglePasswordInstansi');
+            const eyeIconOpen2 = document.getElementById('eyeIconOpen2');
+            const eyeIconClosed2 = document.getElementById('eyeIconClosed2');
+
+            togglePasswordButtonInstansi.addEventListener('click', function () {
+                const isPasswordVisible2 = passwordInputInstansi.type === 'password';
+
+                // Toggle password visibility
+                passwordInputInstansi.type = isPasswordVisible2 ? 'text' : 'password';
+
+                // Toggle icons
+                eyeIconClosed2.classList.toggle('hidden', isPasswordVisible2);
+                eyeIconOpen2.classList.toggle('hidden', !isPasswordVisible2);
+            });
+
             // Fungsi untuk menampilkan gambar preview profile
             function previewImage(event) {
                 var reader = new FileReader();
@@ -606,6 +776,111 @@
                     output.src = reader.result;
                 }
                 reader.readAsDataURL(event.target.files[0]);
+            }
+
+            // Fungsi untuk menampilkan gambar preview unit layanan
+            function previewImageUnitLayanan1(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('unit-layanan-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
+            function previewImageUnitLayanan2(event) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('unit-layanan2-preview');
+                    output.src = reader.result;
+                }
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
+            // Fungsi untuk menampilkan modal tambah unit layanan
+            const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modal = document.getElementById('modal');
+
+            openModalBtn.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            });
+
+            // Fungsi untuk menampilkan modal edit unit layanan
+            document.addEventListener("DOMContentLoaded", function(event) {
+                document.getElementById('editModalButton').click();
+            });
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                const updateButtons = document.querySelectorAll('#editModalButton');
+                
+                updateButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const id = button.getAttribute('data-id');
+                        const nama = button.getAttribute('data-nama');
+                        const emailPIC = button.getAttribute('data-email');
+                        const password = button.getAttribute('data-password');
+                        const image = button.getAttribute('data-image');
+                        const qrcode = button.getAttribute('data-qrcode');
+
+                        const imageElement = document.querySelector('#editModal img[name="image-unit"]');
+                        // Periksa apakah ada gambar
+                        if (image && image !== "assets/laptop.jpg") {
+                            // Jika gambar ada dan bukan gambar default
+                            imageElement.src = "./Back-end" + image;
+                        } else {
+                            // Jika gambar tidak ada atau gambar default
+                            imageElement.src = "assets/laptop.jpg";
+                        }
+                        // Populate modal fields
+                        document.querySelector('#editModal input[name="id_instansi"]').value = id;
+                        document.querySelector('#editModal input[name="nama_instansi"]').value = nama;
+                        document.querySelector('#editModal input[name="email_pic"]').value = emailPIC;
+                        document.querySelector('#editModal input[name="password"]').value = password;
+                        document.querySelector('#editModal img[name="qr-code"]').src = "/Wicara_Admin_Web"+qrcode;
+                    });
+                });
+            });
+
+            function submitEditForm() {
+                const form = document.getElementById('editForm');
+                const formData = new FormData(form);
+
+                fetch('./Back-end/update_instansi.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Tambahkan kode untuk memperbarui UI jika perlu
+                    } else {
+                        alert("Gagal menyimpan data: " + data.message);
+                    }
+                })
+            }
+
+            function confirmHapus() {
+                const id = document.querySelector('#editForm input[name="id_instansi"]').value;
+
+                fetch('./Back-end/delete_instansi.php?id=' + id, {
+                    method: 'GET',
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Data berhasil dihapus.");
+                        // Tambahkan kode untuk menghapus data dari UI jika perlu
+                    } else {
+                        alert("Gagal menghapus data: " + data.message);
+                    }
+                })
             }
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>

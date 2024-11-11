@@ -1,17 +1,16 @@
 <?php
     // buat update profile
     session_start();
-    include './Back-end/config.php';
-    $db = new database();
-
+    include './Back-end/api_dashboard.php';
+    
     if (!isset($_SESSION['id_user'])) {
         header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
     }
 
     $id_user = $_SESSION['id_user'];
-    $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
+    $user_data = mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? './Back-end'.$user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
 
     // Jika ada pesan sukses
     if (isset($_GET['message'])) {
@@ -24,6 +23,24 @@
         </script>
         ";
     }
+
+    $pengaduanCard = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2 AND status_pengaduan = 1"));
+    $kehilanganCard = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1 AND status_kehilangan = 4"));
+    $ratingCard = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
+
+    $total = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian"));
+    $pengaduan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 2"));
+    $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1"));
+    $rating = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
+
+    $presentase_pengaduan = round(($pengaduan/$total) * 100, 2);
+    $presentase_kehilangan = round(($kehilangan/$total) * 100, 2);
+    $presentase_rating = round(($rating/$total) * 100, 2);
+
+    $mahasiswaCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM user WHERE role = 3"));
+    $dosenTendikCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM user WHERE role = 2 and 4"));
+    $unitLayananCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM instansi"));
+    
 ?>
 
 
@@ -37,7 +54,6 @@
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="import" href="read_profile.html">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
         <style>
@@ -58,22 +74,31 @@
             }
 
             .tab-button {
-            transition: color 0.3s, border-bottom 0.3s;
+                transition: background-color 0.3s, color 0.3s;
+                display: flex;
+                width: 100%;
+                align-items: center;
+                text-align: left;
             }
+            
+            .tab-button:hover {
+                background-color: #f3f4f6; /* light gray */
+            }
+
             .tab-button.active {
                 color: #fbbf24; /* yellow-500 */
                 border-bottom: 2px solid #fbbf24; /* yellow-500 */
             }
             .modal {
-                display: none;
-                position: fixed;
-                z-index: 10;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
             }
             .modal-content {
                 background-color: #fefefe;
@@ -84,6 +109,7 @@
                 max-width: 400px;
                 text-align: center;
             }
+
             #notificationSidebar {
                 z-index: 10;
             }
@@ -170,14 +196,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="./unit_layanan.php" class="flex items-center p-2 text-gray-50 rounded-lg hover:bg-blue-900 group">
-                            <svg class="w-6 h-6 text-gray-50 transition duration-75 group-hover:text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M12 2a7 7 0 0 0-7 7 3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1a1 1 0 0 0 1-1V9a5 5 0 1 1 10 0v7.083A2.919 2.919 0 0 1 14.083 19H14a2 2 0 0 0-2-2h-1a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1a2 2 0 0 0 1.732-1h.351a4.917 4.917 0 0 0 4.83-4H19a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3 7 7 0 0 0-7-7Zm1.45 3.275a4 4 0 0 0-4.352.976 1 1 0 0 0 1.452 1.376 2.001 2.001 0 0 1 2.836-.067 1 1 0 1 0 1.386-1.442 4 4 0 0 0-1.321-.843Z" clip-rule="evenodd"/>
-                            </svg>                               
-                            <span class="ms-3 group-hover:text-yellow-400">Unit Layanan</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </aside>
@@ -198,10 +216,12 @@
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
-                        <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
-                            <span class="sr-only">View notifications</span>
+                        <button type="button" id="notificationButton" onclick="loadPengaduan()" class=" realtive p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                        <span id="notificationDot" class="hidden absolute top-8 right-15 h-2 w-2 bg-red-500 rounded-full transform translate-x-1/2 -translate-y-1/2"></span>  
+                        <span class="sr-only">View notifications</span>
                             <!-- Bell icon -->
-                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>
+                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
+                                <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>     
                         </button>
                         <!-- NOTIFIKASI CONTENT -->
                         <div id="notificationSidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 overflow-y-auto">
@@ -219,7 +239,7 @@
                                     <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
                                 </div>
                             </div>
-                            <div id="notifications" class="p-4">
+                            <div id="notifications" class="p-4 flex flex-col space-y-2">
                                 <!-- Notifications will be dynamically inserted here -->
                             </div>
                         </div>
@@ -399,10 +419,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
+                                        <div class="text-[24px] font-bold text-black"><?=$pengaduanCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./lihat_pengaduan.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -420,10 +440,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
+                                        <div class="text-[24px] font-bold text-black" id="kehilangan-count"><?=$kehilanganCard;?></div>
                                         <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./kehilangan.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -441,10 +461,10 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-[24px] font-bold text-black">150</div>
-                                        <p class="mb-2 font-small italic text-[12px] text-black">Perlu Diproses</p>
+                                        <div class="text-[24px] font-bold text-black" id="ulasan-count"><?=$ratingCard;?></div>
+                                        <p class="mb-2 font-small italic text-[12px] text-black">Perlu Dibalas</p>
                                         <button type="button" class="flex items-center px-3 md:px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./rating.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -455,63 +475,30 @@
                     </div>
                 </div>
                 <!-- INII DONUT CHART -->
-                <div class="max-w py-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <div class="text-xl text-center font-bold text-gray-900 mb-2">Persentase Aktivitas</div>
-                    <div class="py-2" id="donut-chart"></div>
-                    <div class="grid grid-cols-2 text-center">
+                <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
+                    <div class="grid grid-cols-1 gap-4 grid-rows-1">
+                    <div>
+                        <p class="text-xl font-bold text-center text-gray-900">Presentase Aktivitas</p>
+                        <p class="text-sm font-normal text-center text-gray-600">Presentase Aktivitas User</p>
+                    </div>
+                        <div class="py-6" id="donut-chart"></div> 
                     </div>
                 </div>
-                <!-- INII LINE CHART -->
+                <!-- INII LINE CHART -->                   
                 <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <div class="flex justify-between mb-5">
-                    <div class="grid gap-4 grid-cols-2">
+                <div class="flex justify-between mb-5">
+                    <div class="grid grid-cols-2 gap-4 grid-rows-1">
                         <div>
-                        <h5>
-                            <div class="text-xl font-bold text-gray-900">Grafik Aduan & Rating
-                            </div>
-                        </h5>
+                            <p class="text-xl font-bold text-left text-gray-900">Grafik Aktivitas</p>
+                            <p class="text-sm font-normal text-left text-gray-600">Grafik Aktivitas User</p>
+                        </div>
                         </div>
                     </div>
-                    <div>
-                        <button id="dropdownDefaultButton"
-                        data-dropdown-toggle="lastDaysdropdown"
-                        data-dropdown-placement="bottom" type="button" class="px-3 py-2 inline-flex items-center text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-[#4270C3] focus:z-10 focus:ring-4 focus:ring-gray-200">Last week <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                    </svg></button>
-                    <div id="lastDaysdropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                            <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Yesterday</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Today</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 7 days</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 30 days</a>
-                            </li>
-                            <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Last 90 days</a>
-                            </li>
-                            </ul>
-                        </div>
-                    </div>
-                    </div>
-                    <div id="line-chart"></div>
-                    <div class="grid grid-cols-1 items-center border-gray-200 border-t justify-between mt-2.5">
-                    <div class="pt-5">      
-                        <a href="#" class="px-5 py-2.5 text-sm font-medium text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center">
-                        <svg class="w-3.5 h-3.5 text-white me-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
-                            <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2Zm-3 15H4.828a1 1 0 0 1 0-2h6.238a1 1 0 0 1 0 2Zm0-4H4.828a1 1 0 0 1 0-2h6.238a1 1 0 1 1 0 2Z"/>
-                            <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
-                        </svg>
-                        View full report
-                        </a>
-                    </div>
-                    </div>
-                </div>  
+                    
+                <div id="line-chart"></div>
+                </div>
+
+
                 <!-- INII CARD STATISTIK -->
                 <div class="max-w p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <div class="grid grid-cols-1 gap-4">
@@ -531,11 +518,11 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div class="text-2xl px-2 py-2 font-bold text-black"><?=$mahasiswaCount;?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#4270C3] rounded-full hover:bg-[#4270C9]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./mahasiswa.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -556,11 +543,11 @@
                                         </svg>  
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="dosenCount" class="text-2xl px-2 py-2 font-bold text-black"><?=$dosenTendikCount;?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#DC7274] rounded-full hover:bg-[#DC7279]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./dosen.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -581,11 +568,11 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <div class="text-2xl px-2 py-2 font-bold text-black">150</div>
+                                        <div id="unitCount" class="text-2xl px-2 py-2 font-bold text-black"><?=$unitLayananCount;?></div>
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
-                                            <a href="./Pengaduan.html">
+                                            <a href="./unit_layanan.php">
                                                 Detail
                                             </a>
                                         </button>
@@ -598,43 +585,227 @@
             </div>
         </div>
 
-  
-        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
-        <script src="main.js"></script>
         <script src="./Back-end/toast.js"></script>
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+        <script>
+            const getChartOptions = () => {
+                return {
+                    series: [<?=$pengaduan?>, <?=$kehilangan?>, <?=$rating?>],
+                    colors: ["#4270C3", "#DC7274", "#CD7014"],
+                    chart: {
+                        height: 320,
+                        width: "100%",
+                        type: "donut",
+                    },
+                    stroke: {
+                        colors: ["transparent"],
+                        lineCap: "",
+                    },
+                    plotOptions: {
+                        pie: {
+                            donut: {
+                                labels: {
+                                    show: true,
+                                    name: {
+                                        show: true,
+                                        fontFamily: "Inter, sans-serif",
+                                        offsetY: 7,
+                                    },
+                                    total: {
+                                        showAlways: true,
+                                        show: true,
+                                        label: "WICARA",
+                                        fontFamily: "Inter, sans-serif",
+                                        offsetY: 0,
+                                        offsetX: 0,
+                                    },
+                                    value: {
+                                        show: false,
+                                        fontFamily: "Inter, sans-serif",
+                                        offsetY: -20,
+                                    },
+                                },
+                                size: "80%",
+                            },
+                        },
+                    },
+                    labels: [
+                        `Pengaduan - <?=$presentase_pengaduan?>%`,
+                        `Kehilangan - <?=$presentase_kehilangan?>%`,
+                        `Rating - <?=$presentase_rating?>%`
+                    ],
+                    dataLabels: {
+                        enabled: false,
+                        formatter: function (val, opts) {
+                            return opts.w.globals.labels[opts.seriesIndex];
+                        },
+                        style: {
+                            fontFamily: "Inter, sans-serif",
+                            fontSize: '14px',
+                            fontWeight: 'bold',
+                            colors: ['#333']
+                        },
+                    },
+                    legend: {
+                        position: "right",
+                        fontFamily: "Inter, sans-serif",
+                        formatter: function(seriesName, opts) {
+                            return seriesName;
+                        },
+                    },
+                    grid: {
+                        padding: {
+                            top: -2,
+                        },
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: function (value) {
+                                return value + " Laporan";
+                            },
+                        },
+                    },
+                    xaxis: {
+                        labels: {
+                            formatter: function (value) {
+                                return value + " Laporan";
+                            },
+                        },
+                        axisTicks: {
+                            show: false,
+                        },
+                        axisBorder: {
+                            show: false,
+                        },
+                    },
+                }
+            }
+
+            if (document.getElementById("donut-chart") && typeof ApexCharts !== 'undefined') {
+                const chart = new ApexCharts(document.getElementById("donut-chart"), getChartOptions());
+                chart.render();
+            }
+        </script>
+
+        <script>  
+        var pengaduan =  <?php echo json_encode($pengaduan_harian);?>;      
+        var kehilangan =  <?php echo json_encode($kehilangan_harian);?>;      
+        var rating =  <?php echo json_encode($rating_harian);?>;      
+        var tanggal =  <?php echo json_encode($tanggal_array);?>;      
+        const options = {
+        chart: {
+            height: "100%",
+            maxWidth: "100%",
+            type: "line",
+            fontFamily: "Inter, sans-serif",
+            dropShadow: {
+            enabled: false,
+            },
+            toolbar: {
+            show: false,
+            },
+        },
+        legend: {
+            show: true
+        },
+        tooltip: {
+            enabled: true,
+            x: {
+            show: false,
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            width: 6,
+        },
+        grid: {
+            show: true,
+            strokeDashArray: 4,
+            padding: {
+            left: 10,
+            right: 2,
+            top: -26
+            },
+        },
+        series: [
+            {
+            name: "Pengaduan",
+            data: pengaduan,
+            color: "#4270C3",
+            },
+            {
+            name: "Laporan Kehilangan",
+            data: kehilangan,
+            color: "#DC7274",
+            },
+            {
+            name: "Rating",
+            data: rating,
+            color: "#CD7014",
+            },
+        ],
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories: tanggal,
+            labels: {
+            show: true,
+            style: {
+                fontFamily: "Inter, sans-serif",
+                cssClass: 'text-xs font-normal fill-gray-500'
+            }
+            },
+            axisBorder: {
+            show: true,
+            },
+            axisTicks: {
+            show: true,
+            },
+        },
+        yaxis: {
+            show: true,
+        },
+        }
+
+        if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("line-chart"), options);
+        chart.render();
+        }
+        </script>
         <script>
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=2' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=4' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=5' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
+                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=4' },
+                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=5' },
+                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
                 { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=8' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=9' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=10' },
-                { type: 'pengaduan', title: 'Admin PBM Judes', time: '2h ago', avatar: 'https://placehold.co/40x40?text=11' }
             ];
-    
+
             document.getElementById('notificationButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
             });
-    
+
             document.getElementById('closeSidebarButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.add('translate-x-full');
             });
-    
+
             function filterNotifications(type) {
                 const container = document.getElementById('notifications');
                 container.innerHTML = '';
+
                 const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
+
                 filteredNotifications.forEach(notification => {
-                    const notificationElement = document.createElement('div');
-                    notificationElement.classList.add('flex', 'items-center', 'mb-4');
+                    const notificationElement = document.createElement('button');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
                     notificationElement.innerHTML = `
                         <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
@@ -649,9 +820,22 @@
                             ` : ''}
                         </div>
                     `;
+
+                    // Add click event to navigate based on notification type
+                    notificationElement.addEventListener('click', () => {
+                        if (notification.type === 'pengaduan') {
+                            window.location.href = 'lihat_pengaduan.php';
+                        } else if (notification.type === 'rating') {
+                            window.location.href = 'rating.php';
+                        } else if (notification.type === 'kehilangan') {
+                            window.location.href = 'kehilangan.php'; // Replace with the correct page
+                        }
+                    });
+
                     container.appendChild(notificationElement);
                 });
-    
+
+
                 // Update tab button styles
                 document.querySelectorAll('.tab-button').forEach(button => {
                     button.classList.remove('active');
@@ -659,24 +843,24 @@
                 });
                 document.getElementById(`tab-${type}`).classList.add('active');
             }
-    
+
             function showConfirmationDialog(action) {
                 const modal = document.getElementById('confirmationModal');
                 modal.style.display = 'block';
-    
+
                 document.getElementById('confirmYes').onclick = () => {
                     alert(`${action} berhasil!`);
                     modal.style.display = 'none';
                 };
-    
+
                 document.getElementById('confirmNo').onclick = () => {
                     modal.style.display = 'none';
                 };
             }
-    
+
             // Initialize with all notifications
             filterNotifications('semua');
-    
+
             // Close the modal when clicking outside of it
             window.onclick = function(event) {
                 const modal = document.getElementById('confirmationModal');
@@ -690,11 +874,11 @@
                 document.getElementById('profile-section-body').classList.remove('hidden');
                 document.getElementById('dropdown').classList.add('hidden');
             });
-
+            
             // Fungsi tombol kembali
             function goBack() {
                 document.getElementById('profile-section-body').classList.add('hidden');
-            }
+            };
 
             // Fungsi untuk menampilkan halaman edit profile
             document.querySelector('[id="edit-profile"]').addEventListener('click', function () {
