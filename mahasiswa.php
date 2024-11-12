@@ -41,7 +41,13 @@
     $lastUpdate = $row['last_update'];
     $totalMahasiswa = $row['total_mahasiswa'];
 
+    $allUsersQuery = "SELECT * FROM user WHERE role = 3";
+    $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
+    $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>
+<script>
+    const allUsers = <?php echo json_encode($allUsers); ?>;
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -534,7 +540,6 @@
                         for ($i = 0; $i < $remainingRows; $i++): 
                             // Increment overall row index for empty rows
                             $overallRowIndex++;
-                            $rowClass = $overallRowIndex % 2 == 0 ? 'bg-white' : 'bg-gray-100'; // Maintain color pattern
                     ?>
                     <?php 
                     endfor 
@@ -647,36 +652,62 @@
                     searchInput.setAttribute("disabled", "true");
                 }
             }
+            
             // Buat Searching
             function searchTable() {
                 const searchInput = document.getElementById('default-search').value.toLowerCase();
-                const tableRows = document.querySelectorAll('table tbody tr');
-                let visibleRowIndex = 0; // Initialize a visible row index
+                const tableBody = document.querySelector('table tbody');
+                
+                // Kosongkan tabel sebelum menampilkan data baru
+                tableBody.innerHTML = '';
 
-                tableRows.forEach(row => {
-                    const cells = row.getElementsByTagName('td');
-                    let found = false;
+                // Jika input pencarian kosong, tampilkan data asli
+                if (searchInput === '') {
+                    allUsers.forEach((user, index) => {
+                        const row = createTableRow(user, index);
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                    return; // Keluar dari fungsi untuk menghindari pencarian lebih lanjut
+                }
 
-                    for (let i = 0; i < cells.length; i++) {
-                        const cellText = cells[i].innerText.toLowerCase();
-                        if (cellText.includes(searchInput)) {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    // Show or hide the row based on the search results
-                    if (found) {
-                        row.style.display = ''; // Show the row
+                // Jika ada input pencarian, lakukan pencarian dan tampilkan hasil
+                let visibleRowIndex = 0;
+                allUsers.forEach((user, index) => {
+                    const userString = `${user.nama} ${user.nomor_induk} ${user.nomor_telepon}`.toLowerCase();
+                    if (userString.includes(searchInput)) {
+                        const row = createTableRow(user, visibleRowIndex);
+                        tableBody.insertAdjacentHTML('beforeend', row);
                         visibleRowIndex++;
-
-                        // Update the background color based on the visible index
-                        row.className = (visibleRowIndex % 2 === 0) ? 'bg-white border-b' : 'bg-gray-100 border-b';
-                    } else {
-                        row.style.display = 'none'; // Hide the row
                     }
                 });
             }
+
+            // Fungsi untuk membuat baris tabel
+            function createTableRow(user, index) {
+                return `
+                    <tr class="border-b">
+                        <th class="text-center w-10">${index + 1}</th>
+                        <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="./Back-end${user.image || '/foto-profile/default-profile.png'}">
+                        </td>
+                        <td class="px-4 py-2" style="height: 3rem;">
+                            <span class="text-base font-semibold text-blue-950">${user.nama}</span><br>
+                            <span class="text-sm text-gray-800 font-medium">NIM: ${user.nomor_induk}</span><br>
+                            <span class="text-sm text-gray-600">${user.nomor_telepon}</span>
+                        </td>
+                        <td class="py-2 px-6 text-right">
+                            <button 
+                                class="text-blue-500 hover:underline"
+                                onclick="openEditPopup('${user.id_user}', '${user.nama}', '${user.nomor_induk}', '${user.nomor_telepon}', '${user.email}', '${user.password}')">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+
+
      
             function applyRowAlternatingColors() {
                  let table = document.getElementById('student-table');
