@@ -395,21 +395,16 @@
             </div>
 
             <!-- ATAS TABEL -->
-            <div class="flex justify-between">
-                <p class="p-2 text-gray-500" style="font-size: 10px;">
-                    Update terakhir: <?php
-                    // Check if $lastUpdate is not empty and valid before using strtotime
-                    if (!empty($lastUpdate)) {
-                        echo date("j F Y (H:i T)", strtotime($lastUpdate));
-                    } else {
-                        echo "Belum ada update"; // Fallback message if no update is available
-                    }
-                    ?>
-                </p>
-                <p class="p-2 text-gray-500" style="font-size: 10px;">
-                    Σ Jumlah: <?php echo $totalDosen; ?> Dosen
-                </p>
-            </div>
+            <p class="p-2 text-gray-500 text-sm">
+                Update terakhir: <?php
+                // Check if $lastUpdate is not empty and valid before using strtotime
+                if (!empty($lastUpdate)) {
+                    echo date("j F Y (H:i T)", strtotime($lastUpdate));
+                } else {
+                    echo "Belum ada update"; // Fallback message if no update is available
+                }
+                ?>
+            </p>
 
             <!-- BAGIAN TABEL -->
             <div class="bg-white p-4 border-2 border-gray-200 shadow-md rounded-lg">
@@ -596,21 +591,26 @@
                 </div>            
             </div>
             <!-- Tampilan navigasi Pagination -->
-            <nav aria-label="Page navigation example" class="flex justify-end mt-3">
-                <ul class="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
-                    </li>
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <div class="flex justify-between">
+                <p class="p-2 text-gray-500 text-sm">
+                    Σ Jumlah: <?php echo $totalDosen; ?> Dosen
+                </p>
+                <nav aria-label="Page navigation example" class="flex justify-end mt-3">
+                    <ul class="inline-flex -space-x-px text-sm">
                         <li>
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                            <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
                         </li>
-                    <?php endfor; ?>
-                    <li>
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <li>
+                                <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                            </li>
+                        <?php endfor; ?>
+                        <li>
+                            <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
             </div>
         </div> 
         <!-- DIV CONTENT -->
