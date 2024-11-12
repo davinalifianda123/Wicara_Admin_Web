@@ -250,10 +250,10 @@ if ($mysqli->connect_error) {
         }
 
 //FORM USER
-        function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image)
+        function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image, $id_instansi)
         { 
-            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, image) 
-            VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image')");
+            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, image, id_instansi) 
+            VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image', '$id_instansi')");
         }
         
         public function edit_user($id_user, $nama, $nomor_induk, $nomor_telepon) {

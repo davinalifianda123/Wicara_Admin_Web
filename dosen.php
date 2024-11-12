@@ -27,7 +27,7 @@
     $totalPages = ceil($totalUsers / $itemsPerPage);
 
     // Fetch the users for the current page
-    $users = array_filter($db->tampil_user(), function($x) {
+    $users = array_filter($db->tampil_user_instansi(), function($x) {
         return $x['role'] == 2;
     });
     $usersToShow = array_slice($users, $offset, $itemsPerPage);
@@ -410,29 +410,29 @@
             <div class="bg-white p-4 border-2 border-gray-200 shadow-md rounded-lg">
                 <!-- ROW ATAS -->
                 <div class="flex justify-between items-center mb-2">
-                        <div>
-                            <p class="font-bold p-0 text-lg">Data Dosen</p>
-                            <p class="text-xs text-gray-500">Detail Dosen</p>
-                        </div>
-                        <div class="ml-auto">
-                            <button onclick="togglePopup()" id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
-                        </div>
-                        <!-- SEARCH -->
-                        <form id="search-form" class="flex-grow max-w-sm">
-                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-                            <div class="relative w-full">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                    </svg>
-                                </div>
-                                <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="search anything..." required onkeyup="searchTable()" />
+                    <div>
+                        <p class="font-bold p-0 text-lg">Data Dosen</p>
+                        <p class="text-xs text-gray-500">Detail Dosen</p>
+                    </div>
+                    <div class="ml-auto">
+                        <button onclick="togglePopup()" id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
+                    </div>
+                    <!-- SEARCH -->
+                    <form id="search-form" class="flex-grow max-w-sm">
+                        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                </svg>
                             </div>
-                        </form>
+                            <input type="search" id="default-search" class="block w-full p-2 pl-9 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="search anything..." required onkeyup="searchTable()" />
+                        </div>
+                    </form>
                     <div id="popup" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center hidden">
                     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative">
-                    <h3 class="flex items-center justify-between text-lg font-semibold text-gray-700 mb-4">
-                            Tambah Mahasiswa
+                        <h3 class="flex items-center justify-between text-lg font-semibold text-gray-700 mb-4">
+                            Tambah Dosen
                             <button onclick="togglePopup()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex items-center">
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -445,7 +445,7 @@
                                 <input type="text" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded" required>
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">ID</label>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">NIM</label>
                                 <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
                             </div>
                             <div class="mb-4">
@@ -455,6 +455,20 @@
                             <div class="mb-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
                                 <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Staff Instansi</label>
+                                <select name="id_instansi" id="id_instansi" class="w-full px-3 py-2 border border-gray-300 rounded">
+                                    <option value="">
+                                    <?php
+                                        foreach($db->tampil_instansi() as $x){
+                                            echo '<option value="'.$x['id_instansi'].'">'.$x['nama_instansi'].'</option>';
+                                        ?>
+                                        <?php
+                                        }
+                                        ?>
+                                    </option>
+                                </select>
                             </div>
                             <div class="flex justify-end">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">Simpan</button>
@@ -525,7 +539,7 @@
                         <td class="py-2 px-6 text-right">
                             <button 
                                 class="text-blue-500 hover:underline"
-                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>')">
+                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>', '<?php echo addslashes($x['id_instansi']); ?>')">
                                 Edit
                             </button>
                         </td>
@@ -547,8 +561,15 @@
                 <!-- Popup Form untuk Edit User -->
                 <div id="editPopup" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
                     <div class="bg-white p-6 rounded-lg w-96">
-                        <h2 class="text-lg font-semibold mb-4">Edit User</h2>
-                        <form id="editForm" action="./Back-end/edit_mahasiswa.php" method="POST">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold">Edit User</h2>
+                            <button onclick="closePopup()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex items-center">
+                                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <form id="editForm" action="./Back-end/edit_dosen.php" method="POST">
                             <input type="hidden" name="id_user" id="editUserId">
                             
                             <div class="mb-4">
@@ -576,6 +597,19 @@
                                 <input type="password" name="password" id="editPassword" class="w-full border px-3 py-2 rounded bg-gray-100" readonly>
                             </div>
 
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700">Staff Instansi</label>
+                                <select name="id_instansi" id="editInstansi" class="w-full px-3 py-2 border border-gray-300 rounded" readonly>
+                                    <?php
+                                        foreach($db->tampil_instansi() as $x){
+                                            echo '<option value="'.$x['id_instansi'].'">'.$x['nama_instansi'].'</option>';
+                                        ?>
+                                        <?php
+                                        }
+                                        ?>
+                                </select>
+                            </div>
+
                             <!-- Checkbox Reset Password -->
                             <div class="mb-4 flex items-center">
                                 <input type="checkbox" name="reset_password" id="resetPasswordCheckbox" class="mr-2">
@@ -583,8 +617,8 @@
                             </div>
 
                             <div class="flex justify-end">
-                                <button type="button" onclick="closePopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
-                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                                <button type="submit" name="delete" value="1" class="bg-red-500 text-white px-4 py-2 rounded mr-2 hover:bg-red-600">Delete</button>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
                             </div>
                         </form>
                     </div>
@@ -617,14 +651,15 @@
         <script>
             
              // Fungsi untuk menampilkan popup dan mengisi data yang benar
-             function openEditPopup(userId, nama, nomorInduk, nomorTelepon, email, password) {
+             function openEditPopup(userId, nama, nomorInduk, nomorTelepon, email, password, id_instansi) {
                 // Debugging: Log each parameter to check if values are correct
                 console.log("User ID:", userId);
                 console.log("Nama:", nama);
                 console.log("Nomor Induk:", nomorInduk);
                 console.log("Nomor Telepon:", nomorTelepon);
                 console.log("Email:", email);   // Pastikan ini berisi email
-                console.log("Password:", password); // Pastikan ini berisi password
+                console.log("Password:", password); 
+                console.log("Staff Instansi:", id_instansi);// Pastikan ini berisi password
 
                 // Set each input field with the corresponding value
                 document.getElementById('editUserId').value = userId;
@@ -633,6 +668,7 @@
                 document.getElementById('editNomorTelepon').value = nomorTelepon;
                 document.getElementById('editEmail').value = email;
                 document.getElementById('editPassword').value = password;
+                document.getElementById('editInstansi').value = id_instansi;
 
                 // Display the popup
                 document.getElementById('editPopup').classList.remove('hidden');

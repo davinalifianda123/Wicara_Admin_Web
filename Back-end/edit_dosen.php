@@ -1,32 +1,42 @@
 <?php
-include 'config.php'; // Include konfigurasi database
+include 'config.php'; // Include database configuration
 
 $id_user = $_POST['id_user'];
 $nama = $_POST['nama'];
 $nomor_induk = $_POST['nomor_induk'];
 $nomor_telepon = $_POST['nomor_telepon'];
+$id_instansi = $_POST['id_instansi'];
 
-// Cek apakah password perlu di-reset
-if (isset($_POST['reset_password'])) {
-    // Set password default menjadi "polines123*" sesuai NIM pengguna
-    $default_password = "Polines123*";
-
-    // Query untuk update data dengan reset password
-    $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, password=? WHERE id_user=?";
+// Check if the delete action is triggered
+if (isset($_POST['delete'])) {
+    // Prepare delete query
+    $query = "DELETE FROM user WHERE id_user=?";
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("ssssi", $nama, $nomor_induk, $nomor_telepon, $default_password, $id_user);
+    $stmt->bind_param("i", $id_user);
 } else {
-    // Query untuk update data tanpa reset password
-    $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=? WHERE id_user=?";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("sssi", $nama, $nomor_induk, $nomor_telepon, $id_user);
+    // Check if password needs to be reset
+    if (isset($_POST['reset_password'])) {
+        // Set default password to "Polines123*"
+        $default_password = "Polines123*";
+
+        // Query to update data with password reset
+        $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, password=?, id_instansi=? WHERE id_user=?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("sssssi", $nama, $nomor_induk, $nomor_telepon, $default_password, $id_instansi, $id_user);
+    } else {
+        // Query to update data without password reset
+        $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, id_instansi=? WHERE id_user=?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("ssssi", $nama, $nomor_induk, $nomor_telepon, $id_instansi, $id_user);
+    }
 }
 
+// Execute the query
 $stmt->execute();
 $stmt->close();
 $mysqli->close();
 
-// Redirect ke halaman dosen.php
+// Redirect to dosen.php page
 header("Location: ../dosen.php");
-exit(); // Pastikan untuk mengakhiri skrip setelah redirect
+exit(); // Ensure to end the script after redirect
 ?>
