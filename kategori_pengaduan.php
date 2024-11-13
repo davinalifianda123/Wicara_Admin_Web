@@ -28,14 +28,23 @@
     
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'delete') {
       $id_jenis_pengaduan = $_POST['id_jenis_pengaduan'];
+      
+      // Check if the ID is provided
       if (!$id_jenis_pengaduan) {
           echo "ID tidak ditemukan!";
           exit;
       }
-      $db->hapus_jenis_pengaduan($id_jenis_pengaduan);
-      header("Location: kategori_pengaduan.php");
-      exit;
-    }
+  
+      $result = $db->hapus_jenis_pengaduan($id_jenis_pengaduan);
+  
+      if ($result) {
+          header("Location: kategori_pengaduan.php");
+          exit;
+      } else {
+          echo "<script>alert('Kategori ini tidak dapat dihapus karena sudah digunakan dalam pengaduan.'); window.location.href='kategori_pengaduan.php';</script>";
+          exit;
+      }
+    }  
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
       $nama_jenis_pengaduan = $_POST['nama_jenis_pengaduan'];
