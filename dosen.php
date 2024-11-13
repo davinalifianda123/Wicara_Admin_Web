@@ -41,7 +41,15 @@
     $lastUpdate = $row['last_update'];
     $totalDosen = $row['total_dosen'];
 
+    $allUsersQuery = "SELECT * FROM user WHERE role = 2";
+    $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
+    $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
+
 ?>
+
+<script>
+    const allUsers = <?php echo json_encode($allUsers); ?>;
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -647,8 +655,8 @@
         <!-- DIV CONTENT -->
         <script>
             
-             // Fungsi untuk menampilkan popup dan mengisi data yang benar
-             function openEditPopup(userId, nama, nomorInduk, nomorTelepon, email, password, id_instansi) {
+            // Fungsi untuk menampilkan popup dan mengisi data yang benar
+            function openEditPopup(userId, nama, nomorInduk, nomorTelepon, email, password, id_instansi) {
                 // Debugging: Log each parameter to check if values are correct
                 console.log("User ID:", userId);
                 console.log("Nama:", nama);
@@ -689,36 +697,69 @@
                     searchInput.setAttribute("disabled", "true");
                 }
             }
-            // Buat Searching
+
             function searchTable() {
                 const searchInput = document.getElementById('default-search').value.toLowerCase();
-                const tableRows = document.querySelectorAll('table tbody tr');
-                let visibleRowIndex = 0; // Initialize a visible row index
+                const tableBody = document.querySelector('table tbody');
 
-                tableRows.forEach(row => {
-                    const cells = row.getElementsByTagName('td');
-                    let found = false;
+                // Jika input pencarian kosong, tampilkan data asli dari halaman saat ini
+                if (searchInput.trim() === '') {
+                    // Ambil data asli yang sesuai dengan halaman saat ini
+                    tableBody.innerHTML = '';
+                    currentPageData.forEach((user, index) => {
+                        const row = createTableRow(user, index);
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                    return;
+                }
 
-                    for (let i = 0; i < cells.length; i++) {
-                        const cellText = cells[i].innerText.toLowerCase();
-                        if (cellText.includes(searchInput)) {
-                            found = true;
-                            break;
-                        }
-                    }
+                // Kosongkan tabel sebelum menampilkan data baru
+                tableBody.innerHTML = '';
 
-                    // Show or hide the row based on the search results
-                    if (found) {
-                        row.style.display = ''; // Show the row
+                // Lakukan pencarian di semua data
+                let visibleRowIndex = 0;
+                allUsers.forEach((user, index) => {
+                    const userString = `${user.nama} ${user.nomor_induk} ${user.nomor_telepon}`.toLowerCase();
+                    if (userString.includes(searchInput)) {
+                        const row = createTableRow(user, visibleRowIndex);
+                        tableBody.insertAdjacentHTML('beforeend', row);
                         visibleRowIndex++;
-
-                        // Update the background color based on the visible index
-                        row.className = (visibleRowIndex % 2 === 0) ? 'bg-white border-b' : 'bg-gray-100 border-b';
-                    } else {
-                        row.style.display = 'none'; // Hide the row
                     }
                 });
             }
+
+            // Menyimpan data asli dari halaman saat ini
+            const currentPageData = <?php echo json_encode($usersToShow); ?>;
+
+            // Mencegah di enter pada search
+            document.getElementById('search-form').addEventListener('submit', function(event) {
+                event.preventDefault(); // Mencegah submit form saat Enter ditekan
+            });
+
+            // Fungsi untuk membuat baris tabel
+            function createTableRow(user, index) {
+                return `
+                    <tr class="border-b">
+                        <th class="text-center w-10">${index + 1}</th>
+                        <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="./Back-end${user.image || '/foto-profile/default-profile.png'}">
+                        </td>
+                        <td class="px-4 py-2" style="height: 3rem;">
+                            <span class="text-base font-semibold text-blue-950">${user.nama}</span><br>
+                            <span class="text-sm text-gray-800 font-medium">NIM: ${user.nomor_induk}</span><br>
+                            <span class="text-sm text-gray-600">${user.nomor_telepon}</span>
+                        </td>
+                        <td class="py-2 px-6 text-right">
+                            <button 
+                                class="text-blue-500 hover:underline"
+                                onclick="openEditPopup('${user.id_user}', '${user.nama}', '${user.nomor_induk}', '${user.nomor_telepon}', '${user.email}', '${user.password}')">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+
      
             function applyRowAlternatingColors() {
                  let table = document.getElementById('student-table');
