@@ -489,7 +489,7 @@
                               </div>
                             </div>
                         
-                            <!-- Rating Stars -->
+                            <!-- Rating Stars User-->
                             <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
                                 <?php
                                 $skala_bintang = $x['skala_bintang']; 
@@ -510,11 +510,11 @@
                           </article>
                           <div>
                             <p class="mt-2 text-start text-xs font-normal text-gray-500">
-                                <span id="comment-short"><?php echo $x['isi_komentar']; ?></span>
-                                <span id="comment-full" class="hidden"></span>
-                                <button id="show-more" class="text-blue-500" style="display: none;">Selengkapnya</button>
+                              <span class="comment-short"><?php echo $x['isi_komentar']; ?></span>
+                              <span class="comment-full hidden"></span>
+                              <button class="show-more text-blue-500" style="display: none;">Selengkapnya</button>
                             </p>
-                        </div>
+                          </div>
                         </div>
                         <?php
                           }
@@ -694,33 +694,36 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-        </script>
-        
-        <script>
+          
+          //Funsi komentar ulasan  
           document.addEventListener("DOMContentLoaded", () => {
-              const commentShort = document.getElementById("comment-short");
-              const commentFull = document.getElementById("comment-full");
-              const showMoreButton = document.getElementById("show-more");
-              const maxChars = 10;
+            const comments = document.querySelectorAll(".comment-short");
+            const fullComments = document.querySelectorAll(".comment-full");
+            const showMoreButtons = document.querySelectorAll(".show-more");
+            const maxChars = 100;
 
-              const fullCommentText = commentShort.textContent;
+            comments.forEach((commentShort, index) => {
+                const fullCommentText = commentShort.textContent;
+                const commentFull = fullComments[index];
+                const showMoreButton = showMoreButtons[index];
 
-              if (fullCommentText.length > maxChars) {
-                  commentShort.textContent = fullCommentText.slice(0, maxChars) + "...";
-                  commentFull.textContent = fullCommentText;
-                  
-                  showMoreButton.style.display = "inline";
-                  showMoreButton.addEventListener("click", () => {
-                      commentShort.classList.toggle("hidden");
-                      commentFull.classList.toggle("hidden");
-                      showMoreButton.textContent = commentShort.classList.contains("hidden") ? "Sembunyikan" : "Selengkapnya";
-                  });
-              } else {
-                  commentShort.textContent = fullCommentText; 
-                  showMoreButton.style.display = "none";
-                  commentFull.textContent = "";
-              }
-          });
+                if (fullCommentText.length > maxChars) {
+                    commentShort.textContent = fullCommentText.slice(0, maxChars) + "...";
+                    commentFull.textContent = fullCommentText;
+
+                    showMoreButton.style.display = "inline";
+                    showMoreButton.addEventListener("click", () => {
+                        commentShort.classList.toggle("hidden");
+                        commentFull.classList.toggle("hidden");
+                        showMoreButton.textContent = commentShort.classList.contains("hidden") ? "Sembunyikan" : "Selengkapnya";
+                    });
+                } else {
+                    commentShort.textContent = fullCommentText; 
+                    showMoreButton.style.display = "none";
+                    commentFull.textContent = "";
+                }
+            });
+        });
         </script>
 
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
