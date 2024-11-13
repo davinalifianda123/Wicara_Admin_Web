@@ -458,16 +458,13 @@
                             </div>
                             <div class="mb-4">
                                 <label class="block text-gray-700 text-sm font-bold mb-2">Staff Instansi</label>
-                                <select name="id_instansi" id="id_instansi" class="w-full px-3 py-2 border border-gray-300 rounded">
-                                    <option value="">
+                                <select name="id_instansi" id="id_instansi" class="w-full px-3 py-2 border border-gray-300 rounded" required>
+                                    <option value="">Pilih Instansi</option>
                                     <?php
-                                        foreach($db->tampil_instansi() as $x){
-                                            echo '<option value="'.$x['id_instansi'].'">'.$x['nama_instansi'].'</option>';
-                                        ?>
-                                        <?php
+                                        foreach ($db->tampil_instansi() as $x) {
+                                            echo '<option value="' . $x['id_instansi'] . '">' . $x['nama_instansi'] . '</option>';
                                         }
-                                        ?>
-                                    </option>
+                                    ?>
                                 </select>
                             </div>
                             <div class="flex justify-end">
