@@ -38,6 +38,17 @@
 
     // Start numbering from the current offset
     $no = $offset + 1;
+
+    $allUsersQuery = "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
+                        LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+                        LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
+                        INNER JOIN user c ON c.id_user = a.id_user
+                        LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
+                        LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
+                        LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
+                        WHERE a.id_jenis_kejadian = 2";
+    $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
+    $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -410,14 +421,14 @@
                             <li class="me-2">
                                 <a href="?status=dibatalkan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="dibatalkan">Dibatalkan</a>
                             </li>
-                            <form class="flex-grow mx-auto">
+                            <form id="search-form" class="flex-grow mx-auto">
                                 <div class="relative top-2">
                                     <div class="absolute top-2.5 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                         </svg>
                                     </div>
-                                    <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchTable()" required />
+                                    <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required onkeyup="searchTable()"/>
                                 </div>
                             </form>
                         </ul>
@@ -643,32 +654,101 @@
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
             // Search Table
+            const allUsers = <?php echo json_encode($allUsers); ?>;
+
+            // Fungsi untuk mencari data di tabel
             function searchTable() {
                 const searchInput = document.getElementById('default-search').value.toLowerCase();
-                const tableRows = document.querySelectorAll('table tbody tr');
-                let visibleRowIndex = 0; // Initialize a visible row index
+                const tableBody = document.querySelector('table tbody');
 
-                tableRows.forEach(row => {
-                    const cells = row.getElementsByTagName('td');
-                    let found = false;
+                // Jika input pencarian kosong, tampilkan data asli dari halaman saat ini
+                if (searchInput.trim() === '') {
+                    tableBody.innerHTML = '';
+                    currentPageData.forEach((user, index) => {
+                        const row = createTableRow(user, index);
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                    return;
+                }
 
-                    for (let i = 0; i < cells.length; i++) {
-                        const cellText = cells[i].innerText.toLowerCase();
-                        if (cellText.includes(searchInput)) {
-                            found = true;
-                            break;
-                        }
-                    }
+                // Kosongkan tabel sebelum menampilkan data baru
+                tableBody.innerHTML = '';
 
-                    // Show or hide the row based on the search results
-                    if (found) {
-                        row.style.display = ''; // Show the row
+                // Lakukan pencarian di semua data
+                let visibleRowIndex = 0;
+                allUsers.forEach((user, index) => {
+                    const userString = `${user.id_kejadian} ${user.judul} ${user.tanggal} ${user.nama_jenis_pengaduan} ${user.deskripsi} ${user.nama_status_pengaduan}`.toLowerCase();
+                    if (userString.includes(searchInput)) {
+                        const row = createTableRow(user, visibleRowIndex);
+                        tableBody.insertAdjacentHTML('beforeend', row);
                         visibleRowIndex++;
-                    } else {
-                        row.style.display = 'none'; // Hide the row
                     }
                 });
             }
+
+            // Simpan data asli dari halaman saat ini
+            const currentPageData = <?php echo json_encode($KejadianToShow); ?>;
+
+            // Mencegah form submit dengan Enter
+            document.getElementById('search-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+            });
+
+            // Fungsi untuk membuat baris tabel
+            function createTableRow(user, index) {
+                // Fungsi untuk menghindari error saat mengakses properti yang null atau undefined
+                function safeToLowerCase(value) {
+                    return value ? value.toLowerCase() : '';
+                }
+
+                // Default value for status
+                const statusClass = {
+                    "Diajukan": "bg-gray-100 text-gray-500",
+                    "Diproses": "bg-yellow-100 text-yellow-400",
+                    "Selesai": "bg-green-200 text-green-600",
+                    "Ditolak": "bg-red-200 text-red-600",
+                    "Dibatalkan": "bg-pink-100 text-pink-500"
+                };
+
+                const statusColorClass = statusClass[user.nama_status_pengaduan] || "bg-gray-100 text-gray-500";
+
+                return `
+                    <tr class="bg-white border-b">
+                        <th scope="row" class="px-3 py-4">${index + 1}</th>
+                        <td class="px-6 py-4">${user.id_kejadian || ''}</td>
+                        <td class="px-6 py-4">${user.judul || ''}</td>
+                        <td class="px-6 py-4">${user.tanggal || ''}</td>
+                        <td class="px-6 py-4 text-center">${user.nama_jenis_pengaduan || ''}</td>
+                        <td class="px-6 py-4">${user.deskripsi ? user.deskripsi.substring(0, 30) + '...' : ''}</td>
+                        <td class="">
+                            <span class="${statusColorClass} text-xs font-medium px-3 py-1 rounded">${user.nama_status_pengaduan || ''}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button 
+                                id="updateProductButton" 
+                                data-modal-target="updateProductModal" 
+                                data-modal-toggle="updateProductModal" 
+                                class="inline text-blue-600 hover:underline font-medium text-sm" 
+                                type="button"
+                                data-id="${user.id_kejadian || ''}"
+                                data-user="${user.nama || ''}"
+                                data-judul="${user.judul || ''}"
+                                data-kategori="${user.nama_jenis_pengaduan || ''}"
+                                data-tanggal="${user.tanggal || ''}"
+                                data-status="${user.nama_status_pengaduan || ''}"
+                                data-lokasi="${user.lokasi || ''}"
+                                data-lampiran="${user.lampiran || ''}"
+                                data-deskripsi="${user.deskripsi || ''}"
+                                data-instansi="${user.nama_instansi || ''}">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+
+
 
             const notifications = [
                 { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
@@ -810,10 +890,6 @@
                 reader.readAsDataURL(event.target.files[0]);
             }
 
-            // Fungsi untuk menampilkan modal update product
-            document.addEventListener("DOMContentLoaded", function(event) {
-                document.getElementById('updateProductButton').click();
-            });
 
             // Fungsi untuk menampilkan modal update product
             document.addEventListener('DOMContentLoaded', function() {

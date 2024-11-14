@@ -465,7 +465,7 @@
                 </div>
                 <!-- TABEL -->
                 <table class="w-full">
-                <thead class="text-[#858585] text-xs bg-gray-50">
+                    <thead class="text-[#858585] text-xs bg-gray-50">
                         <tr>
                             <th scope="col" class="text-center px-2.5 py-2 font-light">
                                 No
