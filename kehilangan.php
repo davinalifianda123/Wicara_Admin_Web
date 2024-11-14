@@ -39,6 +39,16 @@
     // Start numbering from the current offset
     $no = $offset + 1;
 
+    $allUsersQuery = "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
+                        LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+                        LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
+                        INNER JOIN user c ON c.id_user = a.id_user
+                        LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
+                        LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
+                        LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
+                        WHERE a.id_jenis_kejadian = 1";
+    $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
+    $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -408,7 +418,7 @@
                             <li class="me-2">
                                 <a href="?status=hilang" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="hilang">Hilang</a>
                             </li>
-                            <form class="flex-grow mx-auto">
+                            <form id="search-form" class="flex-grow mx-auto">
                                 <div class="relative top-2">
                                     <div class="absolute top-2.5 start-0 flex items-center ps-3 pointer-events-none">
                                         <svg class="w-4 h-4 text-gray-500 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -444,9 +454,6 @@
                             </th>
                             <th scope="col" class="px-6 py-2 font-light">
                                 Status
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
-                                Tanggal Kadaluwarsa
                             </th>
                             <th scope="col" class="px-6 py-2 font-light">
                                 <span class="sr-only">Edit</span>
@@ -505,21 +512,9 @@
                                         }
                                     ?>
                                 </td>
-                                <td class="px-6 py-4 text-center">
-                                    <?php echo $x['tanggal_kadaluwarsa']; ?>
-                                </td>
                                 <td class="px-6 py-4 text-right">
-                                    <button id="updateProductButton" data-modal-target="updateProductModal" data-modal-toggle="updateProductModal" class="inline text-blue-600 hover:underline font-medium text-sm" type="button" 
-                                        data-id="<?php echo $x['id_kejadian']; ?>"
-                                        data-user="<?php echo $x['nama']; ?>"
-                                        data-judul="<?php echo $x['judul']; ?>"
-                                        data-jenis="<?php echo $x['jenis_barang']; ?>"
-                                        data-tanggal="<?php echo $x['tanggal']; ?>"
-                                        data-status="<?php echo $x['nama_status_kehilangan']; ?>"
-                                        data-lokasi="<?php echo $x['lokasi']; ?>"
-                                        data-tanggal-kadaluwarsa="<?php echo $x['tanggal_kadaluwarsa']; ?>"
-                                        data-lampiran="<?php echo $x['lampiran']; ?>"
-                                        data-deskripsi="<?php echo $x['deskripsi']; ?>">
+                                    <button id="updateProductButton" class="inline text-blue-600 hover:underline font-medium text-sm" type="button" 
+                                        onclick="openEditPopup('<?php echo $x['id_kejadian']; ?>', '<?php echo $x['nama']; ?>', '<?php echo $x['judul']; ?>', '<?php echo $x['jenis_barang']; ?>', '<?php echo $x['tanggal']; ?>', '<?php echo $x['nama_status_kehilangan']; ?>', '<?php echo $x['lokasi']; ?>', '<?php echo $x['tanggal_kadaluwarsa']; ?>', '<?php echo $x['deskripsi']; ?>', '<?php echo $x['lampiran']; ?>')">
                                         Edit
                                     </button>
                                 </td>
@@ -558,7 +553,7 @@
 
 
         <!-- Main modal -->
-        <div id="updateProductModal" tabindex="-1" aria-hidden="true" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:min-h-screen">
+        <div id="updateProductModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:min-h-screen">
             <div class="relative p-4 mx-4 w-full max-w-2xl h-auto md:min-h-screen">
                 <!-- Modal content -->
                 <div class="relative p-4 bg-white rounded-lg overflow-y-auto max-h-screen shadow sm:p-5">
@@ -567,7 +562,7 @@
                         <h3 class="text-lg font-semibold text-gray-900">
                             Detail Laporan
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="updateProductModal">
+                        <button onclick="closePopup()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="updateProductModal">
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             <span class="sr-only">Close modal</span>
                         </button>
@@ -640,31 +635,163 @@
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
             // Search Table
-            function searchTable() {
-                const searchInput = document.getElementById('default-search').value.toLowerCase();
-                const tableRows = document.querySelectorAll('table tbody tr');
-                let visibleRowIndex = 0; // Initialize a visible row index
+            const allUsers = <?php echo json_encode($allUsers); ?>;
 
-                tableRows.forEach(row => {
-                    const cells = row.getElementsByTagName('td');
-                    let found = false;
+            function openEditPopup(id_kejadian, nama, judul, jenis_barang, tanggal, nama_status_kehilangan, lokasi, tanggal_kadaluwarsa, deskripsi, lampiran) {
+                // Set each input field with the corresponding value
+                document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id_kejadian;
+                document.querySelector('#updateProductModal input[name="user"]').value = nama;
+                document.querySelector('#updateProductModal input[name="judul"]').value = judul;
+                document.querySelector('#updateProductModal input[name="jenis_barang"]').value = jenis_barang;
+                document.querySelector('#updateProductModal input[name="tanggal"]').value = tanggal;
+                document.querySelector('#updateProductModal input[name="status"]').value = nama_status_kehilangan;
+                document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
+                document.querySelector('#updateProductModal input[name="tanggal_kadaluwarsa"]').value = tanggal_kadaluwarsa;
+                const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
+                if (deskripsiField) deskripsiField.value = deskripsi;
 
-                    for (let i = 0; i < cells.length; i++) {
-                        const cellText = cells[i].innerText.toLowerCase();
-                        if (cellText.includes(searchInput)) {
-                            found = true;
-                            break;
+                const lampiranField = document.querySelector('#updateProductModal img[id="lampiran"]');
+                if (lampiranField) {
+                    lampiranField.src = lampiran ? `./Back-end/foto-kehilangan/${lampiran}` : "./assets/default-image.png";
+                }
+
+                // Show or hide buttons based on the status
+                // Show or hide buttons based on the status
+                const acceptButton = document.getElementById('acceptButton');
+                const deleteButton = document.getElementById('deleteButton');
+
+                if (nama_status_kehilangan === 'Diajukan') {
+                    // Show "Terima" buttons, hide "Delete"
+                    acceptButton.classList.remove('hidden');
+                    deleteButton.classList.add('hidden');
+                } else {
+                    // Show "Delete" button, hide "Terima"
+                    acceptButton.classList.add('hidden');
+                    deleteButton.classList.remove('hidden');
+                }
+
+                // Display the popup
+                document.getElementById('updateProductModal').classList.remove('hidden');
+                document.getElementById('updateProductModal').classList.add('flex');
+
+                
+                // Mengambil id kejadian dari modal
+                const getIdKejadian = () => document.querySelector('#updateProductModal input[name="id_kejadian"]').value;
+
+                // Fungsi AJAX untuk mengirim data
+                function sendAction(action) {
+                    const idKejadian = getIdKejadian();
+                    fetch('Back-end/update_status_kehilangan.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `id_kejadian=${idKejadian}&action=${action}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert(data.message);
+                            location.reload(); // Refresh halaman setelah aksi berhasil
+                        } else {
+                            alert(data.message);
                         }
-                    }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
 
-                    // Show or hide the row based on the search results
-                    if (found) {
-                        row.style.display = ''; // Show the row
-                        visibleRowIndex++;
-                    } else {
-                        row.style.display = 'none'; // Hide the row
+                // Event listeners untuk tombol aksi
+                acceptButton.addEventListener('click', () => sendAction('terima'));
+                deleteButton.addEventListener('click', () => {
+                    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                        sendAction('delete');
                     }
                 });
+            }
+
+            function closePopup() {
+                document.getElementById('updateProductModal').classList.add('hidden');
+                document.getElementById('updateProductModal').classList.remove('flex');
+            }
+
+
+            // Fungsi untuk mencari data di tabel
+            function searchTable() {
+                const searchInput = document.getElementById('default-search').value.toLowerCase();
+                const tableBody = document.querySelector('table tbody');
+
+                // Jika input pencarian kosong, tampilkan data asli dari halaman saat ini
+                if (searchInput.trim() === '') {
+                    tableBody.innerHTML = '';
+                    currentPageData.forEach((user, index) => {
+                        const row = createTableRow(user, index);
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                    return;
+                }
+
+                // Kosongkan tabel sebelum menampilkan data baru
+                tableBody.innerHTML = '';
+
+                // Lakukan pencarian di semua data
+                let visibleRowIndex = 0;
+                allUsers.forEach((user, index) => {
+                    const userString = `${user.id_kejadian} ${user.judul} ${user.tanggal} ${user.jenis_barang} ${user.deskripsi} ${user.nama_status_kehilangan}`.toLowerCase();
+                    if (userString.includes(searchInput)) {
+                        const row = createTableRow(user, visibleRowIndex);
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                        visibleRowIndex++;
+                    }
+                });
+            }
+
+            // Simpan data asli dari halaman saat ini
+            const currentPageData = <?php echo json_encode($kehilanganToShow); ?>;
+
+            // Mencegah form submit dengan Enter
+            document.getElementById('search-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+            });
+
+            // Fungsi untuk membuat baris tabel
+            function createTableRow(user, index) {
+                // Fungsi untuk menghindari error saat mengakses properti yang null atau undefined
+                function safeToLowerCase(value) {
+                    return value ? value.toLowerCase() : '';
+                }
+
+                // Default value for status
+                const statusClass = {
+                    "Diajukan": "bg-gray-100 text-gray-500",
+                    "Belum Ditemukan": "bg-yellow-100 text-yellow-400",
+                    "Ditemukan": "bg-green-200 text-green-600",
+                    "Hilang": "bg-red-200 text-red-600",
+                };
+
+                const statusColorClass = statusClass[user.nama_status_kehilangan] || "bg-gray-100 text-gray-500";
+
+                return `
+                    <tr class="bg-white border-b">
+                        <th scope="row" class="px-3 py-4">${index + 1}</th>
+                        <td class="px-6 py-4">${user.id_kejadian || ''}</td>
+                        <td class="px-6 py-4">${user.judul || ''}</td>
+                        <td class="px-6 py-4">${user.tanggal || ''}</td>
+                        <td class="px-6 py-4 text-center">${user.jenis_barang || ''}</td>
+                        <td class="px-6 py-4">${user.deskripsi ? user.deskripsi.substring(0, 30) + '...' : ''}</td>
+                        <td class="">
+                            <span class="${statusColorClass} text-xs font-medium px-3 py-1 rounded">${user.nama_status_kehilangan || ''}</span>
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            <button 
+                                id="updateProductButton" 
+                                class="inline text-blue-600 hover:underline font-medium text-sm" 
+                                type="button"
+                                onclick="openEditPopup('${user.id_kejadian || ''}', '${user.nama || ''}', '${user.judul || ''}', '${user.jenis_barang || ''}', '${user.tanggal || ''}', '${user.nama_status_kehilangan || ''}', '${user.lokasi || ''}', '${user.tanggal_kadaluwarsa || ''}', '${user.deskripsi || ''}', '${user.lampiran || ''}')">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                `;
             }
 
             const notifications = [
@@ -806,99 +933,6 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-
-            // Fungsi untuk menampilkan modal update product
-            document.addEventListener("DOMContentLoaded", function(event) {
-                document.getElementById('updateProductButton').click();
-            });
-
-            // Fungsi untuk menampilkan modal update product
-            document.addEventListener('DOMContentLoaded', function() {
-                const updateButtons = document.querySelectorAll('#updateProductButton');
-                
-                updateButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const id = button.getAttribute('data-id');
-                        const user = button.getAttribute('data-user');
-                        const judul = button.getAttribute('data-judul');
-                        const jenis_barang = button.getAttribute('data-jenis');
-                        const tanggal = button.getAttribute('data-tanggal');
-                        const status = button.getAttribute('data-status').toLowerCase();
-                        const lokasi = button.getAttribute('data-lokasi');
-                        const tanggal_kadaluwarsa = button.getAttribute('data-tanggal-kadaluwarsa');
-                        const lampiran = button.getAttribute('data-lampiran');
-                        const deskripsi = button.getAttribute('data-deskripsi');
-
-                        // Populate modal fields
-                        document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id;
-                        document.querySelector('#updateProductModal input[name="user"]').value = user;
-                        document.querySelector('#updateProductModal input[name="judul"]').value = judul;
-                        document.querySelector('#updateProductModal input[name="jenis_barang"]').value = jenis_barang;
-                        document.querySelector('#updateProductModal input[name="tanggal"]').value = tanggal;
-                        document.querySelector('#updateProductModal input[name="status"]').value = status;
-                        document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
-                        document.querySelector('#updateProductModal input[name="tanggal_kadaluwarsa"]').value = tanggal_kadaluwarsa;
-
-                        const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
-                        if (deskripsiField) deskripsiField.value = deskripsi;
-
-                        const lampiranField = document.querySelector('#updateProductModal img[id="lampiran"]');
-                        if (lampiranField) {
-                            lampiranField.src = lampiran ? `./Back-end/foto-kehilangan/${lampiran}` : "./assets/default-image.png";
-                        }
-
-                        // Show or hide buttons based on the status
-                        const acceptButton = document.getElementById('acceptButton');
-                        const deleteButton = document.getElementById('deleteButton');
-
-                        if (status === 'diajukan') {
-                            // Show "Terima" buttons, hide "Delete"
-                            acceptButton.classList.remove('hidden');
-                            deleteButton.classList.add('hidden');
-                        } else {
-                            // Show "Delete" button, hide "Terima"
-                            acceptButton.classList.add('hidden');
-                            deleteButton.classList.remove('hidden');
-                        }
-                    });
-                });
-
-                const acceptButton = document.getElementById('acceptButton');
-                const deleteButton = document.getElementById('deleteButton');
-                
-                // Mengambil id kejadian dari modal
-                const getIdKejadian = () => document.querySelector('#updateProductModal input[name="id_kejadian"]').value;
-
-                // Fungsi AJAX untuk mengirim data
-                function sendAction(action) {
-                    const idKejadian = getIdKejadian();
-                    fetch('Back-end/update_status_kehilangan.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: `id_kejadian=${idKejadian}&action=${action}`
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            alert(data.message);
-                            location.reload(); // Refresh halaman setelah aksi berhasil
-                        } else {
-                            alert(data.message);
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-                }
-
-                // Event listeners untuk tombol aksi
-                acceptButton.addEventListener('click', () => sendAction('terima'));
-                deleteButton.addEventListener('click', () => {
-                    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                        sendAction('delete');
-                    }
-                });
-            });
 
 
             // Fungsi untuk menampilkan tab status
