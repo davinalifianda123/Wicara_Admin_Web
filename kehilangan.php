@@ -49,6 +49,63 @@
                         WHERE a.id_jenis_kejadian = 1";
     $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
     $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
+
+    // php notif
+
+    // note tambahan: ini cuman masih di page kehilangan, dan kalo di copas satu2 kayaknya bakal pusing banget.
+    // biar gak repetisi banyak aku udah pernah liat di yt pakek beda file
+    // tapi masih blom nangkep cara nerapinnya. nek kamu dah tau boleh bisa langusng mbok terapin ya pin.
+
+    // Fungsi untuk menghitung waktu relatif
+    function timeAgo($timestamp) {
+        $timeAgo = strtotime($timestamp); // Convert to UNIX timestamp
+        $currentTime = time();
+        $timeDifference = $currentTime - $timeAgo;
+
+        if ($timeDifference < 60) {
+            return $timeDifference . 'm ago'; // Minutes
+        } elseif ($timeDifference < 3600) {
+            return floor($timeDifference / 60) . 'm ago'; // Minutes
+        } elseif ($timeDifference < 86400) {
+            return floor($timeDifference / 3600) . 'h ago'; // Hours
+        } else {
+            return floor($timeDifference / 86400) . 'd ago'; // Days
+        }
+    }
+
+    // Query untuk notifikasi kehilangan
+    $kehilanganQuery = "SELECT id_kejadian, judul, tanggal FROM kejadian WHERE id_jenis_kejadian = 1";
+    $kehilanganResult = mysqli_query($db->koneksi, $kehilanganQuery);
+
+    $kehilanganNotifications = [];
+    while ($row = mysqli_fetch_assoc($kehilanganResult)) {
+        $kehilanganNotifications[] = [
+            'type' => 'kehilangan',
+            'title' => $row['judul'],
+            'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
+            'id' => $row['id_kejadian'],
+        ];
+    }
+
+    // Query untuk notifikasi pengaduan
+    $pengaduanQuery = "SELECT id_kejadian, judul, tanggal FROM kejadian WHERE id_jenis_kejadian = 2";
+    $pengaduanResult = mysqli_query($db->koneksi, $pengaduanQuery);
+
+    $pengaduanNotifications = [];
+    while ($row = mysqli_fetch_assoc($pengaduanResult)) {
+        $pengaduanNotifications[] = [
+            'type' => 'pengaduan',
+            'title' => $row['judul'],
+            'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
+            'id' => $row['id_kejadian'],
+        ];
+    }
+
+    // Gabungkan notifikasi kehilangan dan pengaduan
+    $notifications = array_merge($kehilanganNotifications, $pengaduanNotifications);
+
+    // Encode data notifikasi ke dalam JSON agar dapat digunakan oleh JavaScript
+    $notificationsJSON = json_encode($notifications);
 ?>
 
 <!DOCTYPE html>
@@ -233,10 +290,10 @@
                                     <h1 class="text-center text-xl font-bold flex-1">Notifikasi</h1>
                                 </div>
                                 <div class="flex justify-around border-b border-gray-200 overflow-x-auto">
-                                    <button id="tab-semua" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('semua')">Semua</button>
-                                    <button id="tab-pengaduan" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('pengaduan')">Pengaduan</button>
-                                    <button id="tab-kehilangan" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('kehilangan')">Kehilangan</button>
-                                    <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
+                                    <button id="tab-semua" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('semua')">Semua</button>
+                                    <button id="tab-pengaduan" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('pengaduan')">Pengaduan</button>
+                                    <button id="tab-kehilangan" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('kehilangan')">Kehilangan</button>
+                                    <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('rating')">Rating</button>
                                 </div>
                             </div>
                             <div id="notifications" class="p-4 flex flex-col space-y-2">
@@ -794,15 +851,59 @@
                 `;
             }
 
-            const notifications = [
-                { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=4' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=5' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
-            ];
+            // Ambil notifikasi dari PHP
+            const notifications = <?php echo $notificationsJSON; ?>;
+
+            function populateNotifications(type) {
+                const container = document.getElementById('notifications');
+                container.innerHTML = '';
+
+                const filteredNotifications = type === 'semua'
+                    ? notifications
+                    : notifications.filter(notification => notification.type === type);
+
+                filteredNotifications.forEach(notification => {
+                    const notificationElement = document.createElement('button');
+                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
+                    notificationElement.innerHTML = `
+                        <img src="https://placehold.co/40x40?text=User" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+                        <div class="flex-1">
+                            <h2 class="font-bold">${notification.title}</h2>
+                            <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
+                            ${
+                                notification.type === 'kehilangan'
+                                    ? `
+                                        <div class="flex space-x-2 mt-2">
+                                            <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
+                                            <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
+                                        </div>
+                                    `
+                                    : ''
+                            }
+                        </div>
+                    `;
+
+                    notificationElement.addEventListener('click', () => {
+                        if (notification.type === 'pengaduan') {
+                            window.location.href = `lihat_pengaduan.php?id=${notification.id}`;
+                        } else if (notification.type === 'kehilangan') {
+                            window.location.href = `kehilangan.php?id=${notification.id}`;
+                        }
+                    });
+
+                    container.appendChild(notificationElement);
+                });
+
+                document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+                button.classList.add('text-gray-500');
+                });
+                document.getElementById(`tab-${type}`).classList.add('active');
+                }
+
+            // Initialize with all notifications
+            populateNotifications('semua');
+
 
             document.getElementById('notificationButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
@@ -812,52 +913,51 @@
                 document.getElementById('notificationSidebar').classList.add('translate-x-full');
             });
 
-            function filterNotifications(type) {
-                const container = document.getElementById('notifications');
-                container.innerHTML = '';
+            // function filterNotifications(type) {
+            //     const container = document.getElementById('notifications');
+            //     container.innerHTML = '';
 
-                const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
+            //     const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
 
-                filteredNotifications.forEach(notification => {
-                    const notificationElement = document.createElement('button');
-                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
-                    notificationElement.innerHTML = `
-                        <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
-                        <div class="flex-1">
-                            <h2 class="font-bold">${notification.title}</h2>
-                            <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
-                            ${notification.type === 'rating' ? `<div class="text-yellow-500">${'<i class="fas fa-star"></i>'.repeat(notification.rating)}${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}</div>` : ''}
-                            ${notification.type === 'kehilangan' ? `
-                                <div class="flex space-x-2 mt-2">
-                                    <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
-                                    <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
+            //     filteredNotifications.forEach(notification => {
+            //         const notificationElement = document.createElement('button');
+            //         notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
+            //         notificationElement.innerHTML = `
+            //             <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+            //             <div class="flex-1">
+            //                 <h2 class="font-bold">${notification.title}</h2>
+            //                 <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
+            //                 ${notification.type === 'rating' ? `<div class="text-yellow-500">${'<i class="fas fa-star"></i>'.repeat(notification.rating)}${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}</div>` : ''}
+            //                 ${notification.type === 'kehilangan' ? `
+            //                     <div class="flex space-x-2 mt-2">
+            //                         <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
+            //                         <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
+            //                     </div>
+            //                 ` : ''}
+            //             </div>
+            //         `;
 
-                    // Add click event to navigate based on notification type
-                    notificationElement.addEventListener('click', () => {
-                        if (notification.type === 'pengaduan') {
-                            window.location.href = 'lihat_pengaduan.php';
-                        } else if (notification.type === 'rating') {
-                            window.location.href = 'rating.php';
-                        } else if (notification.type === 'kehilangan') {
-                            window.location.href = 'kehilangan.php'; // Replace with the correct page
-                        }
-                    });
+            //         // Add click event to navigate based on notification type
+            //         notificationElement.addEventListener('click', () => {
+            //             if (notification.type === 'pengaduan') {
+            //                 window.location.href = 'lihat_pengaduan.php';
+            //             } else if (notification.type === 'rating') {
+            //                 window.location.href = 'rating.php';
+            //             } else if (notification.type === 'kehilangan') {
+            //                 window.location.href = 'kehilangan.php'; // Replace with the correct page
+            //             }
+            //         });
 
-                    container.appendChild(notificationElement);
-                });
+            //         container.appendChild(notificationElement);
+            //     });
 
 
-                // Update tab button styles
-                document.querySelectorAll('.tab-button').forEach(button => {
-                    button.classList.remove('active');
-                    button.classList.add('text-gray-500');
-                });
-                document.getElementById(`tab-${type}`).classList.add('active');
-            }
+            //     // Update tab button styles
+            // document.querySelectorAll('.tab-button').forEach(button => {
+            //     button.classList.remove('active');
+            //     button.classList.add('text-gray-500');
+            // });
+            // document.getElementById(`tab-${type}`).classList.add('active');
 
             function showConfirmationDialog(action) {
                 const modal = document.getElementById('confirmationModal');
@@ -873,8 +973,8 @@
                 };
             }
 
-            // Initialize with all notifications
-            filterNotifications('semua');
+            // // Initialize with all notifications
+            // filterNotifications('semua');
 
             // Close the modal when clicking outside of it
             window.onclick = function(event) {
