@@ -51,11 +51,6 @@
     $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 
     // php notif
-
-    // note tambahan: ini cuman masih di page kehilangan, dan kalo di copas satu2 kayaknya bakal pusing banget.
-    // biar gak repetisi banyak aku udah pernah liat di yt pakek beda file
-    // tapi masih blom nangkep cara nerapinnya. nek kamu dah tau boleh bisa langusng mbok terapin ya pin.
-
     // Fungsi untuk menghitung waktu relatif
     function timeAgo($timestamp) {
         $timeAgo = strtotime($timestamp); // Convert to UNIX timestamp
