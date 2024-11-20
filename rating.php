@@ -377,7 +377,7 @@
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                     </svg>
                                 </div>
-                                <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
+                                <input type="search" id="default-searching" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
                             </div>
                         </div>
                       </ul>
@@ -636,7 +636,7 @@
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
             function searchCard() {
-                const searchInput = document.getElementById('default-search').value.toLowerCase(); 
+                const searchInput = document.getElementById('default-searching').value.toLowerCase(); 
                 const cards = document.querySelectorAll('.card'); 
                 let visibleRowIndex = 0;
 
