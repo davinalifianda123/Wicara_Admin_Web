@@ -409,14 +409,16 @@
                             </li>
                             <div class="flex items-center ms-auto gap-2">
                                 <button class="text-sm text-gray-600 px-5 hover:text-blue-600 hover:underline" onclick="openAddModal()"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                        </svg>
+                                <form method="GET" action="">
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                            </svg>
+                                        </div>
+                                        <input type="search" name="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
                                     </div>
-                                    <input type="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" required />
-                                </div>
+                                </form>
                             </div>
                         </ul>
                     </div>
@@ -425,12 +427,16 @@
                       $itemsPerPage = 8;
                       $offset = ($currentPage - 1) * $itemsPerPage;
 
-                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM jenis_pengaduan"; 
+                      $search = isset($_GET['search']) ? $_GET['search'] : '';
+                      $searchQuery = $search ? "WHERE nama_jenis_pengaduan LIKE '%" . mysqli_real_escape_string($db->koneksi, $search) . "%'" : '';
+
+                      
+                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM jenis_pengaduan $searchQuery";
                       $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
                       $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
                       $totalPages = ceil($totalItems / $itemsPerPage);
-
-                      $query = "SELECT * FROM jenis_pengaduan LIMIT $itemsPerPage OFFSET $offset"; 
+                      
+                      $query = "SELECT * FROM jenis_pengaduan $searchQuery LIMIT $itemsPerPage OFFSET $offset";
                       $results = mysqli_query($db->koneksi, $query);
                       ?>
 
@@ -468,21 +474,22 @@
             </div>
 
             <!--Pagenation-->
-            <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
+            <nav aria-label="Page navigation example" class="flex justify-end mt-2">
                 <ul class="inline-flex -space-x-px text-sm">
                     <li>
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>&search=<?php echo urlencode($search); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                         <li>
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                            <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
                     <li>
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>&search=<?php echo urlencode($search); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
                     </li>
                 </ul>
             </nav>
+
 
             <!--Edit Delete MODAL-->
             <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
