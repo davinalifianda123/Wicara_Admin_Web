@@ -420,6 +420,19 @@
                             </div>
                         </ul>
                     </div>
+                    <?php
+                      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                      $itemsPerPage = 8;
+                      $offset = ($currentPage - 1) * $itemsPerPage;
+
+                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM jenis_pengaduan"; 
+                      $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
+                      $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
+                      $totalPages = ceil($totalItems / $itemsPerPage);
+
+                      $query = "SELECT * FROM jenis_pengaduan LIMIT $itemsPerPage OFFSET $offset"; 
+                      $results = mysqli_query($db->koneksi, $query);
+                      ?>
 
                     <!-- JUDUL KOLOM -->
                     <thead class="text-[#858585] text-xs bg-gray-50 text-center">
@@ -433,8 +446,8 @@
                     <!-- ISI KOLOM -->
                     <tbody class="text-center">
                         <?php
-                        $no = 1;
-                        foreach ($db->tampil_jenis_pengaduan() as $x) {
+                        $no = 1 + $offset; 
+                        while ($x = mysqli_fetch_assoc($results)) {
                         ?>
                         <tr class="bg-white border-b">
                             <th scope="row" class="px-6 py-2"><?php echo $no++; ?></th>
@@ -453,6 +466,23 @@
                     </tbody>
                 </table>
             </div>
+
+            <!--Pagenation-->
+            <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
+                <ul class="inline-flex -space-x-px text-sm">
+                    <li>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                    </li>
+                </ul>
+            </nav>
 
             <!--Edit Delete MODAL-->
             <div id="crud-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
