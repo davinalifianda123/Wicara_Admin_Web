@@ -82,6 +82,28 @@
         ];
     }
 
+    // Query untuk notifikasi rating
+    $ratingQuery = "SELECT id_kejadian, judul, tanggal, skala_bintang FROM kejadian WHERE id_jenis_kejadian = 3";
+    // Query untuk notifikasi rating dengan nama user
+    $ratingQuery = "
+    SELECT kejadian.id_kejadian, kejadian.tanggal, kejadian.skala_bintang, user.nama AS user_name
+    FROM kejadian
+    JOIN user ON kejadian.id_user = user.id_user
+    WHERE kejadian.id_jenis_kejadian = 3
+    ";
+    $ratingResult = mysqli_query($db->koneksi, $ratingQuery);
+
+    $ratingNotifications = [];
+    while ($row = mysqli_fetch_assoc($ratingResult)) {
+        $ratingNotifications[] = [
+            'type' => 'rating',
+            'title' => $row['user_name'],
+            'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
+            'id' => $row['id_kejadian'],
+            'rating' => (int)$row['skala_bintang'] // Ambil nilai bintang sebagai integer
+        ];
+    }
+
     // Query untuk notifikasi pengaduan
     $pengaduanQuery = "SELECT id_kejadian, judul, tanggal FROM kejadian WHERE id_jenis_kejadian = 2";
     $pengaduanResult = mysqli_query($db->koneksi, $pengaduanQuery);
@@ -96,8 +118,8 @@
         ];
     }
 
-    // Gabungkan notifikasi kehilangan dan pengaduan
-    $notifications = array_merge($kehilanganNotifications, $pengaduanNotifications);
+    // Gabungkan semua notifikasi
+    $notifications = array_merge($kehilanganNotifications, $pengaduanNotifications, $ratingNotifications);
 
     // Encode data notifikasi ke dalam JSON agar dapat digunakan oleh JavaScript
     $notificationsJSON = json_encode($notifications);
@@ -271,11 +293,21 @@
                     </div>
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
-                        <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
-                            <span class="sr-only">View notifications</span>
-                            <!-- Bell icon -->
-                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>
-                        </button>
+                        <div class="relative">
+                            <button type="button" id="notificationButton" class="relative p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                                <span class="sr-only">View notifications</span>
+                                
+                                <!-- Red dot for notification count -->
+                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900">
+                                    7
+                                </div>
+                                
+                                <!-- Bell icon -->
+                                <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
+                                    <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/>
+                                </svg>
+                            </button>
+                        </div>
                         <div id="notificationSidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 overflow-y-auto">
                             <div class="sticky top-0 bg-white z-10">
                                 <div class="border-b border-gray-200 p-4 flex justify-between items-center">
@@ -866,14 +898,12 @@
                             <h2 class="font-bold">${notification.title}</h2>
                             <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
                             ${
-                                notification.type === 'kehilangan'
-                                    ? `
-                                        <div class="flex space-x-2 mt-2">
-                                            <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
-                                            <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
-                                        </div>
-                                    `
-                                    : ''
+                                notification.type === 'rating'
+                                ? `<div class="text-yellow-500">
+                                    ${'<i class="fas fa-star"></i>'.repeat(notification.rating)}
+                                    ${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}
+                                </div>` // Menampilkan bintang
+                                : ''
                             }
                         </div>
                     `;
@@ -883,6 +913,8 @@
                             window.location.href = `lihat_pengaduan.php?id=${notification.id}`;
                         } else if (notification.type === 'kehilangan') {
                             window.location.href = `kehilangan.php?id=${notification.id}`;
+                        } else if (notification.type === 'rating') {
+                            window.location.href = `rating.php?id=${notification.id}`;
                         }
                     });
 
