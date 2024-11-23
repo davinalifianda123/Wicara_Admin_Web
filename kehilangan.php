@@ -69,7 +69,17 @@
     }
 
     // Query untuk notifikasi kehilangan
-    $kehilanganQuery = "SELECT id_kejadian, judul, tanggal FROM kejadian WHERE id_jenis_kejadian = 1";
+    $kehilanganQuery = "
+        SELECT 
+            kejadian.id_kejadian, 
+            kejadian.judul, 
+            kejadian.tanggal, 
+            kejadian.status_notif,
+            user.image AS user_image
+        FROM kejadian
+        JOIN user ON kejadian.id_user = user.id_user
+        WHERE kejadian.id_jenis_kejadian = 1
+    ";
     $kehilanganResult = mysqli_query($db->koneksi, $kehilanganQuery);
 
     $kehilanganNotifications = [];
@@ -78,7 +88,10 @@
             'type' => 'kehilangan',
             'title' => $row['judul'],
             'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
+            'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
             'id' => $row['id_kejadian'],
+            'image' => $row['user_image'], // Tambahkan gambar pengguna
+            'status_notif' => $row['status_notif'], // Tambahkan status_notif
         ];
     }
 
@@ -86,10 +99,17 @@
     $ratingQuery = "SELECT id_kejadian, judul, tanggal, skala_bintang FROM kejadian WHERE id_jenis_kejadian = 3";
     // Query untuk notifikasi rating dengan nama user
     $ratingQuery = "
-    SELECT kejadian.id_kejadian, kejadian.tanggal, kejadian.skala_bintang, user.nama AS user_name
-    FROM kejadian
-    JOIN user ON kejadian.id_user = user.id_user
-    WHERE kejadian.id_jenis_kejadian = 3
+        SELECT 
+            kejadian.id_kejadian, 
+            kejadian.tanggal, 
+            kejadian.skala_bintang, 
+            instansi.nama_instansi, 
+            kejadian.status_notif,
+            user.image AS user_image
+        FROM kejadian
+        JOIN instansi ON kejadian.id_instansi = instansi.id_instansi
+        JOIN user ON kejadian.id_user = user.id_user
+        WHERE kejadian.id_jenis_kejadian = 3
     ";
     $ratingResult = mysqli_query($db->koneksi, $ratingQuery);
 
@@ -97,15 +117,28 @@
     while ($row = mysqli_fetch_assoc($ratingResult)) {
         $ratingNotifications[] = [
             'type' => 'rating',
-            'title' => $row['user_name'],
+            'title' => $row['nama_instansi'], // Gunakan nama instansi sebagai judul
             'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
+            'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
             'id' => $row['id_kejadian'],
-            'rating' => (int)$row['skala_bintang'] // Ambil nilai bintang sebagai integer
+            'rating' => (int)$row['skala_bintang'], // Ambil nilai bintang sebagai integer
+            'image' => $row['user_image'], // Tambahkan gambar pengguna
+            'status_notif' => $row['status_notif'], // Tambahkan status_notif
         ];
     }
 
     // Query untuk notifikasi pengaduan
-    $pengaduanQuery = "SELECT id_kejadian, judul, tanggal FROM kejadian WHERE id_jenis_kejadian = 2";
+    $pengaduanQuery = "
+        SELECT 
+            kejadian.id_kejadian, 
+            kejadian.judul, 
+            kejadian.tanggal, 
+            user.image AS user_image,
+            kejadian.status_notif
+        FROM kejadian
+        JOIN user ON kejadian.id_user = user.id_user
+        WHERE kejadian.id_jenis_kejadian = 2
+    ";
     $pengaduanResult = mysqli_query($db->koneksi, $pengaduanQuery);
 
     $pengaduanNotifications = [];
@@ -114,7 +147,10 @@
             'type' => 'pengaduan',
             'title' => $row['judul'],
             'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
+            'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
             'id' => $row['id_kejadian'],
+            'image' => $row['user_image'], // Tambahkan gambar pengguna
+            'status_notif' => $row['status_notif'], // Tambahkan status_notif
         ];
     }
 
@@ -135,6 +171,7 @@
         <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet"/>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
         <style>
@@ -158,6 +195,16 @@
                 text-align: left;
             }
             
+            /* .tab-button.bg-gray-800 {
+                background-color: #2d3748; Dark Gray */
+                /* color: white; */
+            /* } */
+
+            /* .tab-button.bg-white {
+                background-color: white;
+                color: black;
+            } */
+
             .tab-button:hover {
                 background-color: #f3f4f6; /* light gray */
             }
@@ -298,7 +345,7 @@
                                 <span class="sr-only">View notifications</span>
                                 
                                 <!-- Red dot for notification count -->
-                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900">
+                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900 hidden">
                                     7
                                 </div>
                                 
@@ -889,11 +936,23 @@
                     ? notifications
                     : notifications.filter(notification => notification.type === type);
 
+                // Urutkan berdasarkan waktu terbaru
+                filteredNotifications.sort((a, b) => new Date(b.raw_time) - new Date(a.raw_time));
+
+                let unreadCount = 0;  // Menyimpan jumlah notifikasi yang belum terbaca
+
                 filteredNotifications.forEach(notification => {
                     const notificationElement = document.createElement('button');
                     notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
+
+                    // Cek status notifikasi
+                    if (notification.status_notif === 'belum terbaca') {
+                        notificationElement.classList.add('bg-gray-800', 'text-white');
+                        unreadCount++;  // Increment jumlah unread notifications
+                    }
+                    
                     notificationElement.innerHTML = `
-                        <img src="https://placehold.co/40x40?text=User" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+                        <img src="${notification.image || './Back-end/foto-profile/default-profile.png'}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
                             <h2 class="font-bold">${notification.title}</h2>
                             <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
@@ -908,6 +967,25 @@
                         </div>
                     `;
 
+                    // // cek jika image kosong
+                    // const userImage = notification.image || './Back-end/foto-profile/default-profile.png'; // Gunakan gambar default jika kosong
+
+                    // notificationElement.innerHTML = `
+                    //     <img src="${userImage}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+                    //     <div class="flex-1">
+                    //         <h2 class="font-bold">${notification.title}</h2>
+                    //         <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
+                    //         ${
+                    //             notification.type === 'rating'
+                    //             ? `<div class="text-yellow-500">
+                    //                 ${'<i class="fas fa-star"></i>'.repeat(notification.rating)}
+                    //                 ${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}
+                    //             </div>`
+                    //             : ''
+                    //         }
+                    //     </div>
+                    // `;
+
                     notificationElement.addEventListener('click', () => {
                         if (notification.type === 'pengaduan') {
                             window.location.href = `lihat_pengaduan.php?id=${notification.id}`;
@@ -916,8 +994,34 @@
                         } else if (notification.type === 'rating') {
                             window.location.href = `rating.php?id=${notification.id}`;
                         }
-                    });
 
+                         // Ubah status warna setelah klik
+                        notificationElement.classList.remove('bg-gray-800', 'text-white');
+                        notificationElement.classList.add('bg-white');
+                        
+                        // Update status di backend menggunakan AJAX
+                        console.log('ID yang dikirim:', notification.id);
+
+                        fetch('./Back-end/update_status_notif.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ id: notification.id }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Response:', data);
+                            if (data.success) {
+                                notificationElement.classList.remove('bg-gray-800', 'text-white');
+                                notificationElement.classList.add('bg-white');
+                            } else {
+                                console.error('Gagal memperbarui status:', data.error);
+                            }
+                        })
+                        .catch(err => console.error('Error:', err));
+                    });
+            
                     container.appendChild(notificationElement);
                 });
 
@@ -926,8 +1030,20 @@
                 button.classList.add('text-gray-500');
                 });
                 document.getElementById(`tab-${type}`).classList.add('active');
+                
+                // Update red dot with unread count
+                const notificationButton = document.getElementById('notificationButton');
+                const redDot = notificationButton.querySelector('.absolute'); // Memilih elemen red dot
+                if (unreadCount > 0) {
+                    redDot.textContent = unreadCount;  // Menampilkan jumlah notifikasi belum terbaca
+                    redDot.classList.remove('hidden');  // Menampilkan red dot jika ada notifikasi
+                } else {
+                    redDot.classList.add('hidden');  // Menyembunyikan red dot jika tidak ada notifikasi
                 }
 
+            }
+
+                
             // Initialize with all notifications
             populateNotifications('semua');
 
