@@ -1,49 +1,73 @@
 <?php
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "wicara";
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "wicara";
 
-    $conn = new mysqli($host, $username, $password, $database);
-    if ($conn->connect_error) 
-    {
-        die("Connection failed: " . $conn->connect_error); 
-    }
+$conn = new mysqli($host, $username, $password, $database);
+if ($conn->connect_error) {
+    die("Unable to connect to the database. Please try again later.");
+}
 
-    $username = $_POST['email'];
-    $password = $_POST['password'];
+$email = $_POST['email'];
+$password = $_POST['password'];
 
-    $sql = "SELECT * FROM user WHERE email ='$username' AND password='$password'";
-    $result = $conn->query($sql);
+// Query ke tabel user
+$stmt_user = $conn->prepare("SELECT * FROM user WHERE email = ?");
+$stmt_user->bind_param("s", $email);
+$stmt_user->execute();
+$result_user = $stmt_user->get_result();
 
-    if ($result->num_rows > 0) 
-    {
-        // Ambil data pengguna
-        $user = $result->fetch_assoc();
+if ($result_user->num_rows > 0) {
+    $user = $result_user->fetch_assoc();
 
-        // Mulai session dan simpan data pengguna
+    // Bandingkan password langsung (plaintext)
+    if ($password === $user['password']) {
         session_start();
-        $_SESSION["email"] = $username;
+        $_SESSION["email"] = $user['email'];
         $_SESSION["role"] = $user['role'];
         $_SESSION['id_user'] = $user['id_user'];
 
         if (isset($_POST['remember'])) {
-            setcookie("email", $username, time() + (15 * 24 * 60 * 60), "/"); // 15 hari
-            setcookie("password", $password, time() + (15 * 24 * 60 * 60), "/"); // 15 hari
+            setcookie("auth_token", bin2hex(random_bytes(16)), time() + (15 * 24 * 60 * 60), "/");
         }
 
-         // Arahkan berdasarkan role
+        // Arahkan berdasarkan role
         if ($user['role'] == 1) {
-            // Role admin
             header("Location: ../Dashboard.php");
         } else {
-            // Role selain admin (misalnya dosen atau mahasiswa)
             header("Location: ../user.php");
         }
-
-    } else {
-        header("Location: ../login.php?login_failed=1");
+        exit();
     }
+}
 
-    $conn->close();
+// Jika tidak ditemukan di tabel user, cek tabel instansi
+$stmt_instansi = $conn->prepare("SELECT * FROM instansi WHERE email_pic = ?");
+$stmt_instansi->bind_param("s", $email);
+$stmt_instansi->execute();
+$result_instansi = $stmt_instansi->get_result();
+
+if ($result_instansi->num_rows > 0) {
+    $instansi = $result_instansi->fetch_assoc();
+
+    // Bandingkan password langsung (plaintext)
+    if ($password === $instansi['password']) {
+        session_start();
+        $_SESSION["email"] = $instansi['email_pic'];
+        $_SESSION['id_instansi'] = $instansi['id_instansi'];
+
+        if (isset($_POST['remember'])) {
+            setcookie("auth_token", bin2hex(random_bytes(16)), time() + (15 * 24 * 60 * 60), "/");
+        }
+
+        // Arahkan ke halaman admin PIC
+        header("Location: ../admin_pic.php");
+        exit();
+    }
+}
+
+// Jika login gagal
+header("Location: ../login.php?login_failed=1");
+$conn->close();
 ?>

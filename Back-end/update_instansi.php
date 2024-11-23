@@ -44,6 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Redirect ke halaman tampilan
-header('Location: ../rating.php');
+// Redirect dinamis ke halaman asal
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $redirect_url = $_SERVER['HTTP_REFERER']; // URL halaman asal
+    header("Location: $redirect_url");
+} else {
+    // Fallback jika HTTP_REFERER tidak tersedia
+    header("Location: ../rating.php");
+}
+exit;
 ?>

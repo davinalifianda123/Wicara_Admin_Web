@@ -15,12 +15,20 @@
             mysqli_query($db->koneksi, $query);
             echo json_encode(['status' => 'success', 'message' => 'Data berhasil dihapus']);
             exit;
+        } elseif ($action === 'selesai') {
+            $statusPengaduan = 5; // ID status untuk "Selesai"
         }
 
         if (isset($statusPengaduan)) {
             $query = "UPDATE kejadian SET status_pengaduan = '$statusPengaduan' WHERE id_kejadian = '$idKejadian'";
             mysqli_query($db->koneksi, $query);
             echo json_encode(['status' => 'success', 'message' => 'Status berhasil diperbarui']);
+
+            // Redirect khusus jika action adalah 'selesai'
+            if ($action === 'selesai') {
+                header('Location: ../admin_pic.php');
+                exit;
+            }
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Aksi tidak valid']);
         }
@@ -28,6 +36,6 @@
         echo json_encode(['status' => 'error', 'message' => 'Permintaan tidak valid']);
     }
 
-    // Redirect ke halaman tampilan
+    // Redirect ke halaman tampilan default
     header('Location: ../lihat_pengaduan.php');
 ?>

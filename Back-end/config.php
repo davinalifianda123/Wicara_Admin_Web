@@ -72,6 +72,39 @@ if ($mysqli->connect_error) {
             
         }
 
+        function tampil_data_pengaduan_filtered($id_instansi)
+        {
+            // Query untuk mengambil data pengaduan sesuai kriteria
+            $data = mysqli_query($this->koneksi, "
+                SELECT 
+                    a.*, 
+                    b.*, 
+                    c.*, 
+                    d.*, 
+                    e.*, 
+                    f.*, 
+                    g.* 
+                FROM kejadian a
+                LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+                LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
+                INNER JOIN user c ON c.id_user = a.id_user
+                LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
+                LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
+                LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
+                WHERE a.id_jenis_kejadian = 2 AND a.id_instansi = '$id_instansi'
+                ORDER BY a.tanggal DESC
+            ");
+
+            // Array untuk menyimpan hasil
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
+                $hasil[] = $row;
+            }
+
+            return $hasil;
+        }
+
+
         function tampil_data_ulasan()
         {
             $data = mysqli_query($this->koneksi, "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
