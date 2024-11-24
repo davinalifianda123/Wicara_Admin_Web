@@ -233,9 +233,12 @@ if ($mysqli->connect_error) {
             return $hasil;
         }
 
-        function tampil_instansi_by_id($id_instansi)
+        function tampil_instansi_by_anggota($id_instansi)
         {
-            $data = mysqli_query($this->koneksi, "SELECT * FROM instansi WHERE id_instansi = '$id_instansi'");
+            $data = mysqli_query($this->koneksi, "SELECT a.*, b.*, c.* FROM anggota_instansi a
+                                                                INNER JOIN instansi b ON b.id_instansi = a.id_instansi
+                                                                INNER JOIN user c ON c.id_user = a.id_user
+                                                                WHERE id_instansi = '$id_instansi'");
             $row = mysqli_fetch_array($data);
             return $row;
         }
@@ -448,3 +451,4 @@ if ($mysqli->connect_error) {
         }
         
     }
+?>

@@ -28,5 +28,27 @@
         }
         ?>
     </table>
+
+    <h2>Instansi + Anggota</h2>
+    <table border="1">
+        <tr>
+            <th>No</th>
+            <th>Nama</th>
+            <th>Anggota</th>
+        </tr>
+        <?php
+        $no = 1;
+        foreach ($db->tampil_instansi_by_anggota() as $x) {
+        ?>
+            <tr>
+                <td><?php echo $no++; ?></td>
+                <td><?php echo $x['nama_instansi']; ?></td>
+                <td><?php echo $x['nama']; ?></td>
+            </tr>
+        <?php
+        }
+        ?>
+    </table>
+
 </body>
 </html>
