@@ -1,5 +1,6 @@
 <?php
 require 'config.php'; // Pastikan koneksi database benar
+$db = new database();
 
 header('Content-Type: application/json');
 
@@ -11,7 +12,7 @@ if (!$notifId) {
     exit;
 }
 
-$query = "UPDATE kejadian SET status_notif = 'terbaca' WHERE id_kejadian = ?";
+$query = "UPDATE kejadian SET status_notif = 1 WHERE id_kejadian = ?";
 $stmt = $db->koneksi->prepare($query);
 
 if (!$stmt) {

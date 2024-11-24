@@ -946,8 +946,8 @@
                     notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
 
                     // Cek status notifikasi
-                    if (notification.status_notif === 'belum terbaca') {
-                        notificationElement.classList.add('bg-gray-800', 'text-white');
+                    if (notification.status_notif == 0) {
+                        notificationElement.classList.add('bg-gray-300', 'text-white', 'rounded-lg');
                         unreadCount++;  // Increment jumlah unread notifications
                     }
                     
@@ -967,25 +967,6 @@
                         </div>
                     `;
 
-                    // // cek jika image kosong
-                    // const userImage = notification.image || './Back-end/foto-profile/default-profile.png'; // Gunakan gambar default jika kosong
-
-                    // notificationElement.innerHTML = `
-                    //     <img src="${userImage}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
-                    //     <div class="flex-1">
-                    //         <h2 class="font-bold">${notification.title}</h2>
-                    //         <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
-                    //         ${
-                    //             notification.type === 'rating'
-                    //             ? `<div class="text-yellow-500">
-                    //                 ${'<i class="fas fa-star"></i>'.repeat(notification.rating)}
-                    //                 ${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}
-                    //             </div>`
-                    //             : ''
-                    //         }
-                    //     </div>
-                    // `;
-
                     notificationElement.addEventListener('click', () => {
                         if (notification.type === 'pengaduan') {
                             window.location.href = `lihat_pengaduan.php?id=${notification.id}`;
@@ -996,7 +977,7 @@
                         }
 
                          // Ubah status warna setelah klik
-                        notificationElement.classList.remove('bg-gray-800', 'text-white');
+                        notificationElement.classList.remove('bg-gray-300', 'text-white', 'rounded-lg');
                         notificationElement.classList.add('bg-white');
                         
                         // Update status di backend menggunakan AJAX
@@ -1013,7 +994,7 @@
                         .then(data => {
                             console.log('Response:', data);
                             if (data.success) {
-                                notificationElement.classList.remove('bg-gray-800', 'text-white');
+                                notificationElement.classList.remove('bg-gray-300', 'text-white', 'rounded-lg');
                                 notificationElement.classList.add('bg-white');
                             } else {
                                 console.error('Gagal memperbarui status:', data.error);
@@ -1056,51 +1037,6 @@
                 document.getElementById('notificationSidebar').classList.add('translate-x-full');
             });
 
-            // function filterNotifications(type) {
-            //     const container = document.getElementById('notifications');
-            //     container.innerHTML = '';
-
-            //     const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
-
-            //     filteredNotifications.forEach(notification => {
-            //         const notificationElement = document.createElement('button');
-            //         notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
-            //         notificationElement.innerHTML = `
-            //             <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
-            //             <div class="flex-1">
-            //                 <h2 class="font-bold">${notification.title}</h2>
-            //                 <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
-            //                 ${notification.type === 'rating' ? `<div class="text-yellow-500">${'<i class="fas fa-star"></i>'.repeat(notification.rating)}${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}</div>` : ''}
-            //                 ${notification.type === 'kehilangan' ? `
-            //                     <div class="flex space-x-2 mt-2">
-            //                         <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
-            //                         <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
-            //                     </div>
-            //                 ` : ''}
-            //             </div>
-            //         `;
-
-            //         // Add click event to navigate based on notification type
-            //         notificationElement.addEventListener('click', () => {
-            //             if (notification.type === 'pengaduan') {
-            //                 window.location.href = 'lihat_pengaduan.php';
-            //             } else if (notification.type === 'rating') {
-            //                 window.location.href = 'rating.php';
-            //             } else if (notification.type === 'kehilangan') {
-            //                 window.location.href = 'kehilangan.php'; // Replace with the correct page
-            //             }
-            //         });
-
-            //         container.appendChild(notificationElement);
-            //     });
-
-
-            //     // Update tab button styles
-            // document.querySelectorAll('.tab-button').forEach(button => {
-            //     button.classList.remove('active');
-            //     button.classList.add('text-gray-500');
-            // });
-            // document.getElementById(`tab-${type}`).classList.add('active');
 
             function showConfirmationDialog(action) {
                 const modal = document.getElementById('confirmationModal');
@@ -1116,7 +1052,6 @@
                 };
             }
 
-            // // Initialize with all notifications
             // filterNotifications('semua');
 
             // Close the modal when clicking outside of it
