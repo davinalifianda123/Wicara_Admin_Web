@@ -52,6 +52,22 @@
       $db->tambah_jenis_pengaduan($nama_jenis_pengaduan);
       header("Location: kategori_pengaduan.php");
     }
+
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $itemsPerPage = 8;
+    $offset = ($currentPage - 1) * $itemsPerPage;
+
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $searchQuery = $search ? "WHERE nama_jenis_pengaduan LIKE '%" . mysqli_real_escape_string($db->koneksi, $search) . "%'" : '';
+
+    
+    $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM jenis_pengaduan $searchQuery";
+    $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
+    $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
+    $totalPages = ceil($totalItems / $itemsPerPage);
+    
+    $query = "SELECT * FROM jenis_pengaduan $searchQuery LIMIT $itemsPerPage OFFSET $offset";
+    $results = mysqli_query($db->koneksi, $query);
 ?>
 
 <!DOCTYPE html>
@@ -422,24 +438,6 @@
                             </div>
                         </ul>
                     </div>
-                    <?php
-                      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                      $itemsPerPage = 8;
-                      $offset = ($currentPage - 1) * $itemsPerPage;
-
-                      $search = isset($_GET['search']) ? $_GET['search'] : '';
-                      $searchQuery = $search ? "WHERE nama_jenis_pengaduan LIKE '%" . mysqli_real_escape_string($db->koneksi, $search) . "%'" : '';
-
-                      
-                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM jenis_pengaduan $searchQuery";
-                      $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
-                      $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
-                      $totalPages = ceil($totalItems / $itemsPerPage);
-                      
-                      $query = "SELECT * FROM jenis_pengaduan $searchQuery LIMIT $itemsPerPage OFFSET $offset";
-                      $results = mysqli_query($db->koneksi, $query);
-                      ?>
-
                     <!-- JUDUL KOLOM -->
                     <thead class="text-[#858585] text-xs bg-gray-50 text-center">
                         <tr>

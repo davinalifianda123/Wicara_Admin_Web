@@ -12,6 +12,21 @@
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
     $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';    
+
+    $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $itemsPerPage = 6;
+    $offset = ($currentPage - 1) * $itemsPerPage;
+
+    $search = isset($_GET['search']) ? $_GET['search'] : '';
+    $searchQuery = $search ? "WHERE nama_instansi LIKE '%" . mysqli_real_escape_string($db->koneksi, $search) . "%'" : '';
+
+    $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM instansi $searchQuery"; 
+    $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
+    $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
+    $totalPages = ceil($totalItems / $itemsPerPage);
+
+    $query = "SELECT * FROM instansi $searchQuery LIMIT $itemsPerPage OFFSET $offset"; 
+    $results = mysqli_query($db->koneksi, $query);
 ?>
 
 <!DOCTYPE html>
@@ -371,34 +386,22 @@
                             <div class="ml-auto">
                                 <button id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
                             </div>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                                    </svg>
+                            <form action="" method="GET">
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                                        </svg>
+                                    </div>
+                                    <input type="search" name="search" id="default-search" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
                                 </div>
-                                <input type="search" id="default-searching" class="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search Anything" onkeyup="searchCard()" required />
-                            </div>
+                            </form>
                         </div>
                       </ul>
-                      <?php
-                      $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                      $itemsPerPage = 6;
-                      $offset = ($currentPage - 1) * $itemsPerPage;
-
-                      $totalItemsQuery = "SELECT COUNT(*) AS total_items FROM instansi"; 
-                      $totalItemsResult = mysqli_query($db->koneksi, $totalItemsQuery);
-                      $totalItems = mysqli_fetch_assoc($totalItemsResult)['total_items'];
-                      $totalPages = ceil($totalItems / $itemsPerPage);
-
-                      $query = "SELECT * FROM instansi LIMIT $itemsPerPage OFFSET $offset"; 
-                      $results = mysqli_query($db->koneksi, $query);
-                      ?>
-
                       <!-- INI CARDNYA -->
                       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5 justify-center">
                         <?php
-                        $no = 1;
+                        $no = 1 + $offset;
                         while ($x = mysqli_fetch_assoc($results)) {
                         ?>
                         <div class="card w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
@@ -494,15 +497,15 @@
             <nav aria-label="Page navigation example" class="flex justify-end  mt-2">
                 <ul class="inline-flex -space-x-px text-sm">
                     <li>
-                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
+                        <a href="?page=<?php echo max(1, $currentPage - 1); ?>&search=<?php echo urlencode($search); ?>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700">Previous</a>
                     </li>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                         <li>
-                            <a href="?page=<?php echo $i; ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
+                            <a href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>" class="flex items-center justify-center px-3 h-8 leading-tight <?php echo $i === $currentPage ? 'text-blue-600 border border-gray-300 bg-blue-50' : 'text-gray-500 bg-white border-gray-300'; ?> hover:bg-gray-100 hover:text-gray-700"><?php echo $i; ?></a>
                         </li>
                     <?php endfor; ?>
                     <li>
-                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
+                        <a href="?page=<?php echo min($totalPages, $currentPage + 1); ?>&search=<?php echo urlencode($search); ?>" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700">Next</a>
                     </li>
                 </ul>
             </nav>
@@ -630,24 +633,6 @@
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
-            function searchCard() {
-                const searchInput = document.getElementById('default-searching').value.toLowerCase(); 
-                const cards = document.querySelectorAll('.card'); 
-                let visibleRowIndex = 0;
-
-                cards.forEach(card => {
-                    card.style.display = 'none'; 
-                });
-
-                cards.forEach(card => {
-                    const instansiName = card.querySelector('.nama-instansi'); 
-                    if (instansiName && instansiName.innerText.toLowerCase().includes(searchInput)) { 
-                        card.style.display = ''; 
-                        visibleRowIndex++;
-                    }
-                });
-            }
-
             function openEditPopup(id, nama, email, password, image, qrCode) {
                 document.getElementById('idLayanan').value = id;
                 document.getElementById('namaLayanan').value = nama;
