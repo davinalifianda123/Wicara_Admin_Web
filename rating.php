@@ -476,13 +476,8 @@
                               </div>
                           </div>
                             <div class="flex justify-end mt-2">
-                            <button id="editModalButton" data-modal-target="editModal" data-modal-toggle="editModal" type="button" class="text-sm font-medium text-blue-600 hover:underline align-start"
-                                data-id="<?=$x['id_instansi'];?>"
-                                data-nama="<?=$x['nama_instansi'];?>"
-                                data-email="<?=$x['email_pic'];?>"
-                                data-password="<?=$x['password'];?>"
-                                data-image="<?=$x['image_instansi'];?>"
-                                data-qrcode = "<?=$x['qr_code_url'];?>">
+                            <button id="editModalButton" type="button" class="text-sm font-medium text-blue-600 hover:underline align-start"
+                                onclick="openEditPopup('<?php echo $x['id_instansi']; ?>', '<?php echo $x['nama_instansi']; ?>', '<?php echo $x['email_pic']; ?>', '<?php echo $x['password']; ?>', '<?php echo $x['image_instansi']; ?>', '<?php echo $x['qr_code_url']; ?>')">
                                 Edit
                             </button>
                             </div>
@@ -559,14 +554,14 @@
             </div>
 
             <!-- Modal: Edit Form -->
-            <div id="editModal" tabindex="-1" aria-hidden="true" class="hidden fixed z-50 px-4 items-center justify-center w-full inset-0">
+            <div id="editModal" class="hidden fixed z-50 px-4 items-center justify-center w-full inset-0">
                 <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative overflow-y-auto md:mih-h-screen">
                     <div class="flex justify-between items-center mb-4">
                         <div>
                             <h2 class="text-2xl font-semibold">Form Unit Layanan</h2>
                             <p class="text-gray-500">Detail Unit Layanan</p>
                         </div>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="editModal"> 
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" onclick="closePopup()"> 
                             <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             <span class="sr-only">Close modal</span>                         
                         </button>
@@ -651,6 +646,31 @@
                         visibleRowIndex++;
                     }
                 });
+            }
+
+            function openEditPopup(id, nama, email, password, image, qrCode) {
+                document.getElementById('idLayanan').value = id;
+                document.getElementById('namaLayanan').value = nama;
+                document.getElementById('emailPIC').value = email;
+                document.getElementById('password-instansi').value = password;
+                document.querySelector('[name="qr-code"]').src = qrCode;
+
+                const imageElement = document.querySelector('#editModal img[name="image-unit"]');
+                // Periksa apakah ada gambar
+                if (image && image !== "assets/laptop.jpg") {
+                    // Jika gambar ada dan bukan gambar default
+                    imageElement.src = "./Back-end" + image;
+                } else {
+                    // Jika gambar tidak ada atau gambar default
+                    imageElement.src = "assets/laptop.jpg";
+                }
+                document.getElementById('editModal').classList.remove('hidden');
+                document.getElementById('editModal').classList.add('flex');
+            }
+
+            function closePopup() {
+                document.getElementById('editModal').classList.remove('flex');
+                document.getElementById('editModal').classList.add('hidden');
             }
 
             const notifications = [
@@ -826,42 +846,6 @@
             closeModalBtn.addEventListener('click', () => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-            });
-
-            // Fungsi untuk menampilkan modal edit unit layanan
-            document.addEventListener("DOMContentLoaded", function(event) {
-                document.getElementById('editModalButton').click();
-            });
-            
-            document.addEventListener('DOMContentLoaded', function() {
-                const updateButtons = document.querySelectorAll('#editModalButton');
-                
-                updateButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const id = button.getAttribute('data-id');
-                        const nama = button.getAttribute('data-nama');
-                        const emailPIC = button.getAttribute('data-email');
-                        const password = button.getAttribute('data-password');
-                        const image = button.getAttribute('data-image');
-                        const qrcode = button.getAttribute('data-qrcode');
-
-                        const imageElement = document.querySelector('#editModal img[name="image-unit"]');
-                        // Periksa apakah ada gambar
-                        if (image && image !== "assets/laptop.jpg") {
-                            // Jika gambar ada dan bukan gambar default
-                            imageElement.src = "./Back-end" + image;
-                        } else {
-                            // Jika gambar tidak ada atau gambar default
-                            imageElement.src = "assets/laptop.jpg";
-                        }
-                        // Populate modal fields
-                        document.querySelector('#editModal input[name="id_instansi"]').value = id;
-                        document.querySelector('#editModal input[name="nama_instansi"]').value = nama;
-                        document.querySelector('#editModal input[name="email_pic"]').value = emailPIC;
-                        document.querySelector('#editModal input[name="password"]').value = password;
-                        document.querySelector('#editModal img[name="qr-code"]').src = qrcode;
-                    });
-                });
             });
 
             function submitEditForm() {

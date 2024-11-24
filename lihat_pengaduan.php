@@ -704,7 +704,7 @@
                     .then(data => {
                         if (data.status === 'success') {
                             alert(data.message);
-                            location.reload(); // Refresh halaman setelah aksi berhasil
+                            setTimeout(() => location.reload(), 1000); // Tunggu 1 detik sebelum reload
                         } else {
                             alert(data.message);
                         }
@@ -712,14 +712,23 @@
                     .catch(error => console.error('Error:', error));
                 }
 
-                // Event listeners untuk tombol aksi
-                acceptButton.addEventListener('click', () => sendAction('terima'));
-                rejectButton.addEventListener('click', () => sendAction('tolak'));
-                deleteButton.addEventListener('click', () => {
+                acceptButton.replaceWith(acceptButton.cloneNode(true));
+                rejectButton.replaceWith(rejectButton.cloneNode(true));
+                deleteButton.replaceWith(deleteButton.cloneNode(true));
+
+                // Ambil elemen tombol baru setelah clone
+                const newAcceptButton = document.getElementById('acceptButton');
+                const newRejectButton = document.getElementById('rejectButton');
+                const newDeleteButton = document.getElementById('deleteButton');
+
+                newAcceptButton.addEventListener('click', () => sendAction('terima'));
+                newRejectButton.addEventListener('click', () => sendAction('tolak'));
+                newDeleteButton.addEventListener('click', () => {
                     if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                         sendAction('delete');
                     }
                 });
+
             }
 
             function closePopup() {

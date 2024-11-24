@@ -643,7 +643,7 @@
                         .then(data => {
                             if (data.status === 'success') {
                                 alert(data.message);
-                                location.reload(); // Refresh halaman setelah aksi berhasil
+                                setTimeout(() => location.reload(), 500);
                             } else {
                                 alert(data.message);
                             }
