@@ -50,7 +50,7 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 <td>
                     <label for="tanggal">Tanggal</label>
                 </td>
-                <td><input type="date" name="tanggal" id="tanggal" onchange="setTanggalKadaluwarsa()" required></td>
+                <td><input type="datetime-local" name="tanggal" id="tanggal" onchange="setTanggalKadaluwarsa()" required></td>
             </tr>
             <tr>
                 <td>Lokasi</td>

@@ -42,7 +42,8 @@ $koneksi->tambah_kejadian_pengaduan(
     $lampiran, // Kirim nama file lampiran
     $_POST['id_jenis_pengaduan'],
     $_POST['status_pengaduan'],
-    $_POST['id_instansi']
+    $_POST['id_instansi'],
+    $_POST['status_notif']
 );
 
 // Redirect ke halaman tampilan

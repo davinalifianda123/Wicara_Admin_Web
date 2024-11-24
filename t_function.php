@@ -3,6 +3,8 @@
     include './Back-end/config.php';
     $db = new database();
 
+    date_default_timezone_set('Asia/Jakarta');
+
     // php notif
     // Fungsi untuk menghitung waktu relatif
     function timeAgo($timestamp) {
@@ -15,7 +17,7 @@
         $timeDifference = $currentTime - $timeAgo;
     
         if ($timeDifference < 60) {
-            return $timeDifference . 's ago'; // Seconds
+            return floor($timeDifference) . 's ago'; // Seconds
         } elseif ($timeDifference < 3600) {
             return floor($timeDifference / 60) . 'm ago'; // Minutes
         } elseif ($timeDifference < 86400) {
