@@ -1,9 +1,8 @@
 <?php
+    require_once('t_function.php');
     // buat update profile
     session_start();
-    include './Back-end/config.php';
-    $db = new database();
-
+    
     if (!isset($_SESSION['id_user'])) {
         header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
     }
@@ -62,6 +61,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        
+        <link rel="stylesheet" href="t_style_notif.css">
+        <script src="t_skrip_notif.js" defer></script>
         <style>
             body {
                 font-family: 'Poppins', sans-serif !important;
@@ -85,46 +87,6 @@
 
             .odd {
                 background-color: #ffffff; /* Warna latar untuk baris ganjil */
-            }
-
-            .tab-button {
-                transition: background-color 0.3s, color 0.3s;
-                display: flex;
-                width: 100%;
-                align-items: center;
-                text-align: left;
-            }
-            
-            .tab-button:hover {
-                background-color: #f3f4f6; /* light gray */
-            }
-
-            .tab-button.active {
-                color: #fbbf24; /* yellow-500 */
-                border-bottom: 2px solid #fbbf24; /* yellow-500 */
-            }
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 10;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.4);
-            }
-            .modal-content {
-                background-color: #fefefe;
-                margin: 15% auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-                max-width: 400px;
-                text-align: center;
-            }
-            #notificationSidebar {
-                z-index: 10;
             }
 
         </style>
@@ -231,11 +193,21 @@
                     </div>                        
                     <div class="flex items-center lg:order-2">
                         <!-- INII Notifications -->
-                        <button type="button" id="notificationButton" class="p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
-                            <span class="sr-only">View notifications</span>
-                            <!-- Bell icon -->
-                            <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20"><path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/></svg>
-                        </button>
+                        <div class="relative">
+                            <button type="button" id="notificationButton" class="relative p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
+                                <span class="sr-only">View notifications</span>
+                                
+                                <!-- Red dot for notification count -->
+                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900 hidden">
+                                    7
+                                </div>
+                                
+                                <!-- Bell icon -->
+                                <svg class="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 14 20">
+                                    <path d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z"/>
+                                </svg>
+                            </button>
+                        </div>
                         <div id="notificationSidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-lg transform translate-x-full transition-transform duration-300 overflow-y-auto">
                             <div class="sticky top-0 bg-white z-10">
                                 <div class="border-b border-gray-200 p-4 flex justify-between items-center">
@@ -245,25 +217,24 @@
                                     <h1 class="text-center text-xl font-bold flex-1">Notifikasi</h1>
                                 </div>
                                 <div class="flex justify-around border-b border-gray-200 overflow-x-auto">
-                                    <button id="tab-semua" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('semua')">Semua</button>
-                                    <button id="tab-pengaduan" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('pengaduan')">Pengaduan</button>
-                                    <button id="tab-kehilangan" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('kehilangan')">Kehilangan</button>
-                                    <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="filterNotifications('rating')">Rating</button>
+                                    <button id="tab-semua" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('semua')">Semua</button>
+                                    <button id="tab-pengaduan" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('pengaduan')">Pengaduan</button>
+                                    <button id="tab-kehilangan" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('kehilangan')">Kehilangan</button>
+                                    <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('rating')">Rating</button>
                                 </div>
+                            </div>
+                            <!-- Elemen tersembunyi untuk data notifikasi -->
+                            <div id="notifications-data" style="display: none;">
+                                <?php echo $notificationsJSON; ?>
                             </div>
                             <div id="notifications" class="p-4 flex flex-col space-y-2">
                                 <!-- Notifications will be dynamically inserted here -->
                             </div>
-                        </div>
-                        <div id="confirmationModal" class="modal">
-                            <div class="modal-content">
-                                <p>Apakah anda yakin?</p>
-                                <div class="flex justify-center space-x-4 mt-4">
-                                    <button id="confirmYes" class="bg-green-500 text-white py-1 px-3 rounded">Ya</button>
-                                    <button id="confirmNo" class="bg-red-500 text-white py-1 px-3 rounded">Batal</button>
-                                </div>
+                            <div id="showAllButtonContainer" class="text-center p-4 hidden">
+                                <button id="showAllButton" class="text-blue-500 underline">Tampilkan Semua</button>
                             </div>
                         </div>
+
                         <!-- INII Profile -->
                         <button type="button" class="flex mx-2 text-sm bg-gray-400 rounded-full md:mr-0 hover:ring-4 ring-yellow-400" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="dropdown">
                             <span class="sr-only">Open user menu</span>
@@ -756,81 +727,6 @@
         <!-- INII SCRIPT NOTIF -->
         <script src="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.js"></script>
         <script>
-            const notifications = [
-                { type: 'pengaduan', title: 'Kamar mandi Kotor', time: '2h ago', avatar: 'https://placehold.co/40x40?text=1' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=2' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=3' },
-                { type: 'pengaduan', title: 'Dosen suka bolos', time: '2h ago', avatar: 'https://placehold.co/40x40?text=4' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=5' },
-                { type: 'kehilangan', title: 'Pacar ku Hilang', time: '2h ago', avatar: 'https://placehold.co/40x40?text=6' },
-                { type: 'rating', title: 'Poliklinik', time: '2h ago', rating: 4, avatar: 'https://placehold.co/40x40?text=7' },
-            ];
-
-            document.getElementById('notificationButton').addEventListener('click', () => {
-                document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
-            });
-
-            document.getElementById('closeSidebarButton').addEventListener('click', () => {
-                document.getElementById('notificationSidebar').classList.add('translate-x-full');
-            });
-
-            function filterNotifications(type) {
-                const container = document.getElementById('notifications');
-                container.innerHTML = '';
-                const filteredNotifications = type === 'semua' ? notifications : notifications.filter(n => n.type === type);
-                filteredNotifications.forEach(notification => {
-                    const notificationElement = document.createElement('button');
-                    notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full');
-                    notificationElement.innerHTML = `
-                        <img src="${notification.avatar}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
-                        <div class="flex-1">
-                            <h2 class="font-bold">${notification.title}</h2>
-                            <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
-                            ${notification.type === 'rating' ? `<div class="text-yellow-500">${'<i class="fas fa-star"></i>'.repeat(notification.rating)}${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}</div>` : ''}
-                            ${notification.type === 'kehilangan' ? `
-                                <div class="flex space-x-2 mt-2">
-                                    <button class="bg-red-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Tolak')">Tolak</button>
-                                    <button class="bg-green-500 text-white py-1 px-3 rounded" onclick="showConfirmationDialog('Konfirmasi')">Konfirmasi</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                    container.appendChild(notificationElement);
-                });
-
-                // Update tab button styles
-                document.querySelectorAll('.tab-button').forEach(button => {
-                    button.classList.remove('active');
-                    button.classList.add('text-gray-500');
-                });
-                document.getElementById(`tab-${type}`).classList.add('active');
-            }
-
-            function showConfirmationDialog(action) {
-                const modal = document.getElementById('confirmationModal');
-                modal.style.display = 'block';
-
-                document.getElementById('confirmYes').onclick = () => {
-                    alert(`${action} berhasil!`);
-                    modal.style.display = 'none';
-            };
-
-                document.getElementById('confirmNo').onclick = () => {
-                    modal.style.display = 'none';
-                };
-            }
-
-            // Initialize with all notifications
-            filterNotifications('semua');
-
-            // Close the modal when clicking outside of it
-            window.onclick = function(event) {
-                const modal = document.getElementById('confirmationModal');
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            };
-
             // Fungsi untuk menampilkan halaman read profile
             document.querySelector('[href="#profile-section"]').addEventListener('click', function () {
                 document.getElementById('profile-section-body').classList.remove('hidden');

@@ -54,11 +54,15 @@
     // Fungsi untuk menghitung waktu relatif
     function timeAgo($timestamp) {
         $timeAgo = strtotime($timestamp); // Convert to UNIX timestamp
+        if (!$timeAgo) {
+            return "Invalid date"; // Tampilkan pesan jika format waktu salah
+        }
+    
         $currentTime = time();
         $timeDifference = $currentTime - $timeAgo;
-
+    
         if ($timeDifference < 60) {
-            return $timeDifference . 'm ago'; // Minutes
+            return $timeDifference . 's ago'; // Seconds
         } elseif ($timeDifference < 3600) {
             return floor($timeDifference / 60) . 'm ago'; // Minutes
         } elseif ($timeDifference < 86400) {
@@ -105,6 +109,7 @@
             kejadian.skala_bintang, 
             instansi.nama_instansi, 
             kejadian.status_notif,
+            kejadian.id_instansi, -- Tambahkan id_instansi di sini
             user.image AS user_image
         FROM kejadian
         JOIN instansi ON kejadian.id_instansi = instansi.id_instansi
@@ -121,6 +126,7 @@
             'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
             'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
             'id' => $row['id_kejadian'],
+            'id_instansi' => $row['id_instansi'], // Tambahkan id_instansi untuk URL
             'rating' => (int)$row['skala_bintang'], // Ambil nilai bintang sebagai integer
             'image' => $row['user_image'], // Tambahkan gambar pengguna
             'status_notif' => $row['status_notif'], // Tambahkan status_notif
@@ -158,7 +164,7 @@
     $notifications = array_merge($kehilanganNotifications, $pengaduanNotifications, $ratingNotifications);
 
     // Encode data notifikasi ke dalam JSON agar dapat digunakan oleh JavaScript
-    $notificationsJSON = json_encode($notifications);
+    $notificationsJSON = json_encode($notifications, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 ?>
 
 <!DOCTYPE html>
@@ -174,6 +180,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="t_style_notif.css">
+        
         <style>
             body {
                 font-family: 'Poppins', sans-serif !important;
@@ -186,57 +194,6 @@
                 background: rgb(6,10,71);
                 background: linear-gradient(135deg, rgba(6,10,71,1) 0%, rgba(25,48,109,1) 100%);
             }
-
-            .tab-button {
-                transition: background-color 0.3s, color 0.3s;
-                display: flex;
-                width: 100%;
-                align-items: center;
-                text-align: left;
-            }
-            
-            /* .tab-button.bg-gray-800 {
-                background-color: #2d3748; Dark Gray */
-                /* color: white; */
-            /* } */
-
-            /* .tab-button.bg-white {
-                background-color: white;
-                color: black;
-            } */
-
-            .tab-button:hover {
-                background-color: #f3f4f6; /* light gray */
-            }
-
-            .tab-button.active {
-                color: #fbbf24; /* yellow-500 */
-                border-bottom: 2px solid #fbbf24; /* yellow-500 */
-            }
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 10;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                background-color: rgba(0, 0, 0, 0.4);
-            }
-            .modal-content {
-                background-color: #fefefe;
-                margin: 15% auto;
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%;
-                max-width: 400px;
-                text-align: center;
-            }
-            #notificationSidebar {
-                z-index: 10;
-            }
-
         </style>
     </head>
     <body>
@@ -373,15 +330,8 @@
                             <div id="notifications" class="p-4 flex flex-col space-y-2">
                                 <!-- Notifications will be dynamically inserted here -->
                             </div>
-                        </div>
-                    
-                        <div id="confirmationModal" class="modal">
-                            <div class="modal-content">
-                                <p>Apakah anda yakin?</p>
-                                <div class="flex justify-center space-x-4 mt-4">
-                                    <button id="confirmYes" class="bg-green-500 text-white py-1 px-3 rounded">Ya</button>
-                                    <button id="confirmNo" class="bg-red-500 text-white py-1 px-3 rounded">Batal</button>
-                                </div>
+                            <div id="showAllButtonContainer" class="text-center p-4 hidden">
+                                <button id="showAllButton" class="text-blue-500 underline">Tampilkan Semua</button>
                             </div>
                         </div>
 
@@ -928,8 +878,13 @@
             // Ambil notifikasi dari PHP
             const notifications = <?php echo $notificationsJSON; ?>;
 
+            let allNotificationsVisible = false; // State untuk mengecek apakah semua notifikasi sedang ditampilkan
+
             function populateNotifications(type) {
                 const container = document.getElementById('notifications');
+                const showAllButtonContainer = document.getElementById('showAllButtonContainer');
+                const showAllButton = document.getElementById('showAllButton');
+                
                 container.innerHTML = '';
 
                 const filteredNotifications = type === 'semua'
@@ -939,18 +894,28 @@
                 // Urutkan berdasarkan waktu terbaru
                 filteredNotifications.sort((a, b) => new Date(b.raw_time) - new Date(a.raw_time));
 
+                const maxNotificationsToShow = 7; // Batasan jumlah notifikasi default
+                const notificationsToDisplay = allNotificationsVisible
+                    ? filteredNotifications
+                    : filteredNotifications.slice(0, maxNotificationsToShow);
+
                 let unreadCount = 0;  // Menyimpan jumlah notifikasi yang belum terbaca
 
-                filteredNotifications.forEach(notification => {
+                notificationsToDisplay.forEach(notification => {
+                    const rawTime = new Date(notification.raw_time);
+                    if (isNaN(rawTime.getTime())) {
+                        notification.time = "Invalid date";
+                    }
+
                     const notificationElement = document.createElement('button');
                     notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
 
                     // Cek status notifikasi
                     if (notification.status_notif == 0) {
                         notificationElement.classList.add('bg-gray-300', 'text-white', 'rounded-lg');
-                        unreadCount++;  // Increment jumlah unread notifications
+                        unreadCount++;
                     }
-                    
+
                     notificationElement.innerHTML = `
                         <img src="${notification.image || './Back-end/foto-profile/default-profile.png'}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
                         <div class="flex-1">
@@ -961,7 +926,7 @@
                                 ? `<div class="text-yellow-500">
                                     ${'<i class="fas fa-star"></i>'.repeat(notification.rating)}
                                     ${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}
-                                </div>` // Menampilkan bintang
+                                </div>`
                                 : ''
                             }
                         </div>
@@ -973,16 +938,14 @@
                         } else if (notification.type === 'kehilangan') {
                             window.location.href = `kehilangan.php?id=${notification.id}`;
                         } else if (notification.type === 'rating') {
-                            window.location.href = `rating.php?id=${notification.id}`;
+                            window.location.href = `detail_rating.php?id=${notification.id_instansi}`;
                         }
 
-                         // Ubah status warna setelah klik
+                        // Ubah status warna setelah klik
                         notificationElement.classList.remove('bg-gray-300', 'text-white', 'rounded-lg');
                         notificationElement.classList.add('bg-white');
-                        
-                        // Update status di backend menggunakan AJAX
-                        console.log('ID yang dikirim:', notification.id);
 
+                        // Update status di backend menggunakan AJAX
                         fetch('./Back-end/update_status_notif.php', {
                             method: 'POST',
                             headers: {
@@ -992,42 +955,49 @@
                         })
                         .then(response => response.json())
                         .then(data => {
-                            console.log('Response:', data);
-                            if (data.success) {
-                                notificationElement.classList.remove('bg-gray-300', 'text-white', 'rounded-lg');
-                                notificationElement.classList.add('bg-white');
-                            } else {
+                            if (!data.success) {
                                 console.error('Gagal memperbarui status:', data.error);
                             }
                         })
                         .catch(err => console.error('Error:', err));
                     });
-            
+
                     container.appendChild(notificationElement);
                 });
-
+                
                 document.querySelectorAll('.tab-button').forEach(button => {
                 button.classList.remove('active');
                 button.classList.add('text-gray-500');
                 });
                 document.getElementById(`tab-${type}`).classList.add('active');
-                
-                // Update red dot with unread count
-                const notificationButton = document.getElementById('notificationButton');
-                const redDot = notificationButton.querySelector('.absolute'); // Memilih elemen red dot
-                if (unreadCount > 0) {
-                    redDot.textContent = unreadCount;  // Menampilkan jumlah notifikasi belum terbaca
-                    redDot.classList.remove('hidden');  // Menampilkan red dot jika ada notifikasi
+
+                // Tampilkan atau sembunyikan tombol "Tampilkan Semua"
+                if (filteredNotifications.length > maxNotificationsToShow && !allNotificationsVisible) {
+                    showAllButtonContainer.classList.remove('hidden');
+                    showAllButton.onclick = () => {
+                        allNotificationsVisible = true;
+                        populateNotifications(type);
+
+                        // Hilangkan tombol setelah semua notifikasi ditampilkan
+                        showAllButtonContainer.classList.add('hidden');
+                    };
                 } else {
-                    redDot.classList.add('hidden');  // Menyembunyikan red dot jika tidak ada notifikasi
+                    showAllButtonContainer.classList.add('hidden');
                 }
 
+                // Update red dot with unread count
+                const notificationButton = document.getElementById('notificationButton');
+                const redDot = notificationButton.querySelector('.absolute');
+                if (unreadCount > 0) {
+                    redDot.textContent = unreadCount;
+                    redDot.classList.remove('hidden');
+                } else {
+                    redDot.classList.add('hidden');
+                }
             }
 
-                
             // Initialize with all notifications
             populateNotifications('semua');
-
 
             document.getElementById('notificationButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
@@ -1035,24 +1005,103 @@
 
             document.getElementById('closeSidebarButton').addEventListener('click', () => {
                 document.getElementById('notificationSidebar').classList.add('translate-x-full');
-            });
+            });    
+
+            //     filteredNotifications.forEach(notification => {
+            //         const notificationElement = document.createElement('button');
+            //         notificationElement.classList.add('tab-button', 'py-2', 'px-4', 'text-gray-500', 'w-full', 'flex', 'items-start');
+
+            //         // Cek status notifikasi
+            //         if (notification.status_notif == 0) {
+            //             notificationElement.classList.add('bg-gray-300', 'text-white', 'rounded-lg');
+            //             unreadCount++;  // Increment jumlah unread notifications
+            //         }
+                    
+            //         notificationElement.innerHTML = `
+            //             <img src="${notification.image || './Back-end/foto-profile/default-profile.png'}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+            //             <div class="flex-1">
+            //                 <h2 class="font-bold">${notification.title}</h2>
+            //                 <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
+            //                 ${
+            //                     notification.type === 'rating'
+            //                     ? `<div class="text-yellow-500">
+            //                         ${'<i class="fas fa-star"></i>'.repeat(notification.rating)}
+            //                         ${'<i class="far fa-star"></i>'.repeat(5 - notification.rating)}
+            //                     </div>` // Menampilkan bintang
+            //                     : ''
+            //                 }
+            //             </div>
+            //         `;
+
+            //         notificationElement.addEventListener('click', () => {
+            //             if (notification.type === 'pengaduan') {
+            //                 window.location.href = `lihat_pengaduan.php?id=${notification.id}`;
+            //             } else if (notification.type === 'kehilangan') {
+            //                 window.location.href = `kehilangan.php?id=${notification.id}`;
+            //             } else if (notification.type === 'rating') {
+            //                 window.location.href = `detail_rating.php?id=${notification.id_instansi}`;
+            //             }
+
+            //              // Ubah status warna setelah klik
+            //             notificationElement.classList.remove('bg-gray-300', 'text-white', 'rounded-lg');
+            //             notificationElement.classList.add('bg-white');
+                        
+            //             // Update status di backend menggunakan AJAX
+            //             console.log('ID yang dikirim:', notification.id);
+
+            //             fetch('./Back-end/update_status_notif.php', {
+            //                 method: 'POST',
+            //                 headers: {
+            //                     'Content-Type': 'application/json',
+            //                 },
+            //                 body: JSON.stringify({ id: notification.id }),
+            //             })
+            //             .then(response => response.json())
+            //             .then(data => {
+            //                 console.log('Response:', data);
+            //                 if (data.success) {
+            //                     notificationElement.classList.remove('bg-gray-300', 'text-white', 'rounded-lg');
+            //                     notificationElement.classList.add('bg-white');
+            //                 } else {
+            //                     console.error('Gagal memperbarui status:', data.error);
+            //                 }
+            //             })
+            //             .catch(err => console.error('Error:', err));
+            //         });
+            
+            //         container.appendChild(notificationElement);
+            //     });
+
+            //     document.querySelectorAll('.tab-button').forEach(button => {
+            //     button.classList.remove('active');
+            //     button.classList.add('text-gray-500');
+            //     });
+            //     document.getElementById(`tab-${type}`).classList.add('active');
+                
+            //     // Update red dot with unread count
+            //     const notificationButton = document.getElementById('notificationButton');
+            //     const redDot = notificationButton.querySelector('.absolute'); // Memilih elemen red dot
+            //     if (unreadCount > 0) {
+            //         redDot.textContent = unreadCount;  // Menampilkan jumlah notifikasi belum terbaca
+            //         redDot.classList.remove('hidden');  // Menampilkan red dot jika ada notifikasi
+            //     } else {
+            //         redDot.classList.add('hidden');  // Menyembunyikan red dot jika tidak ada notifikasi
+            //     }
+
+            // }
+
+                
+            // // Initialize with all notifications
+            // populateNotifications('semua');
 
 
-            function showConfirmationDialog(action) {
-                const modal = document.getElementById('confirmationModal');
-                modal.style.display = 'block';
+            // document.getElementById('notificationButton').addEventListener('click', () => {
+            //     document.getElementById('notificationSidebar').classList.toggle('translate-x-full');
+            // });
 
-                document.getElementById('confirmYes').onclick = () => {
-                    alert(`${action} berhasil!`);
-                    modal.style.display = 'none';
-            };
-
-                document.getElementById('confirmNo').onclick = () => {
-                    modal.style.display = 'none';
-                };
-            }
-
-            // filterNotifications('semua');
+            // document.getElementById('closeSidebarButton').addEventListener('click', () => {
+            //     document.getElementById('notificationSidebar').classList.add('translate-x-full');
+            // });
 
             // Close the modal when clicking outside of it
             window.onclick = function(event) {

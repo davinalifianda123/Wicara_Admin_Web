@@ -1,0 +1,49 @@
+.tab-button {
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    text-align: left;
+}
+
+/* .tab-button.bg-gray-800 {
+    background-color: #2d3748; Dark Gray */
+    /* color: white; */
+/* } */
+
+/* .tab-button.bg-white {
+    background-color: white;
+    color: black;
+} */
+
+.tab-button:hover {
+    background-color: #f3f4f6; /* light gray */
+}
+
+.tab-button.active {
+    color: #fbbf24; /* yellow-500 */
+    border-bottom: 2px solid #fbbf24; /* yellow-500 */
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+#notificationSidebar {
+    z-index: 10;
+}
