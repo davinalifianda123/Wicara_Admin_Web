@@ -520,7 +520,7 @@
                         </button>
                     </div>
                     <!-- Modal body -->
-                    <form action="lihat_pengaduan.php" method="POST">
+                    <form action="admin_pic.php" method="POST">
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <div>
                                 <label for="id_kejadian" class="block mb-2 text-sm font-medium text-gray-900">ID Aduan</label>
