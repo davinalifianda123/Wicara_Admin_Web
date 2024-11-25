@@ -5,7 +5,6 @@ $id_user = $_POST['id_user'];
 $nama = $_POST['nama'];
 $nomor_induk = $_POST['nomor_induk'];
 $nomor_telepon = $_POST['nomor_telepon'];
-$id_instansi = $_POST['id_instansi'];
 
 // Check if the delete action is triggered
 if (isset($_POST['delete'])) {
@@ -20,14 +19,14 @@ if (isset($_POST['delete'])) {
         $default_password = "Polines123*";
 
         // Query to update data with password reset
-        $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, password=?, id_instansi=? WHERE id_user=?";
+        $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, password=? WHERE id_user=?";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("sssssi", $nama, $nomor_induk, $nomor_telepon, $default_password, $id_instansi, $id_user);
+        $stmt->bind_param("ssssi", $nama, $nomor_induk, $nomor_telepon, $default_password, $id_user);
     } else {
         // Query to update data without password reset
-        $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, id_instansi=? WHERE id_user=?";
+        $query = "UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=? WHERE id_user=?";
         $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("ssssi", $nama, $nomor_induk, $nomor_telepon, $id_instansi, $id_user);
+        $stmt->bind_param("sssi", $nama, $nomor_induk, $nomor_telepon, $id_user);
     }
 }
 

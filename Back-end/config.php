@@ -210,18 +210,6 @@ if ($mysqli->connect_error) {
             }
             return $hasil;
         }
-
-        function tampil_user_instansi()
-        {
-            $data = mysqli_query($this->koneksi, "SELECT a.*, b.*, c.* FROM user a 
-                                                INNER JOIN role b ON b.id_role = a.role
-                                                LEFT JOIN instansi c ON c.id_instansi = a.id_instansi"); // Ganti INNER JOIN dengan LEFT JOIN
-            $hasil = [];
-            while ($row = mysqli_fetch_array($data)) {
-                $hasil[] = $row;
-            }
-            return $hasil;
-        }
       
 
         function tampil_status_pengaduan()

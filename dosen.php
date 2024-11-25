@@ -26,7 +26,7 @@
     $totalPages = ceil($totalUsers / $itemsPerPage);
 
     // Fetch the users for the current page
-    $users = array_filter($db->tampil_user_instansi(), function($x) {
+    $users = array_filter($db->tampil_user(), function($x) {
         return $x['role'] == 2;
     });
     $usersToShow = array_slice($users, $offset, $itemsPerPage);
@@ -435,17 +435,6 @@
                                 <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
                                 <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded" required>
                             </div>
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Staff Instansi</label>
-                                <select name="id_instansi" id="id_instansi" class="w-full px-3 py-2 border border-gray-300 rounded" required>
-                                    <option value="">Pilih Instansi</option>
-                                    <?php
-                                        foreach ($db->tampil_instansi() as $x) {
-                                            echo '<option value="' . $x['id_instansi'] . '">' . $x['nama_instansi'] . '</option>';
-                                        }
-                                    ?>
-                                </select>
-                            </div>
                             <div class="flex justify-end">
                                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">Simpan</button>
                             </div>
@@ -515,7 +504,7 @@
                         <td class="py-2 px-6 text-right">
                             <button 
                                 class="text-blue-500 hover:underline"
-                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>', '<?php echo addslashes($x['id_instansi']); ?>')">
+                                onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>')">
                                 Edit
                             </button>
                         </td>
@@ -573,19 +562,6 @@
                                 <input type="password" name="password" id="editPassword" class="w-full border px-3 py-2 rounded bg-gray-100" readonly>
                             </div>
 
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700">Staff Instansi</label>
-                                <select name="id_instansi" id="editInstansi" class="w-full px-3 py-2 border border-gray-300 rounded" readonly>
-                                    <?php
-                                        foreach($db->tampil_instansi() as $x){
-                                            echo '<option value="'.$x['id_instansi'].'">'.$x['nama_instansi'].'</option>';
-                                        ?>
-                                        <?php
-                                        }
-                                        ?>
-                                </select>
-                            </div>
-
                             <!-- Checkbox Reset Password -->
                             <div class="mb-4 flex items-center">
                                 <input type="checkbox" name="reset_password" id="resetPasswordCheckbox" class="mr-2">
@@ -628,15 +604,6 @@
             
             // Fungsi untuk menampilkan popup dan mengisi data yang benar
             function openEditPopup(userId, nama, nomorInduk, nomorTelepon, email, password, id_instansi) {
-                // Debugging: Log each parameter to check if values are correct
-                console.log("User ID:", userId);
-                console.log("Nama:", nama);
-                console.log("Nomor Induk:", nomorInduk);
-                console.log("Nomor Telepon:", nomorTelepon);
-                console.log("Email:", email);   // Pastikan ini berisi email
-                console.log("Password:", password); 
-                console.log("Staff Instansi:", id_instansi);// Pastikan ini berisi password
-
                 // Set each input field with the corresponding value
                 document.getElementById('editUserId').value = userId;
                 document.getElementById('editNama').value = nama;
@@ -644,7 +611,6 @@
                 document.getElementById('editNomorTelepon').value = nomorTelepon;
                 document.getElementById('editEmail').value = email;
                 document.getElementById('editPassword').value = password;
-                document.getElementById('editInstansi').value = id_instansi;
 
                 // Display the popup
                 document.getElementById('editPopup').classList.remove('hidden');
