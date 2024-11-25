@@ -3,47 +3,69 @@ include '../Back-end/config.php';
 header('Content-Type: application/json');
 
 $database = new database();
+$input = json_decode(file_get_contents('php://input'), true);
 
 try {
-    $data = mysqli_query($database->koneksi, "
-        SELECT a.*, g.nama_kejadian, c.nama AS nama_user
-        FROM kejadian a
-        LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
-        INNER JOIN user c ON c.id_user = a.id_user
-        ORDER BY a.tanggal DESC
-    ");
-    $notifications = [];
+    if (isset($input['id'])) {
+        // Jika ada parameter ID, update status_notif
+        $notifId = $input['id'];
+        $query = "UPDATE kejadian SET status_notif = 1 WHERE id_kejadian = ?";
+        $stmt = $database->koneksi->prepare($query);
 
-    function timeAgo($timestamp) {
-        $timeAgo = strtotime($timestamp); // Convert to UNIX timestamp
-        $currentTime = time();
-        $timeDifference = $currentTime - $timeAgo;
-
-        if ($timeDifference < 60) {
-            return $timeDifference . 'm ago'; // Minutes
-        } elseif ($timeDifference < 3600) {
-            return floor($timeDifference / 60) . 'm ago'; // Minutes
-        } elseif ($timeDifference < 86400) {
-            return floor($timeDifference / 3600) . 'h ago'; // Hours
+        if ($stmt) {
+            $stmt->bind_param('i', $notifId);
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Status notifikasi diperbarui']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Gagal memperbarui status notifikasi']);
+            }
+            $stmt->close();
         } else {
-            return floor($timeDifference / 86400) . 'd ago'; // Days
+            echo json_encode(['success' => false, 'message' => 'Gagal mempersiapkan query']);
         }
-    }
+    } else {
+        // Jika tidak ada parameter ID, kembalikan daftar notifikasi
+        $data = mysqli_query($database->koneksi, "
+            SELECT a.*, g.nama_kejadian, c.nama AS nama_user
+            FROM kejadian a
+            LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+            INNER JOIN user c ON c.id_user = a.id_user
+            ORDER BY a.tanggal DESC
+        ");
 
-    foreach ($data as $row) {
-        $notifications[] = [
-            'id' => $row['id_kejadian'], // Ganti dengan kolom primary key dari tabel kejadian
-            'title' => $row['judul'], // Ganti 'judul' sesuai dengan kolom yang sesuai untuk judul
-            'category' => $row['nama_kejadian'], // Sesuaikan dengan kolom kategori
-            'time' => timeAgo($row['tanggal']), // Ganti 'waktu' dengan kolom yang berisi waktu
-            'description' => $row['deskripsi'], // Ganti 'deskripsi' dengan kolom deskripsi
-            'rating' => $row['skala_bintang'] ?? 0,
-            'status_notif' => $row['status_notif'],
-            'nama_user' => $row['nama_user'] ?? 'Tidak ada nama pengguna', // Gunakan kolom 'rating' jika ada
-        ];
-    }
+        $notifications = [];
 
-    echo json_encode(['success' => true, 'data' => $notifications]);
+        function timeAgo($timestamp) {
+            $timeAgo = strtotime($timestamp); // Convert to UNIX timestamp
+            $currentTime = time();
+            $timeDifference = $currentTime - $timeAgo;
+
+            if ($timeDifference < 60) {
+                return $timeDifference . 'm ago'; // Minutes
+            } elseif ($timeDifference < 3600) {
+                return floor($timeDifference / 60) . 'm ago'; // Minutes
+            } elseif ($timeDifference < 86400) {
+                return floor($timeDifference / 3600) . 'h ago'; // Hours
+            } else {
+                return floor($timeDifference / 86400) . 'd ago'; // Days
+            }
+        }
+
+        foreach ($data as $row) {
+            $notifications[] = [
+                'id' => (int)$row['id_kejadian'],
+                'title' => $row['judul'],
+                'category' => $row['nama_kejadian'],
+                'time' => timeAgo($row['tanggal']),
+                'description' => $row['deskripsi'],
+                'rating' => (int)$row['skala_bintang'] ?? 0,
+                'status_notif' => (int)$row['status_notif'],
+                'nama_user' => $row['nama_user'] ?? 'Tidak ada nama pengguna',
+            ];
+        }
+
+        echo json_encode(['success' => true, 'data' => $notifications]);
+    }
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
 }
