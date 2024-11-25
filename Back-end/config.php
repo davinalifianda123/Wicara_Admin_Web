@@ -242,6 +242,13 @@ if ($mysqli->connect_error) {
             return $row;
         }
 
+        function tambah_anggota_instansi($id_instansi,$id_user)
+        {
+            $query = "INSERT INTO anggota_instansi (id_instansi, id_user) 
+                VALUES ('$id_instansi', '$id_user')";
+            mysqli_query($this->koneksi, $query);
+        }
+
         
 //FORM KEHILANGAN
         function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $jenis_barang, $status_kehilangan, $tanggal_kadaluwarsa, $status_notif)
