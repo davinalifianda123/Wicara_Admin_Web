@@ -7,9 +7,12 @@ header("Access-Control-Allow-Headers: Content-Type");
 include '../Back-end/config.php';
 $db = new database();
 
-// Fungsi untuk menghitung jumlah data berdasarkan jenis kejadian
-function countDataByJenisKejadian($db, $id_jenis_kejadian) {
+// Fungsi untuk menghitung jumlah data berdasarkan filter tertentu
+function countFilteredData($db, $id_jenis_kejadian, $status_column = null, $status_value = null) {
     $query = "SELECT COUNT(*) as count FROM kejadian WHERE id_jenis_kejadian = $id_jenis_kejadian";
+    if ($status_column !== null && $status_value !== null) {
+        $query .= " AND $status_column = $status_value";
+    }
     $result = mysqli_query($db->koneksi, $query);
     if ($result) {
         $data = mysqli_fetch_assoc($result);
@@ -21,10 +24,10 @@ function countDataByJenisKejadian($db, $id_jenis_kejadian) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Mendapatkan jumlah data untuk setiap kategori
-    $pengaduan = countDataByJenisKejadian($db, 2);
-    $kehilangan = countDataByJenisKejadian($db, 1);
-    $rating = countDataByJenisKejadian($db, 3);
+    // Mendapatkan jumlah data dengan filter untuk setiap kategori
+    $pengaduan = countFilteredData($db, 2, 'status_pengaduan', 1);
+    $kehilangan = countFilteredData($db, 1, 'status_kehilangan', 4);
+    $rating = countFilteredData($db, 3);
 
     // Mengembalikan data dalam format JSON
     echo json_encode([
