@@ -496,7 +496,7 @@
                             <button 
                                 class="text-blue-500 hover:underline"
                                 onclick="openEditPopup('<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>')">
-                                Edit
+                                Detail
                             </button>
                         </td>
                     </tr>
@@ -687,7 +687,7 @@
                             <button 
                                 class="text-blue-500 hover:underline"
                                 onclick="openEditPopup('${user.id_user}', '${user.nama}', '${user.nomor_induk}', '${user.nomor_telepon}', '${user.email}', '${user.password}')">
-                                Edit
+                                Detail
                             </button>
                         </td>
                     </tr>

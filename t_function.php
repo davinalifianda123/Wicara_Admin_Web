@@ -1,5 +1,4 @@
 <?php
-    // // require_once('./Back-end/config.php');
     include './Back-end/config.php';
     $db = new database();
 
@@ -55,8 +54,6 @@
     }
 
     // Query untuk notifikasi rating
-    $ratingQuery = "SELECT id_kejadian, judul, tanggal, skala_bintang FROM kejadian WHERE id_jenis_kejadian = 3";
-    // Query untuk notifikasi rating dengan nama user
     $ratingQuery = "
         SELECT 
             kejadian.id_kejadian, 

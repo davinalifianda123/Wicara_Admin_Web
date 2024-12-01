@@ -486,7 +486,7 @@
                                 <td class="px-6 py-4 text-right">
                                     <button id="updateProductButton" class="inline text-blue-600 hover:underline font-medium text-sm" type="button" 
                                         onclick="openEditPopup('<?php echo $x['id_kejadian']; ?>', '<?php echo $x['nama']; ?>', '<?php echo $x['judul']; ?>', '<?php echo $x['jenis_barang']; ?>', '<?php echo $x['tanggal']; ?>', '<?php echo $x['nama_status_kehilangan']; ?>', '<?php echo $x['lokasi']; ?>', '<?php echo $x['tanggal_kadaluwarsa']; ?>', '<?php echo $x['deskripsi']; ?>', '<?php echo $x['lampiran']; ?>')">
-                                        Edit
+                                        Detail
                                     </button>
                                 </td>
                             </tr>
@@ -758,7 +758,7 @@
                                 class="inline text-blue-600 hover:underline font-medium text-sm" 
                                 type="button"
                                 onclick="openEditPopup('${user.id_kejadian || ''}', '${user.nama || ''}', '${user.judul || ''}', '${user.jenis_barang || ''}', '${user.tanggal || ''}', '${user.nama_status_kehilangan || ''}', '${user.lokasi || ''}', '${user.tanggal_kadaluwarsa || ''}', '${user.deskripsi || ''}', '${user.lampiran || ''}')">
-                                Edit
+                                Detail
                             </button>
                         </td>
                     </tr>

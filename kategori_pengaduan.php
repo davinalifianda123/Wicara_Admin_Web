@@ -470,7 +470,7 @@
                                 <button class="font-medium text-blue-600 hover:underline edit-button" 
                                         data-id="<?php echo $x['id_jenis_pengaduan']; ?>" 
                                         data-nama="<?php echo $x['nama_jenis_pengaduan']; ?>" 
-                                        onclick="openEditModal(this)">Edit</button>
+                                        onclick="openEditModal(this)">Detail</button>
                             </td>
                         </tr>
                         <?php
