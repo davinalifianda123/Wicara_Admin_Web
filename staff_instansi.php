@@ -426,7 +426,7 @@
                             <button 
                                 class="text-blue-500 hover:underline"
                                 onclick="openEditPopup('<?= $x['id_anggota_instansi']; ?>', '<?php echo $x['id_user']; ?>', '<?php echo addslashes($x['nama']); ?>', '<?php echo $x['nomor_induk']; ?>', '<?php echo $x['nomor_telepon']; ?>', '<?php echo addslashes($x['email']); ?>', '<?php echo addslashes($x['password']); ?>')">
-                                Edit
+                                Detail
                             </button>
                         </td>
                     </tr>
@@ -447,7 +447,7 @@
                 <div id="editPopup" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
                     <div class="bg-white p-6 rounded-lg w-96">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-semibold">Edit User</h2>
+                            <h2 class="text-lg font-semibold">Delete Staff</h2>
                             <button onclick="closePopup()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 inline-flex items-center">
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
@@ -597,8 +597,8 @@
                         <td class="py-2 px-6 text-right">
                             <button 
                                 class="text-blue-500 hover:underline"
-                                onclick="openEditPopup('${user.id_user}', '${user.nama}', '${user.nomor_induk}', '${user.nomor_telepon}', '${user.email}', '${user.password}')">
-                                Edit
+                                onclick="openEditPopup('${id_anggota_instansi}','${user.id_user}', '${user.nama}', '${user.nomor_induk}', '${user.nomor_telepon}', '${user.email}', '${user.password}')">
+                                Detail
                             </button>
                         </td>
                     </tr>
