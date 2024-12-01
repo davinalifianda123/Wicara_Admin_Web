@@ -221,6 +221,24 @@ if ($mysqli->connect_error) {
             return $hasil;
         }
 
+        function tampil_instansi_by_anggota_filtered($id_instansi) {
+            $query = "SELECT a.*, b.*, c.* FROM anggota_instansi a
+                      INNER JOIN instansi b ON b.id_instansi = a.id_instansi
+                      INNER JOIN user c ON c.id_user = a.id_user
+                      WHERE a.id_instansi = ?";
+            $stmt = $this->koneksi->prepare($query);
+            $stmt->bind_param("i", $id_instansi);
+            $stmt->execute();
+            $result = $stmt->get_result();
+        
+            $rows = [];
+            while ($row = $result->fetch_assoc()) {
+                $rows[] = $row;
+            }
+            return $rows;
+        }
+        
+
         function tampil_instansi_by_anggota()
         {
             $data = mysqli_query($this->koneksi, "SELECT a.*, b.*, c.* FROM anggota_instansi a
@@ -228,7 +246,7 @@ if ($mysqli->connect_error) {
                                                                 INNER JOIN user c ON c.id_user = a.id_user
                                                                 ");
             $rows = [];
-            while ($row = $data->fetch_assoc()) {
+            while ($row = mysqli_fetch_array($data)) {
                 $rows[] = $row;
             }
             return $rows;
