@@ -423,21 +423,13 @@ if ($mysqli->connect_error) {
 
         // Fungsi Hapus jenis_pengaduan
         function hapus_jenis_pengaduan($id_jenis_pengaduan) {
-            // Check if the category is in use in the pengaduan table
-            $stmt = $this->koneksi->prepare("SELECT COUNT(*) FROM jenis_pengaduan WHERE id_jenis_pengaduan = ?");
-            $stmt->bind_param("i", $id_jenis_pengaduan);
-            $stmt->execute();
-            $stmt->bind_result($count);
-            $stmt->fetch();
-            
-            if ($count > 0) {
-
-                return false;
-            }
-        
             $stmt = $this->koneksi->prepare("DELETE FROM jenis_pengaduan WHERE id_jenis_pengaduan = ?");
             $stmt->bind_param("i", $id_jenis_pengaduan);
-            return $stmt->execute();
+            
+            if (!$stmt->execute()) {
+                die("Error executing DELETE: " . $this->koneksi->error);
+            }
+            return true;
         }
         
 

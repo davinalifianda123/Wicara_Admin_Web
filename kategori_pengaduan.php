@@ -542,8 +542,13 @@
                                     <h3 id="confirm-delete-text" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                                     </h3>
                                 </div>
-                          <button type="submit" name="action" value="delete" class="text-white inline-flex items-center bg-[#F12626] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1" onclick="">Hapus</button>
-                          <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onclick="closeEditModal()">Cancel</button>
+                                <form method="POST" action="">
+                                    <input type="hidden" name="id_jenis_pengaduan" id="confirm-id">
+                                    <input type="hidden" name="action" value="delete">
+                                    <h3 id="confirm-text" class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400"></h3>
+                                    <button type="submit" class="text-white inline-flex items-center bg-[#F12626] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1">Hapus</button>
+                                    <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" onclick="closeConfirmModal()">Cancel</button>
+                                </form>
                         </div>
                     </div>
                 </div>
@@ -655,15 +660,17 @@
                 reader.readAsDataURL(event.target.files[0]);
             }
             
-            function openConfirmModal() {
+            function openConfirmModal(button) {
+                const id = document.getElementById('modal-id').value;
                 const namaKategori = document.getElementById('modal-nama').value;
-                document.getElementById('confirm-delete-text').textContent = 
+                document.getElementById('confirm-text').textContent = 
                     `Apakah yakin ingin menghapus kategori "${namaKategori}"?`;
-                
-                    closeEditModal();
+                document.getElementById('confirm-id').value = id; // Set ID ke input hidden
+                closeEditModal();
                 document.getElementById('confirm-delete-modal').classList.remove('hidden');
                 document.getElementById('confirm-delete-modal').classList.add('flex');
             }
+
 
 
               function closeConfirmModal() {
