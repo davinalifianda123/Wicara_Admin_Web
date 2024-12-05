@@ -1,7 +1,6 @@
 <?php
-    require_once('t_function.php');
+    require_once('t_function_pic.php');
     // buat update profile
-    session_start();
 
     if (!isset($_SESSION['id_instansi'])) {
         header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
@@ -77,7 +76,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="t_style_notif.css">
-        <script src="t_skrip_notif.js" defer></script>
+        <script src="t_skrip_notif_pic.js" defer></script>
         <style>
             body {
                 font-family: 'Poppins', sans-serif !important;
@@ -195,8 +194,8 @@
                         <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">Pengaduan</span>
                     </div>
                     <div class="flex items-center lg:order-2">
-                                                <!-- INII Notifications -->
-                                                <div class="relative">
+                        <!-- INII Notifications -->
+                        <div class="relative">
                             <button type="button" id="notificationButton" class="relative p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
                                 <span class="sr-only">View notifications</span>
                                 
@@ -222,7 +221,6 @@
                                 <div class="flex justify-around border-b border-gray-200 overflow-x-auto">
                                     <button id="tab-semua" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('semua')">Semua</button>
                                     <button id="tab-pengaduan" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('pengaduan')">Pengaduan</button>
-                                    <button id="tab-kehilangan" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('kehilangan')">Kehilangan</button>
                                     <button id="tab-rating" class="tab-button py-2 px-4 text-gray-500" onclick="populateNotifications('rating')">Rating</button>
                                 </div>
                             </div>

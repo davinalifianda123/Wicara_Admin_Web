@@ -1,9 +1,9 @@
 <?php
 include 'config.php';
 include '../api/phpqrcode/qrlib.php'; // Include library QR Code
+require_once __DIR__ . '/../mpdf/vendor/autoload.php';
 
 $db = new database();
-
 
 // Fungsi untuk menghasilkan QR Code
 function generateQRCode($unit_id) {
@@ -15,6 +15,48 @@ function generateQRCode($unit_id) {
     QRcode::png($url, $file_path, QR_ECLEVEL_L, 10);
     
     return $file_path;
+}
+
+// Fungsi untuk membuat poster menggunakan MPDF
+function generatePoster($unit_id, $nama_instansi, $qr_path) {
+    $poster_dir = "../posters/";
+
+    if (!is_dir($poster_dir)) {
+        mkdir($poster_dir, 0755, true);
+    }
+
+    $poster_file = $poster_dir . "poster_unit_" . $unit_id . ".pdf";
+
+    $html = '
+    <html>
+    <head>
+        <style>
+            body { font-family: sans-serif; text-align: center; }
+            .poster { border: 1px solid #ccc; padding: 20px; }
+            .qr-code { margin-top: 20px; }
+            .title { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+            .subtitle { font-size: 18px; margin-bottom: 10px; }
+        </style>
+    </head>
+    <body>
+        <div class="poster">
+            <div class="title">Selamat Datang di ' . htmlspecialchars($nama_instansi) . '</div>
+            <div class="subtitle">Scan QR Code untuk memberikan rating</div>
+            <div class="qr-code">
+                <img src="' . htmlspecialchars($qr_path) . '" alt="QR Code" width="200">
+            </div>
+        </div>
+    </body>
+    </html>
+    ';
+
+    $mpdf = new \Mpdf\Mpdf(['format' => 'A4']);
+    $mpdf->WriteHTML($html);
+
+    $poster_path = "../posters/poster_" . $unit_id . ".pdf";
+    $mpdf->Output($poster_path, \Mpdf\Output\Destination::FILE);
+
+    return $poster_path;
 }
 
 function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_instansi = null) {
@@ -42,13 +84,18 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
     if (mysqli_query($db->koneksi, $query)) {
         // Ambil ID dari instansi yang baru disimpan
         $unit_id = mysqli_insert_id($db->koneksi);
+        
         // Generate QR Code dan simpan path-nya
         $qr_path = generateQRCode($unit_id);
-        $update_query = "UPDATE instansi SET qr_code_url = '$qr_path' WHERE id_instansi = '$unit_id'";
+
+        // Generate poster dengan QR Code
+        $poster_path = generatePoster($unit_id, $nama_instansi, $qr_path);
+
+        $update_query = "UPDATE instansi SET qr_code_url = '$qr_path', poster_url = '$poster_path' WHERE id_instansi = '$unit_id'";
         if (mysqli_query($db->koneksi, $update_query)) {
-            return ["success" => true, "message" => "Data unit layanan berhasil disimpan dan QR Code di-generate.", "qr_path" => $qr_path];
+            return ["success" => true, "message" => "Data unit layanan berhasil disimpan dan poster di-generate.", "poster_path" => $poster_path];
         } else {
-            return ["success" => false, "message" => "Gagal memperbarui QR Code di database."];
+            return ["success" => false, "message" => "Gagal memperbarui data di database."];
         }
     } else {
         return ["success" => false, "message" => "Gagal menyimpan data unit layanan."];
