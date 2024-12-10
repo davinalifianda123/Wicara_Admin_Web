@@ -21,43 +21,98 @@ function generateQRCode($unit_id) {
 function generatePoster($unit_id, $nama_instansi, $qr_path) {
     $poster_dir = "../posters/";
 
+    // Pastikan folder penyimpanan ada
     if (!is_dir($poster_dir)) {
         mkdir($poster_dir, 0755, true);
     }
 
+    // Path file poster
     $poster_file = $poster_dir . "poster_unit_" . $unit_id . ".pdf";
 
+    // Konten HTML untuk PDF
     $html = '
-    <html>
+    <!DOCTYPE html>
+    <html lang="en">
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-            body { font-family: sans-serif; text-align: center; }
-            .poster { border: 1px solid #ccc; padding: 20px; }
-            .qr-code { margin-top: 20px; }
-            .title { font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-            .subtitle { font-size: 18px; margin-bottom: 10px; }
+            @page {
+                background-image: url("../assets/WadahInformasiCatatanAspirasi&RatingAkademikWICARA.png");
+                background-image-resize: 6;
+            }
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                color: #fff;
+            }
+            .poster {
+                margin: 0 auto;
+                text-align: center;
+                width: 100%;
+            }
+            .title h1 {
+                margin-top: 45px;
+                font-size: 54px;
+                margin-bottom: 5px;
+            }
+            .title h2 {
+                font-size: 36px;
+                margin: 0;
+            }
+            .qr-code {
+                margin-top: 36px;
+            }
+            .instructions {
+                margin-top: 36px;
+            }
+            .footer {
+                color: #fff;
+                padding: 10px;
+                text-align: center;
+                margin-top: 45px;
+            }
+            .footer p {
+                margin: 5px;
+            }
         </style>
     </head>
     <body>
         <div class="poster">
-            <div class="title">Selamat Datang di ' . htmlspecialchars($nama_instansi) . '</div>
-            <div class="subtitle">Scan QR Code untuk memberikan rating</div>
-            <div class="qr-code">
-                <img src="' . htmlspecialchars($qr_path) . '" alt="QR Code" width="200">
+            <img width="180" src="../assets/Polines.png" alt="Logo Polines">
+            <div class="title">
+                <h1>' . htmlspecialchars($nama_instansi) . '</h1>
+                <h2>SCAN HERE TO RATE</h2>
+            </div>
+            <img class="qr-code" width="320" src="' . htmlspecialchars($qr_path) . '" alt="QR Code">
+            <img class="instructions" width="75%" src="../assets/instructions.png" alt="Instructions">
+            <div class="footer">
+                <p>Powered by</p>
+                <img width="150" src="../assets/logo wicara.png" alt="Logo Wicara">
             </div>
         </div>
     </body>
     </html>
     ';
 
-    $mpdf = new \Mpdf\Mpdf(['format' => 'A4']);
+    // Inisialisasi mPDF dan buat file PDF
+    $mpdf = new \Mpdf\Mpdf([
+        'format' => 'A4',
+        'margin_left' => 20,
+        'margin_right' => 15,
+        'margin_top' => 25,
+        'margin_bottom' => 25,
+        'margin_header' => 10,
+        'margin_footer' => 10
+    ]);
     $mpdf->WriteHTML($html);
+    $mpdf->Output($poster_file, \Mpdf\Output\Destination::FILE);
 
-    $poster_path = "../posters/poster_" . $unit_id . ".pdf";
-    $mpdf->Output($poster_path, \Mpdf\Output\Destination::FILE);
-
-    return $poster_path;
+    // Kembalikan path file PDF
+    return $poster_file;
 }
+
 
 function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_instansi = null) {
     // Inisialisasi path gambar jika tidak ada gambar yang diunggah
