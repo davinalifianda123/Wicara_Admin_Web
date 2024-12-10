@@ -304,11 +304,46 @@ if ($mysqli->connect_error) {
         
 
 //FORM ULASAN
-        function tambah_kejadian_ulasan($id_jenis_kejadian,$id_user, $id_instansi, $isi_komentar, $tanggal, $skala_bintang)
-        { 
-            mysqli_query($this->koneksi,"INSERT INTO kejadian (id_jenis_kejadian, id_user, id_instansi,isi_komentar, tanggal, skala_bintang, status_notif) 
-            VALUES ('$id_jenis_kejadian','$id_user', '$id_instansi', '$isi_komentar', '$tanggal', '$skala_bintang', 0)");
+        function tambah_kejadian_ulasan($id_jenis_kejadian, $id_user, $id_instansi, $isi_komentar, $tanggal, $skala_bintang)
+        {
+            // Mengakses koneksi database
+            $koneksi = $this->koneksi;
+
+            // Cek apakah user sudah memberikan rating ke instansi dalam 7 hari terakhir
+            $query_check = "SELECT tanggal FROM kejadian 
+                            WHERE id_user = '$id_user' 
+                            AND id_instansi = '$id_instansi' 
+                            ORDER BY tanggal DESC 
+                            LIMIT 1";
+
+            $result_check = mysqli_query($koneksi, $query_check);
+
+            if (mysqli_num_rows($result_check) > 0) {
+                $row = mysqli_fetch_assoc($result_check);
+                $tanggal_terakhir = $row['tanggal'];
+
+                // Hitung sisa hari
+                $sisa_hari = 7 - (floor((strtotime('now') - strtotime($tanggal_terakhir)) / 86400)); // Konversi detik ke hari
+
+                if ($sisa_hari > 0) {
+                    // Jika masih dalam masa jeda
+                    return "Anda sudah memberikan ulasan ke instansi ini. Harap tunggu $sisa_hari hari sebelum memberikan ulasan lagi.";
+                }
+            }
+
+            // Jika tidak ada ulasan dalam 7 hari terakhir, tambahkan rating baru
+            $query_insert = "INSERT INTO kejadian (id_jenis_kejadian, id_user, id_instansi, isi_komentar, tanggal, skala_bintang, status_notif) 
+                            VALUES ('$id_jenis_kejadian', '$id_user', '$id_instansi', '$isi_komentar', '$tanggal', '$skala_bintang', 0)";
+            
+            if (mysqli_query($koneksi, $query_insert)) {
+                return "Ulasan berhasil ditambahkan.";
+            } else {
+                // Jika ada error saat menyimpan
+                return "Terjadi kesalahan saat menambahkan ulasan: " . mysqli_error($koneksi);
+            }
         }
+
+
 
 //FORM USER
         function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image, $id_instansi)

@@ -1,3 +1,10 @@
+<?php
+if (isset($_GET['status']) && isset($_GET['message'])) {
+    echo "<p>Status: " . htmlspecialchars($_GET['status']) . "</p>";
+    echo "<p>Pesan: " . htmlspecialchars($_GET['message']) . "</p>";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

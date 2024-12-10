@@ -389,6 +389,9 @@
                             <li class="me-2">
                                 <a href="?status=hilang" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="hilang">Hilang</a>
                             </li>
+                            <li class="me-2">
+                                <a href="?status=dibatalkan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="dibatalkan">Dibatalkan</a>
+                            </li>
                             <form id="search-form" class="flex-grow mx-auto">
                                 <div class="relative top-2">
                                     <div class="absolute top-2.5 start-0 flex items-center ps-3 pointer-events-none">
@@ -480,6 +483,8 @@
                                             echo '<span class="bg-green-200 text-green-600 text-xs font-medium px-3 py-1 rounded">Ditemukan</span>';
                                         }elseif($x['nama_status_kehilangan'] == "Hilang"){
                                             echo '<span class="bg-red-200 text-red-600 text-xs font-medium px-3 py-1 rounded">Hilang</span>';
+                                        }elseif($x['nama_status_kehilangan'] == "Dibatalkan"){
+                                            echo '<span class="bg-red-200 text-red-600 text-xs font-medium px-3 py-1 rounded">Dibatalkan</span>';
                                         }
                                     ?>
                                 </td>
