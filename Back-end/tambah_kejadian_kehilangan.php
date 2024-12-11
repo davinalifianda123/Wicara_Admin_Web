@@ -81,12 +81,12 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 </td>
             </tr>
 
-            <tr>
+            <!-- <tr>
                 <td>
                     <label for="tanggal_kadaluwarsa">Tanggal Kadaluwarsa</label>
                 </td>
                 <td><input type="date" id="tanggal_kadaluwarsa" name="tanggal_kadaluwarsa" readonly></td>
-            </tr>
+            </tr> -->
             <tr>
                 <td></td>
                 <td><input type="submit" value="Simpan"></td>
@@ -94,17 +94,17 @@ $kejadian = isset($kejadian) ? $kejadian : [];
         </table>
     </form>
     <script>
-    function setTanggalKadaluwarsa() {
-        const tanggal = new Date(document.getElementById("tanggal").value);
-        if (!isNaN(tanggal)) {
-            // Tambahkan 7 hari (1 minggu)
-            tanggal.setDate(tanggal.getDate() + 7);
+    // function setTanggalKadaluwarsa() {
+    //     const tanggal = new Date(document.getElementById("tanggal").value);
+    //     if (!isNaN(tanggal)) {
+    //         // Tambahkan 7 hari (1 minggu)
+    //         tanggal.setDate(tanggal.getDate() + 7);
             
-            // Format ke input date
-            const tanggalKadaluwarsa = tanggal.toISOString().split('T')[0];
-            document.getElementById("tanggal_kadaluwarsa").value = tanggalKadaluwarsa;
-        }
-    }
+    //         // Format ke input date
+    //         const tanggalKadaluwarsa = tanggal.toISOString().split('T')[0];
+    //         document.getElementById("tanggal_kadaluwarsa").value = tanggalKadaluwarsa;
+    //     }
+    // }
     </script>
 </body>
 </html>

@@ -42,7 +42,7 @@ $koneksi->tambah_kejadian_kehilangan(
     $lampiran, // Kirim nama file lampiran
     $_POST['jenis_barang'],
     $_POST['status_kehilangan'],
-    $_POST['tanggal_kadaluwarsa'],
+    // $_POST['tanggal_kadaluwarsa'],
     $_POST['status_notif']
 );
 

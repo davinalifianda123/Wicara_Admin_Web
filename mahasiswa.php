@@ -40,7 +40,7 @@
     $lastUpdate = $row['last_update'];
     $totalMahasiswa = $row['total_mahasiswa'];
 
-    $allUsersQuery = "SELECT * FROM user WHERE role = 3";
+    $allUsersQuery = "SELECT * FROM user WHERE role = 3 ORDER BY updated_at DESC";
     $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
     $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>

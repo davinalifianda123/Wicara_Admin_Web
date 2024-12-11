@@ -262,13 +262,13 @@
                         <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">Pengaduan > Kategori Pengaduan</span>
                     </div>
                     <div class="flex items-center lg:order-2">
-                                                <!-- INII Notifications -->
-                                                <div class="relative">
+                        <!-- INII Notifications -->
+                        <div class="relative">
                             <button type="button" id="notificationButton" class="relative p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
                                 <span class="sr-only">View notifications</span>
                                 
                                 <!-- Red dot for notification count -->
-                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-fullhidden">
+                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900 hidden">
                                     7
                                 </div>
                                 

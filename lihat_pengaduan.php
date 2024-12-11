@@ -38,14 +38,16 @@
     // Start numbering from the current offset
     $no = $offset + 1;
 
-    $allUsersQuery = "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
-                        LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
-                        LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
-                        INNER JOIN user c ON c.id_user = a.id_user
-                        LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
-                        LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
-                        LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
-                        WHERE a.id_jenis_kejadian = 2";
+    $allUsersQuery = "SELECT a.*, b.*, c.*, d.*, e.*, f.*, g.* 
+                                                FROM kejadian a
+                                                LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+                                                LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
+                                                INNER JOIN user c ON c.id_user = a.id_user
+                                                LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
+                                                LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
+                                                LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
+                                                WHERE a.id_jenis_kejadian = 2
+                                                ORDER BY a.tanggal DESC";
     $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
     $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>
@@ -593,7 +595,7 @@
                             </button>
                             
                             <!-- Reject Button -->
-                            <button type="button" id="rejectButton" class="text-red-600 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden">
+                            <button type="submit" id="rejectButton" class="text-red-600 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden">
                                 Tolak
                             </button>
 

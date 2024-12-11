@@ -22,7 +22,6 @@
         <th>Tanggal</th>
         <th>Jenis Barang</th>               
         <th>Id User</th>
-        <th>Status Kehilangan</th>
         <th>Tanggal Kadaluarsa</th>
     
     </tr>
@@ -40,7 +39,6 @@
         <td><?php echo $x['jenis_barang']; ?></td>
         <td><?php echo $x['nama']; ?></td>
         <td><?php echo $x['nama_status_kehilangan']; ?></td>
-        <td><?php echo $x['tanggal_kadaluwarsa']; ?></td>
         <td><a href="edit_kejadian_kehilangan.php?id=<?php echo $x['id_kejadian']; ?>">Edit</a></td>
         <td><a href="hapus_kejadian_kehilangan.php?id=<?php echo $x['id_kejadian']; ?>">Hapus</a></td>
     </tr>

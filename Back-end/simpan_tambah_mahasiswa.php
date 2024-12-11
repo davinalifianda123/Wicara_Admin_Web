@@ -8,6 +8,6 @@ $password = "Polines123*"; // Password default
 $role = 3;
 
 $koneksi->tambah_user($_POST['nama'], $_POST['nomor_induk'], $_POST['nomor_telepon'],
-    $_POST['email'], $password, $role, $_POST['image']); // Menambahkan parameter $role
+    $_POST['email'], $password, $role, NULL); // Menambahkan parameter $role
 header('location: ../mahasiswa.php');
 ?>
