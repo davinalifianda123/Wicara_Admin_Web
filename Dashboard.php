@@ -12,7 +12,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
 
     // Jika ada pesan sukses
     if (isset($_GET['message'])) {
@@ -35,9 +35,23 @@
     $kehilangan = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 1"));
     $rating = mysqli_num_rows(mysqli_query($conn, "SELECT * FROM kejadian WHERE id_jenis_kejadian = 3"));
 
-    $presentase_pengaduan = round(($pengaduan/$total) * 100, 2);
-    $presentase_kehilangan = round(($kehilangan/$total) * 100, 2);
-    $presentase_rating = round(($rating/$total) * 100, 2);
+    if ($pengaduan > 0) {
+        $presentase_pengaduan = round(($pengaduan/$total) * 100, 2);
+    } else {
+        $presentase_pengaduan = 0;
+    }
+
+    if ($kehilangan > 0) {
+        $presentase_kehilangan = round(($kehilangan/$total) * 100, 2);
+    } else {
+        $presentase_kehilangan = 0;
+    }
+
+    if ($rating > 0) {
+        $presentase_rating = round(($rating/$total) * 100, 2);
+    } else {
+        $presentase_rating = 0;
+    }
 
     $mahasiswaCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM user WHERE role = 3"));
     $dosenTendikCount = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM user WHERE role = 2 and 4"));
@@ -539,7 +553,7 @@
                                     </div>
                                     <div>
                                         <button type="button" class="flex px-7 py-1 text-sm font-light shadow-md shadow-gray-500 text-center text-white bg-[#CD7014] rounded-full hover:bg-[#CD7019]">
-                                            <a href="./unit_layanan.php">
+                                            <a href="./rating.php">
                                                 Detail
                                             </a>
                                         </button>

@@ -9,6 +9,19 @@
         if ($action === 'terima') {
             $statusKehilangan = 1; // ID status untuk "Belum Ditemukan"
         } elseif ($action === 'delete') {
+            $image = "SELECT lampiran FROM kejadian WHERE id_kejadian='$idKejadian'";
+            $result = mysqli_query($db->koneksi, $image);
+            
+            if ($result && mysqli_num_rows($result) > 0) {
+                $data = mysqli_fetch_assoc($result);
+                $imagePath = $data['lampiran'];
+                
+                // Step 4: Delete the image file if it exists
+                if ($imagePath && file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+
             $query = "DELETE FROM kejadian WHERE id_kejadian = '$idKejadian'";
             mysqli_query($db->koneksi, $query);
             echo json_encode(['status' => 'success', 'message' => 'Data berhasil dihapus']);

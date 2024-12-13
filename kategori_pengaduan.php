@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'save') {
       if (isset($_POST['id_jenis_pengaduan']) && isset($_POST['nama_jenis_pengaduan'])) {
@@ -485,7 +485,8 @@
                     <tbody class="text-center">
                         <?php
                         $no = 1 + $offset; 
-                        while ($x = mysqli_fetch_assoc($results)) {
+                        if (mysqli_num_rows($results) > 0) {
+                            while ($x = mysqli_fetch_assoc($results)) {
                         ?>
                         <tr class="bg-white border-b">
                             <th scope="row" class="px-6 py-2"><?php echo $no++; ?></th>
@@ -496,6 +497,17 @@
                                         data-id="<?php echo $x['id_jenis_pengaduan']; ?>" 
                                         data-nama="<?php echo $x['nama_jenis_pengaduan']; ?>" 
                                         onclick="openEditModal(this)">Detail</button>
+                            </td>
+                        </tr>
+                        <?php
+                            }
+                        } else {
+                        ?>
+                        <tr class="bg-white border-b">
+                            <td colspan="4" class="px-6 py-4">
+                                <div class="flex justify-center items-center">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="h-full">
+                                </div>
                             </td>
                         </tr>
                         <?php

@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';    
+    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';    
 
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $itemsPerPage = 6;
@@ -154,7 +154,7 @@
                             <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                             </svg>
                         </button>
-                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block">Rating</span>
+                        <span class="hidden font-semibold text-xl text-[#060A47] md:inline-block">Unit Layanan</span>
                     </div>
                     <div class="flex items-center lg:order-2">
                          <!-- INII Notifications -->
@@ -350,7 +350,7 @@
                     <div class="text-sm font-medium text-center bg-white text-gray-500 border-b border-gray-200">
                       <ul class="flex flex-wrap -mb-px">
                         <li class="me-2">
-                          <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Rating Layanan</a>
+                          <a href="#" class="inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" aria-current="page">Unit Layanan</a>
                         </li>
                         <div class="flex items-center ms-auto gap-2">
                             <div class="ml-auto">
@@ -372,7 +372,8 @@
                       <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5 justify-center">
                         <?php
                         $no = 1 + $offset;
-                        while ($x = mysqli_fetch_assoc($results)) {
+                        if (mysqli_num_rows($results) > 0) {
+                            while ($x = mysqli_fetch_assoc($results)) {
                         ?>
                         <div class="card w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start">
                                 <figure class="relative max-w-full">
@@ -456,6 +457,17 @@
                             </div>
                           </div>
                         </div>
+                        <?php
+                            }
+                        } else {
+                        ?>
+                        <tr class="bg-white border-b">
+                            <td colspan="4" class="px-6 py-4">
+                                <div class="flex justify-center items-center">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="h-full">
+                                </div>
+                            </td>
+                        </tr>
                         <?php
                         }
                         ?>

@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
 
     // Get the selected status from the query parameter, default to 'semua'
     $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'semua';
@@ -437,22 +437,31 @@
                     <!-- INII ISI KOLOM -->
                     <tbody class="text-center">
                         <?php 
-                        // Initialize the overall row index
-                        static $overallRowIndex = 0;
-                        $visibleRowIndex = 0; // Counter for visible rows
+                        if (empty($KejadianToShow)): // Jika tidak ada data yang ditampilkan
+                        ?>
+                            <tr>
+                                <td colspan="8" class="py-4">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                </td>
+                            </tr>
+                        <?php 
+                        else:
+                            // Initialize the overall row index
+                            static $overallRowIndex = 0;
+                            $visibleRowIndex = 0; // Counter for visible rows
 
-                        // Loop through the users to show
-                        foreach ($KejadianToShow as $x): 
-                            // Increment the overall row index
-                            $overallRowIndex++;
-                            
-                            // Check if the row should be displayed
-                            $isVisible = true; // This should be dynamically set based on the search in JavaScript
-                            
-                            if ($isVisible) {
-                                // Increment the visible row index if the row is visible
-                                $visibleRowIndex++;
-                            }
+                            // Loop through the users to show
+                            foreach ($KejadianToShow as $x): 
+                                // Increment the overall row index
+                                $overallRowIndex++;
+                                
+                                // Check if the row should be displayed
+                                $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                                
+                                if ($isVisible) {
+                                    // Increment the visible row index if the row is visible
+                                    $visibleRowIndex++;
+                                }
                         ?>
                             <tr class="bg-white border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>" data-status="<?php echo strtolower($x['nama_status_pengaduan']); ?>">
                                 <th scope="row" class="px-3 py-4">
@@ -504,7 +513,8 @@
                                 $overallRowIndex++;
                         ?>
                         <?php 
-                        endfor 
+                            endfor;
+                        endif;
                         ?>
                     </tbody>
                 </table>
@@ -854,15 +864,45 @@
                         // Get all table rows
                         const rows = document.querySelectorAll('tbody tr');
 
+                        // Initialize a flag to track if there is visible data
+                        let hasVisibleData = false;
+
                         // Show/hide rows based on the selected status
                         rows.forEach(row => {
                             const rowStatus = row.getAttribute('data-status');
                             if (status === 'semua' || rowStatus === status) {
                                 row.style.display = '';
+                                hasVisibleData = true; // Mark that there is at least one visible row
                             } else {
                                 row.style.display = 'none';
                             }
                         });
+
+                        // Handle the case when no data is visible
+                        const emptyMessageRow = document.querySelector('#empty-message-row');
+
+                        if (!hasVisibleData) {
+                            if (!emptyMessageRow) {
+                                // Create a new row for the empty message if it doesn't exist
+                                const tbody = document.querySelector('tbody');
+                                const tr = document.createElement('tr');
+                                tr.id = 'empty-message-row';
+                                tr.innerHTML = `
+                                    <td colspan="8" class="py-4">
+                                        <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                    </td>
+                                `;
+                                tbody.appendChild(tr);
+                            } else {
+                                // Show the existing empty message row
+                                emptyMessageRow.style.display = '';
+                            }
+                        } else {
+                            // Hide the empty message row if data is available
+                            if (emptyMessageRow) {
+                                emptyMessageRow.style.display = 'none';
+                            }
+                        }
 
                         // Update the active tab styling
                         tabs.forEach(t => {
@@ -876,6 +916,7 @@
                     });
                 });
             });
+
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 

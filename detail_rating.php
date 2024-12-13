@@ -9,7 +9,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
 
     // Ambil id_instansi dari URL
     $id_instansi = $_GET['id'];

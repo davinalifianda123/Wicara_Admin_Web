@@ -49,9 +49,11 @@ if ($mysqli->connect_error) {
                                                                 LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
                                                                 WHERE a.id_jenis_kejadian = 1
                                                                 ORDER BY a.tanggal DESC");
-            while ($row = mysqli_fetch_array($data)){
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
             
         }
@@ -113,9 +115,11 @@ if ($mysqli->connect_error) {
                                                                 LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
                                                                 WHERE a.id_jenis_kejadian = 3
                                                                 ORDER BY a.tanggal DESC");
-            while ($row = mysqli_fetch_array($data)){
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
             
         }
@@ -149,27 +153,33 @@ if ($mysqli->connect_error) {
         function tampil_jenis_pengaduan()
         {
             $data = mysqli_query($this->koneksi, "SELECT * FROM jenis_pengaduan ORDER BY id_jenis_pengaduan");
-            while($row = mysqli_fetch_array($data)){
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
 
         function tampil_instansi()
         {
             $data = mysqli_query($this->koneksi, "SELECT * FROM instansi");
-            while($row = mysqli_fetch_array($data)){
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
 
         function tampil_jenis_kejadian()
         {
             $data = mysqli_query($this->koneksi, "SELECT * FROM jenis_kejadian");
-            while($row = mysqli_fetch_array($data)){
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
 
@@ -203,9 +213,11 @@ if ($mysqli->connect_error) {
         function tampil_user()
         {
             $data = mysqli_query($this->koneksi, "SELECT a.*,b.* FROM user a INNER JOIN role b ON b.id_role = a.role ORDER BY a.updated_at DESC");
-            while($row = mysqli_fetch_array($data)){
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
       
