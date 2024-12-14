@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($result && mysqli_num_rows($result) > 0) {
             $data = mysqli_fetch_assoc($result);
-            $imagePath = $data['lampiran'];
+            $imagePath = 'foto-pengaduan/'.$data['lampiran'];
             
             // Step 4: Delete the image file if it exists
             if ($imagePath && file_exists($imagePath)) {

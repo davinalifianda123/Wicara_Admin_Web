@@ -14,7 +14,7 @@
             
             if ($result && mysqli_num_rows($result) > 0) {
                 $data = mysqli_fetch_assoc($result);
-                $imagePath = $data['lampiran'];
+                $imagePath = 'foto-kehilangan/'.$data['lampiran'];
                 
                 // Step 4: Delete the image file if it exists
                 if ($imagePath && file_exists($imagePath)) {

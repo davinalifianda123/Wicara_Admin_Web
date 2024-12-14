@@ -620,7 +620,7 @@
             // Search Table
             const allUsers = <?php echo json_encode($allUsers); ?>;
 
-            function openEditPopup(id_kejadian, nama, judul, jenis_barang, tanggal, nama_status_kehilangan, lokasi, tanggal_kadaluwarsa, deskripsi, lampiran) {
+            function openEditPopup(id_kejadian, nama, judul, jenis_barang, tanggal, nama_status_kehilangan, lokasi, deskripsi, lampiran) {
                 // Set each input field with the corresponding value
                 document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id_kejadian;
                 document.querySelector('#updateProductModal input[name="user"]').value = nama;
