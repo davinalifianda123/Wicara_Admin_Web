@@ -5,6 +5,8 @@ header('Content-Type: application/json');
 $database = new database();
 $input = json_decode(file_get_contents('php://input'), true);
 
+date_default_timezone_set('Asia/Jakarta');
+
 try {
     if (isset($input['id'])) {
         // Jika ada parameter ID, update status_notif
