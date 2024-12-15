@@ -572,7 +572,7 @@
                                 <input type="hidden" name="action" value="delete">
                                 <h3 id="confirm-text" class="mb-5 text-lg font-normal text-gray-500 "></h3>
                                 <button type="submit" class="text-white inline-flex items-center bg-[#F12626] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1">Hapus</button>
-                                <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 " onclick="closeConfirmModal()">Cancel</button>
+                                <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 " onclick="closeConfirmModal()">Batal</button>
                             </form>
                         </div>
                     </div>
@@ -709,24 +709,7 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-            
-            function openConfirmModal(button) {
-                const id = document.getElementById('modal-id').value;
-                const namaKategori = document.getElementById('modal-nama').value;
-                document.getElementById('confirm-text').textContent = 
-                    `Apakah yakin ingin menghapus kategori "${namaKategori}"?`;
-                document.getElementById('confirm-id').value = id; // Set ID ke input hidden
-                closeEditModal();
-                document.getElementById('confirm-delete-modal').classList.remove('hidden');
-                document.getElementById('confirm-delete-modal').classList.add('flex');
-            }
-
-
-              function closeConfirmModal() {
-                  document.getElementById('confirm-delete-modal').classList.remove('flex');
-                  document.getElementById('confirm-delete-modal').classList.add('hidden');
-              }
-
+                        
             function openEditModal(button) {
               const id = button.getAttribute('data-id');
               const nama = button.getAttribute('data-nama');
@@ -743,19 +726,33 @@
             function closeEditModal() {
               document.getElementById('crud-modal').classList.remove('flex');
               document.getElementById('crud-modal').classList.add('hidden');
+            }
 
+            function openConfirmModal(button) {
+                const id = document.getElementById('modal-id').value;
+                const namaKategori = document.getElementById('modal-nama').value;
+                document.getElementById('confirm-text').textContent = 
+                    `Apakah yakin ingin menghapus kategori "${namaKategori}"?`;
+                document.getElementById('confirm-id').value = id; // Set ID ke input hidden
+                closeEditModal();
+                document.getElementById('confirm-delete-modal').classList.remove('hidden');
+                document.getElementById('confirm-delete-modal').classList.add('flex');
+            }
+
+
+            function closeConfirmModal() {
+                document.getElementById('confirm-delete-modal').classList.remove('flex');
+                document.getElementById('confirm-delete-modal').classList.add('hidden');
             }
 
             function closeSuksesModal() {
               document.getElementById('successModal').classList.remove('flex');
               document.getElementById('successModal').classList.add('hidden');
-
             }
 
             function closeErrorModal() {
               document.getElementById('errorModal').classList.remove('flex');
               document.getElementById('errorModal').classList.add('hidden');
-
             }
 
             function openAddModal() {
@@ -766,7 +763,6 @@
             function closeAddModal() {
               document.getElementById('add-modal').classList.remove('flex');
               document.getElementById('add-modal').classList.add('hidden');
-
             }
 
             function closeModal(modalId) {

@@ -536,8 +536,10 @@
                         <h3 class="text-lg font-semibold text-gray-900">
                             Detail Pengaduan
                         </h3>
-                        <button onclick="closePopup()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>
@@ -606,6 +608,54 @@
                 </div>
             </div>
         </div>
+
+        <!--MODAL Konfirmasi Hapus-->
+        <div id="confirm-delete-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
+                <div class="relative p-4 w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow">
+                        </button>
+                        <div class="p-4 md:p-5 text-center">
+                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                            </svg>
+                            <div id="confirm-delete-modal">
+                                <h3 id="confirm-delete-text" class="mb-5 text-lg font-normal text-gray-500 ">
+                                </h3>
+                            </div>
+                            <form method="POST" action="">
+                                <input type="hidden" name="id_jenis_pengaduan" id="confirm-id">
+                                <input type="hidden" name="action" value="delete">
+                                <h3 id="confirm-text" class="mb-5 text-lg font-normal text-gray-500 "></h3>
+                                <button id="confirm-delete-button" type="submit" class="text-white inline-flex items-center bg-[#F12626] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1">Hapus</button>
+                                <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 " onclick="closeConfirmModal()">Batal</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL Sukses Hapus -->
+            <div id="successModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                <div class="relative p-4 w-full max-w-md h-auto">
+                    <!-- Modal content -->
+                    <div class="relative p-4 text-center bg-white rounded-lg shadow ">
+                        <button type="button" class="absolute top-2.5 right-2.5 text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 " data-modal-toggle="successModal" onclick="closeSuksesModal()">
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                        <div class="w-12 h-12 rounded-full bg-green-200  p-2 flex items-center justify-center mx-auto mb-3.5">
+                            <svg aria-hidden="true" class="w-8 h-8 text-green-700 " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="sr-only">Success</span>
+                        </div>
+                        <p class="mb-1 text-lg font-semibold text-gray-900">Sukses</p>
+                        <p class="text-sm text-gray-900">Jenis Pengaduan Berhasil Dihapus</p>
+                    </div>
+                </div>
+            </div>
+
  
   
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
@@ -616,6 +666,7 @@
             // Search Table
             const allUsers = <?php echo json_encode($allUsers); ?>;
 
+            // Fungsi openEditPopup yang sudah ada
             function openEditPopup(id_kejadian, nama, judul, nama_jenis_pengaduan, tanggal, nama_status_pengaduan, lokasi, lampiran, deskripsi, nama_instansi) {
                 // Set each input field with the corresponding value
                 document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id_kejadian;
@@ -626,6 +677,8 @@
                 document.querySelector('#updateProductModal input[name="status"]').value = nama_status_pengaduan;
                 document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
                 document.querySelector('#updateProductModal input[name="instansi"]').value = nama_instansi;
+                document.querySelector('#updateProductModal button[type="button"]').addEventListener('click', closePopup);
+
                 const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
                 if (deskripsiField) deskripsiField.value = deskripsi;
 
@@ -655,13 +708,13 @@
                 document.getElementById('updateProductModal').classList.remove('hidden');
                 document.getElementById('updateProductModal').classList.add('flex');
 
-                
-                // Mengambil id kejadian dari modal
+                // Ambil id kejadian dari modal
                 const getIdKejadian = () => document.querySelector('#updateProductModal input[name="id_kejadian"]').value;
 
                 // Fungsi AJAX untuk mengirim data
                 function sendAction(action) {
-                    const idKejadian = getIdKejadian();
+                    const idKejadian = document.getElementById('id_kejadian').value;
+
                     fetch('Back-end/update_status_pengaduan.php', {
                         method: 'POST',
                         headers: {
@@ -672,8 +725,9 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 'success') {
-                            alert(data.message);
-                            setTimeout(() => location.reload(), 1000); // Tunggu 1 detik sebelum reload
+                            closeConfirmModal();
+                            document.getElementById('successModal').classList.remove('hidden');
+                            document.getElementById('successModal').classList.add('flex');
                         } else {
                             alert(data.message);
                         }
@@ -681,6 +735,13 @@
                     .catch(error => console.error('Error:', error));
                 }
 
+                //Close Main Modal
+                function closePopup() {
+                document.getElementById('updateProductModal').classList.remove('flex');
+                document.getElementById('updateProductModal').classList.add('hidden');
+                }
+
+                // Replace buttons to reset events
                 acceptButton.replaceWith(acceptButton.cloneNode(true));
                 rejectButton.replaceWith(rejectButton.cloneNode(true));
                 deleteButton.replaceWith(deleteButton.cloneNode(true));
@@ -692,17 +753,45 @@
 
                 newAcceptButton.addEventListener('click', () => sendAction('terima'));
                 newRejectButton.addEventListener('click', () => sendAction('tolak'));
-                newDeleteButton.addEventListener('click', () => {
-                    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                        sendAction('delete');
-                    }
-                });
 
+                // Fungsi untuk membuka modal konfirmasi
+                function openConfirmModal(button) {
+                const id = document.getElementById('id_kejadian').value;
+                const judulPengaduan = document.getElementById('judul').value;
+                document.getElementById('confirm-text').textContent = 
+                    `Apakah yakin ingin menghapus engaduan "${judulPengaduan}"?`;
+                document.getElementById('confirm-id').value = id; // Set ID ke input hidden
+                closePopup();
+                document.getElementById('confirm-delete-modal').classList.remove('hidden');
+                document.getElementById('confirm-delete-modal').classList.add('flex');
             }
+                
 
-            function closePopup() {
-                document.getElementById('updateProductModal').classList.add('hidden');
-                document.getElementById('updateProductModal').classList.remove('flex');
+                // Fungsi untuk menutup modal konfirmasi
+                function closeConfirmModal() {
+                    const confirmModal = document.getElementById('confirm-delete-modal');
+                    confirmModal.classList.remove('flex');
+                    confirmModal.classList.add('hidden');
+                }
+
+                // Event listener untuk tombol "Hapus"
+                newDeleteButton.addEventListener('click', () => {
+                    openConfirmModal();
+
+                    document.getElementById('confirm-delete-button').addEventListener('click', () => {
+                        sendAction('delete');
+                        closeConfirmModal();  // Menutup modal konfirmasi
+                    });
+
+                    document.getElementById('cancel-delete-button').addEventListener('click', () => {
+                        closeConfirmModal();  // Menutup modal konfirmasi tanpa melakukan penghapusan
+                    });
+                });
+            
+                function closeSuksesModal() {
+                    document.getElementById('successModal').classList.remove('flex');
+                    document.getElementById('successModal').classList.add('hidden');
+                    }
             }
 
 

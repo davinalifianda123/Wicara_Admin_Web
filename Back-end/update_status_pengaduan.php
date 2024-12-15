@@ -29,14 +29,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Permintaan tidak valid']);
 }
-
-// Redirect dinamis ke halaman asal
-if (isset($_SERVER['HTTP_REFERER'])) {
-    $redirect_url = $_SERVER['HTTP_REFERER']; // URL halaman asal
-    header("Location: $redirect_url");
-} else {
-    // Fallback jika HTTP_REFERER tidak tersedia
-    header("Location: ../lihat_pengaduan.php");
-}
-exit;
 ?>
