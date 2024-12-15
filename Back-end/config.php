@@ -279,10 +279,10 @@ if ($mysqli->connect_error) {
 
         
 //FORM KEHILANGAN
-        function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $jenis_barang, $status_kehilangan, $status_notif)
+        function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $nama_barang, $deskripsi, $tanggal, $lokasi, $lampiran, $status_kehilangan, $status_notif)
         {
-            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, jenis_barang, status_kehilangan, status_notif) 
-                VALUES ('$id_jenis_kejadian', '$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$jenis_barang', '$status_kehilangan', 0)";
+            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, nama_barang, deskripsi, tanggal, lokasi, lampiran, status_kehilangan, flag_notifikasi) 
+                VALUES ('$id_jenis_kejadian', '$id_user', '$nama_barang', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$status_kehilangan', 0)";
             mysqli_query($this->koneksi, $query);
         }
 
@@ -297,7 +297,7 @@ if ($mysqli->connect_error) {
         }
 //FORM PENGADUAN
         function tambah_kejadian_pengaduan($id_jenis_kejadian, $id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $id_jenis_pengaduan, $status_pengaduan, $id_instansi) {
-            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, id_jenis_pengaduan, status_pengaduan, id_instansi, status_notif) 
+            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, id_jenis_pengaduan, status_pengaduan, id_instansi, flag_notifikasi) 
                     VALUES ('$id_jenis_kejadian', '$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$id_jenis_pengaduan', '$status_pengaduan', '$id_instansi', 0)";
             mysqli_query($this->koneksi, $query);
         }
@@ -358,7 +358,7 @@ if ($mysqli->connect_error) {
 //FORM USER
         function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image)
         { 
-            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, image) 
+            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, profile) 
             VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image')");
         }
         
@@ -370,7 +370,7 @@ if ($mysqli->connect_error) {
         function edit_user_with_image($id_user, $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path) {
             if ($image_path) {
                 // Jika ada gambar baru yang diunggah, perbarui juga kolom 'image'
-                $stmt = $this->koneksi->prepare("UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, email=?, password=?, role=?, image=? WHERE id_user=?");
+                $stmt = $this->koneksi->prepare("UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, email=?, password=?, role=?, profile=? WHERE id_user=?");
                 $stmt->bind_param("sssssssi", $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path, $id_user);
             } else {
                 // Jika tidak ada gambar baru, update data kecuali kolom 'image'
@@ -389,14 +389,14 @@ if ($mysqli->connect_error) {
             $stmt->close();
         }
         public function get_user_image($id_user) {
-            $query = "SELECT image FROM user WHERE id_user = ?";
+            $query = "SELECT profile FROM user WHERE id_user = ?";
             $stmt = $this->koneksi->prepare($query);
             $stmt->bind_param("i", $id_user);
             $stmt->execute();
             $result = $stmt->get_result();
             $user = $result->fetch_assoc();
     
-            return $user ? $user['image'] : null;
+            return $user ? $user['profile'] : null;
         }
         
         
@@ -482,7 +482,7 @@ if ($mysqli->connect_error) {
         function edit_instansi_with_image($id_instansi, $nama_instansi, $email_pic, $password, $image_instansi) {
             if ($image_instansi) {
                 // Jika ada gambar baru yang diunggah, perbarui juga kolom 'image'
-                $stmt = $this->koneksi->prepare("UPDATE instansi SET nama_instansi=?, email_pic=?, password=?, image_instansi=? WHERE id_instansi=?");
+                $stmt = $this->koneksi->prepare("UPDATE instansi SET nama_instansi=?, email_pic=?, password=?, gambar_instansi=? WHERE id_instansi=?");
                 $stmt->bind_param("ssssi", $nama_instansi, $email_pic, $password, $image_instansi, $id_instansi);
             } else {
                 // Jika tidak ada gambar baru, update data kecuali kolom 'image'
@@ -501,14 +501,14 @@ if ($mysqli->connect_error) {
             $stmt->close();
         }
         public function get_instansi_image($id_instansi) {
-            $query = "SELECT image_instansi FROM instansi WHERE id_instansi = ?";
+            $query = "SELECT gambar_instansi FROM instansi WHERE id_instansi = ?";
             $stmt = $this->koneksi->prepare($query);
             $stmt->bind_param("i", $id_instansi);
             $stmt->execute();
             $result = $stmt->get_result();
             $instansi = $result->fetch_assoc();
     
-            return $instansi ? $instansi['image_instansi'] : null;
+            return $instansi ? $instansi['gambar_instansi'] : null;
         }
         
     }

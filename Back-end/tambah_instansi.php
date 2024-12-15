@@ -133,20 +133,26 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
         }
     }
 
+    // Format nama instansi untuk namaQR
+    $nama_instansi_formatted = strtolower(str_replace(' ', '', $nama_instansi));
+
     // Simpan data ke database, termasuk gambar jika ada
-    $query = "INSERT INTO instansi (nama_instansi, email_pic, password, image_instansi) VALUES ('$nama_instansi', '$email_pic', '$password', " . ($image_path ? "'$image_path'" : "NULL") . ")";
+    $query = "INSERT INTO instansi (nama_instansi, email_pic, password, gambar_instansi) VALUES ('$nama_instansi', '$email_pic', '$password', " . ($image_path ? "'$image_path'" : "NULL") . ")";
     
     if (mysqli_query($db->koneksi, $query)) {
         // Ambil ID dari instansi yang baru disimpan
         $unit_id = mysqli_insert_id($db->koneksi);
-        
+
+        // Buat namaQR dengan ID instansi
+        $namaQR = $unit_id . "-" . $nama_instansi_formatted . "-polines";
+
         // Generate QR Code dan simpan path-nya
         $qr_path = generateQRCode($unit_id);
 
         // Generate poster dengan QR Code
         $poster_path = generatePoster($unit_id, $nama_instansi, $qr_path);
 
-        $update_query = "UPDATE instansi SET qr_code_url = '$qr_path', poster_url = '$poster_path' WHERE id_instansi = '$unit_id'";
+        $update_query = "UPDATE instansi SET qr_code_url = '$qr_path', poster_url = '$poster_path', namaQR = '$namaQR' WHERE id_instansi = '$unit_id'";
         if (mysqli_query($db->koneksi, $update_query)) {
             return ["success" => true, "message" => "Data unit layanan berhasil disimpan dan poster di-generate.", "poster_path" => $poster_path];
         } else {

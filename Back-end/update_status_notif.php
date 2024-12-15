@@ -12,7 +12,7 @@ if (!$notifId) {
     exit;
 }
 
-$query = "UPDATE kejadian SET status_notif = 1 WHERE id_kejadian = ?";
+$query = "UPDATE kejadian SET flag_notifikasi = 1 WHERE id_kejadian = ?";
 $stmt = $db->koneksi->prepare($query);
 
 if (!$stmt) {

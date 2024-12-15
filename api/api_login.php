@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "nama" => $user['nama'],
             "email" => $user['email'],
             "password" => $user['password'],
-            "image" => $user['image']
+            "profile" => $user['profile']
         ]);
     } else {
         echo json_encode(["success" => false, "message" => "Email, password, atau role tidak sesuai"]);

@@ -11,7 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     // Get the selected status from the query parameter, default to 'semua'
     $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'semua';
@@ -422,9 +422,6 @@
                                 Tanggal
                             </th>
                             <th scope="col" class="px-6 py-2 font-light">
-                                Jenis Barang
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
                                 Deskripsi
                             </th>
                             <th scope="col" class="px-6 py-2 font-light">
@@ -472,16 +469,13 @@
                                     <?php echo $x['id_kejadian']; ?>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <?php echo $x['judul']; ?>
+                                    <?php echo $x['nama_barang']; ?>
                                 </td>
                                 <td class="px-6 py-4">
                                     <?php echo $x['tanggal']; ?>
                                 </td>
-                                <td class="px-6 py-4 text-center">
-                                    <?php echo $x['jenis_barang']; ?>
-                                </td>
                                 <td class="px-6 py-4">
-                                    <?php echo substr($x['deskripsi'], 0, 30) . '...'; ?>
+                                    <?php echo substr($x['deskripsi'] ?? '', 0, 30) . '...'; ?>
                                 </td>
                                 <td class="">
                                     <?php
@@ -500,7 +494,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <button id="updateProductButton" class="inline text-blue-600 hover:underline font-medium text-sm" type="button" 
-                                        onclick="openEditPopup('<?php echo $x['id_kejadian']; ?>', '<?php echo $x['nama']; ?>', '<?php echo $x['judul']; ?>', '<?php echo $x['jenis_barang']; ?>', '<?php echo $x['tanggal']; ?>', '<?php echo $x['nama_status_kehilangan']; ?>', '<?php echo $x['lokasi']; ?>', '<?php echo $x['deskripsi']; ?>', '<?php echo $x['lampiran']; ?>')">
+                                        onclick="openEditPopup('<?php echo $x['id_kejadian']; ?>', '<?php echo $x['nama']; ?>', '<?php echo $x['nama_barang']; ?>', '<?php echo $x['tanggal']; ?>', '<?php echo $x['nama_status_kehilangan']; ?>', '<?php echo $x['lokasi']; ?>', '<?php echo $x['deskripsi']; ?>', '<?php echo $x['lampiran']; ?>')">
                                         Detail
                                     </button>
                                 </td>
@@ -566,12 +560,8 @@
                                 <input type="text" name="user" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div>
-                                <label for="judul" class="block mb-2 text-sm font-medium text-gray-900">Judul Laporan</label>
-                                <input type="text" name="judul" id="judul" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
-                            </div>
-                            <div>
-                                <label for="jenis_barang" class="block mb-2 text-sm font-medium text-gray-900">Jenis Barang</label>
-                                <input type="text" name="jenis_barang" id="jenis_barang" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                                <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Judul Laporan</label>
+                                <input type="text" name="nama_barang" id="nama_barang" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div>
                                 <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-900">Tanggal</label>
@@ -620,12 +610,11 @@
             // Search Table
             const allUsers = <?php echo json_encode($allUsers); ?>;
 
-            function openEditPopup(id_kejadian, nama, judul, jenis_barang, tanggal, nama_status_kehilangan, lokasi, deskripsi, lampiran) {
+            function openEditPopup(id_kejadian, nama, judul, tanggal, nama_status_kehilangan, lokasi, deskripsi, lampiran) {
                 // Set each input field with the corresponding value
                 document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id_kejadian;
                 document.querySelector('#updateProductModal input[name="user"]').value = nama;
-                document.querySelector('#updateProductModal input[name="judul"]').value = judul;
-                document.querySelector('#updateProductModal input[name="jenis_barang"]').value = jenis_barang;
+                document.querySelector('#updateProductModal input[name="nama_barang"]').value = judul;
                 document.querySelector('#updateProductModal input[name="tanggal"]').value = tanggal;
                 document.querySelector('#updateProductModal input[name="status"]').value = nama_status_kehilangan;
                 document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;

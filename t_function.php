@@ -32,8 +32,8 @@
             kejadian.id_kejadian, 
             kejadian.judul, 
             kejadian.tanggal, 
-            kejadian.status_notif,
-            user.image AS user_image
+            kejadian.flag_notifikasi AS status_notif,
+            user.profile AS user_image
         FROM kejadian
         JOIN user ON kejadian.id_user = user.id_user
         WHERE kejadian.id_jenis_kejadian = 1
@@ -60,9 +60,9 @@
             kejadian.tanggal, 
             kejadian.skala_bintang, 
             instansi.nama_instansi, 
-            kejadian.status_notif,
+            kejadian.flag_notifikasi AS status_notif,
             kejadian.id_instansi, -- Tambahkan id_instansi di sini
-            user.image AS user_image
+            user.profile AS user_image
         FROM kejadian
         JOIN instansi ON kejadian.id_instansi = instansi.id_instansi
         JOIN user ON kejadian.id_user = user.id_user
@@ -91,8 +91,8 @@
             kejadian.id_kejadian, 
             kejadian.judul, 
             kejadian.tanggal, 
-            user.image AS user_image,
-            kejadian.status_notif
+            user.profile AS user_image,
+            kejadian.flag_notifikasi AS status_notif
         FROM kejadian
         JOIN user ON kejadian.id_user = user.id_user
         WHERE kejadian.id_jenis_kejadian = 2

@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';    
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';    
 
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $itemsPerPage = 6;
@@ -379,7 +379,7 @@
                                 <figure class="relative max-w-full">
                                     <a href="detail_rating.php?id=<?= $x['id_instansi'];?>" class="w-full h-0 pb-[50%] overflow-hidden">
                                         <div class="relative w-full h-0 pb-[50%] overflow-hidden">
-                                            <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['image_instansi'] != null ? "Back-end".$x['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
+                                            <img class="absolute top-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$x['gambar_instansi'] != null ? "Back-end".$x['gambar_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                         </div>
                                         <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
                                         <figcaption class="absolute px-4 text-white bottom-4 text-left">
@@ -451,7 +451,7 @@
                           </div>
                             <div class="flex justify-end mt-2">
                             <button id="editModalButton" type="button" class="text-sm font-medium text-blue-600 hover:underline align-start"
-                                onclick="openEditPopup('<?php echo $x['id_instansi']; ?>', '<?php echo $x['nama_instansi']; ?>', '<?php echo $x['email_pic']; ?>', '<?php echo $x['password']; ?>', '<?php echo $x['image_instansi']; ?>', '<?php echo $x['qr_code_url']; ?>')">
+                                onclick="openEditPopup('<?php echo $x['id_instansi']; ?>', '<?php echo $x['nama_instansi']; ?>', '<?php echo $x['email_pic']; ?>', '<?php echo $x['password']; ?>', '<?php echo $x['gambar_instansi']; ?>', '<?php echo $x['qr_code_url']; ?>')">
                                 Edit
                             </button>
                             </div>

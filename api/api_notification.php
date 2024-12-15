@@ -11,7 +11,7 @@ try {
     if (isset($input['id'])) {
         // Jika ada parameter ID, update status_notif
         $notifId = $input['id'];
-        $query = "UPDATE kejadian SET status_notif = 1 WHERE id_kejadian = ?";
+        $query = "UPDATE kejadian SET flag_notifikasi = 1 WHERE id_kejadian = ?";
         $stmt = $database->koneksi->prepare($query);
 
         if ($stmt) {
@@ -66,11 +66,11 @@ try {
                 'tanggal' => $row['tanggal'],
                 'description' => $row['deskripsi'],
                 'rating' => (int)$row['skala_bintang'] ?? 0,
-                'status_notif' => (int)$row['status_notif'],
+                'status_notif' => (int)$row['flag_notifikasi'],
                 'nama_user' => $row['nama_user'] ?? 'Tidak ada nama pengguna',
                 'location' => $row['lokasi'] ?? 'Tidak ada lokasi',
                 'lampiran' => $row['lampiran'] ?? 'Tidak ada lampiran',
-                'jenis_barang' => $row['jenis_barang'] ?? 'Tidak ada jenis barang',
+                'nama_barang' => $row['nama_barang'] ?? 'Tidak ada nama barang',
                 'status_kehilangan' => $row['nama_status_kehilangan'] ?? 'Tidak ada status kehilangan',
                 'status_pengaduan' => $row['nama_status_pengaduan'] ?? 'Tidak ada status pengaduan',
                 'jenis_pengaduan' => $row['nama_jenis_pengaduan'] ?? 'Tidak ada jenis pengaduan',

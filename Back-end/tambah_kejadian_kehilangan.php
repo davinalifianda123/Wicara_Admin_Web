@@ -39,8 +39,8 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 </td> 
             </tr>
             <tr>
-                <td>Judul</td>
-                <td><textarea name="judul" cols="25" rows="5"></textarea></td>
+                <td>Nama Barang</td>
+                <td><textarea name="nama_barang" cols="25" rows="5"></textarea></td>
             </tr>
             <tr>
                 <td>Deskripsi</td>
@@ -59,10 +59,6 @@ $kejadian = isset($kejadian) ? $kejadian : [];
             <tr>
                 <td>Lampiran</td>
                 <td><input type="file" name="lampiran" id="lampiran" accept="image/png, image/jpeg, image/jpg"></td>
-            </tr>
-            <tr>
-                <td>Jenis Barang</td>
-                <td><input type="text" name="jenis_barang"></td>
             </tr>
             <tr>
                 <td>Status Kehilangan</td>

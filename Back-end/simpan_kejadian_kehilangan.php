@@ -35,15 +35,14 @@ if (isset($_FILES['lampiran']) && $_FILES['lampiran']['error'] == 0) {
 $koneksi->tambah_kejadian_kehilangan(
     $_POST['id_jenis_kejadian'],
     $_POST['id_user'],
-    $_POST['judul'],
+    $_POST['nama_barang'],
     $_POST['deskripsi'],
     $_POST['tanggal'],
     $_POST['lokasi'],
     $lampiran, // Kirim nama file lampiran
-    $_POST['jenis_barang'],
     $_POST['status_kehilangan'],
     // $_POST['tanggal_kadaluwarsa'],
-    $_POST['status_notif']
+    $_POST['flag_notifikasi']
 );
 
 // Redirect ke halaman tampilan

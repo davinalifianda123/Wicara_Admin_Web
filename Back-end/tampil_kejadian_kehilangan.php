@@ -36,7 +36,7 @@
         <td><?php echo $x['deskripsi']; ?></td>
         <td><?php echo $x['lokasi']; ?></td>
         <td><?php echo $x['tanggal']; ?></td>
-        <td><?php echo $x['jenis_barang']; ?></td>
+        <td><?php echo $x['nama_barang']; ?></td>
         <td><?php echo $x['nama']; ?></td>
         <td><?php echo $x['nama_status_kehilangan']; ?></td>
         <td><a href="edit_kejadian_kehilangan.php?id=<?php echo $x['id_kejadian']; ?>">Edit</a></td>

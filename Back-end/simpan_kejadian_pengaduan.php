@@ -43,7 +43,7 @@ $koneksi->tambah_kejadian_pengaduan(
     $_POST['id_jenis_pengaduan'],
     $_POST['status_pengaduan'],
     $_POST['id_instansi'],
-    $_POST['status_notif']
+    $_POST['flag_notifikasi']
 );
 
 // Redirect ke halaman tampilan

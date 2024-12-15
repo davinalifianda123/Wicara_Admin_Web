@@ -12,7 +12,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     // Jika ada pesan sukses
     if (isset($_GET['message'])) {

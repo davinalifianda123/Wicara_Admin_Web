@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'save') {
       if (isset($_POST['id_jenis_pengaduan']) && isset($_POST['nama_jenis_pengaduan'])) {
