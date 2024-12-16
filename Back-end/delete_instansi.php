@@ -8,11 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $id = $_GET['id'];
 
     // Retrieve and delete image_instansi
-    $query = "SELECT image_instansi FROM instansi WHERE id_instansi='$id'";
+    $query = "SELECT gambar_instansi FROM instansi WHERE id_instansi='$id'";
     $result = mysqli_query($db->koneksi, $query);
     if ($result && mysqli_num_rows($result) > 0) {
         $data = mysqli_fetch_assoc($result);
-        $imagePath = $data['image_instansi'];
+        $imagePath = $data['gambar_instansi'];
         if ($imagePath && file_exists($imagePath)) {
             unlink($imagePath);
         }
