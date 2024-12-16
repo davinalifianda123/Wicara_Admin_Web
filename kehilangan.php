@@ -11,7 +11,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     // Get the selected status from the query parameter, default to 'semua'
     $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'semua';
@@ -39,14 +39,15 @@
     // Start numbering from the current offset
     $no = $offset + 1;
 
-    $allUsersQuery = "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
+    $allUsersQuery = "SELECT a.*,b.*,c.*,d.*,e.*,f.*,g.* FROM kejadian a
                         LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
                         LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
                         INNER JOIN user c ON c.id_user = a.id_user
                         LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
                         LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
                         LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
-                        WHERE a.id_jenis_kejadian = 1";
+                        WHERE a.id_jenis_kejadian = 1
+                        ORDER BY a.tanggal DESC";
     $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
     $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>
@@ -421,9 +422,6 @@
                                 Tanggal
                             </th>
                             <th scope="col" class="px-6 py-2 font-light">
-                                Jenis Barang
-                            </th>
-                            <th scope="col" class="px-6 py-2 font-light">
                                 Deskripsi
                             </th>
                             <th scope="col" class="px-6 py-2 font-light">
@@ -437,22 +435,31 @@
                     <!-- INII ISI KOLOM -->
                     <tbody class="text-center">
                         <?php 
-                        // Initialize the overall row index
-                        static $overallRowIndex = 0;
-                        $visibleRowIndex = 0; // Counter for visible rows
+                        if (empty($kehilanganToShow)): // Jika tidak ada data yang ditampilkan
+                        ?>
+                            <tr>
+                                <td colspan="8" class="py-4">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                </td>
+                            </tr>
+                        <?php
+                        else:
+                            // Initialize the overall row index
+                            static $overallRowIndex = 0;
+                            $visibleRowIndex = 0; // Counter for visible rows
 
-                        // Loop through the users to show
-                        foreach ($kehilanganToShow as $x): 
-                            // Increment the overall row index
-                            $overallRowIndex++;
-                            
-                            // Check if the row should be displayed
-                            $isVisible = true; // This should be dynamically set based on the search in JavaScript
-                            
-                            if ($isVisible) {
-                                // Increment the visible row index if the row is visible
-                                $visibleRowIndex++;
-                            }
+                            // Loop through the users to show
+                            foreach ($kehilanganToShow as $x): 
+                                // Increment the overall row index
+                                $overallRowIndex++;
+                                
+                                // Check if the row should be displayed
+                                $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                                
+                                if ($isVisible) {
+                                    // Increment the visible row index if the row is visible
+                                    $visibleRowIndex++;
+                                }
                         ?>
                             <tr class="bg-white border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>" data-status="<?php echo strtolower($x['nama_status_kehilangan']); ?>">
                                 <th scope="row" class="px-3 py-4">
@@ -462,16 +469,13 @@
                                     <?php echo $x['id_kejadian']; ?>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <?php echo $x['judul']; ?>
+                                    <?php echo $x['nama_barang']; ?>
                                 </td>
                                 <td class="px-6 py-4">
                                     <?php echo $x['tanggal']; ?>
                                 </td>
-                                <td class="px-6 py-4 text-center">
-                                    <?php echo $x['jenis_barang']; ?>
-                                </td>
                                 <td class="px-6 py-4">
-                                    <?php echo substr($x['deskripsi'], 0, 30) . '...'; ?>
+                                    <?php echo substr($x['deskripsi'] ?? '', 0, 30) . '...'; ?>
                                 </td>
                                 <td class="">
                                     <?php
@@ -490,7 +494,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <button id="updateProductButton" class="inline text-blue-600 hover:underline font-medium text-sm" type="button" 
-                                        onclick="openEditPopup('<?php echo $x['id_kejadian']; ?>', '<?php echo $x['nama']; ?>', '<?php echo $x['judul']; ?>', '<?php echo $x['jenis_barang']; ?>', '<?php echo $x['tanggal']; ?>', '<?php echo $x['nama_status_kehilangan']; ?>', '<?php echo $x['lokasi']; ?>', '<?php echo $x['tanggal_kadaluwarsa']; ?>', '<?php echo $x['deskripsi']; ?>', '<?php echo $x['lampiran']; ?>')">
+                                        onclick="openEditPopup('<?php echo $x['id_kejadian']; ?>', '<?php echo $x['nama']; ?>', '<?php echo $x['nama_barang']; ?>', '<?php echo $x['tanggal']; ?>', '<?php echo $x['nama_status_kehilangan']; ?>', '<?php echo $x['lokasi']; ?>', '<?php echo $x['deskripsi']; ?>', '<?php echo $x['lampiran']; ?>')">
                                         Detail
                                     </button>
                                 </td>
@@ -504,7 +508,8 @@
                                 $overallRowIndex++;
                         ?>
                         <?php 
-                        endfor 
+                            endfor;
+                        endif; 
                         ?>
                     </tbody>
                 </table>
@@ -555,12 +560,8 @@
                                 <input type="text" name="user" id="user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div>
-                                <label for="judul" class="block mb-2 text-sm font-medium text-gray-900">Judul Laporan</label>
-                                <input type="text" name="judul" id="judul" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
-                            </div>
-                            <div>
-                                <label for="jenis_barang" class="block mb-2 text-sm font-medium text-gray-900">Jenis Barang</label>
-                                <input type="text" name="jenis_barang" id="jenis_barang" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
+                                <label for="nama_barang" class="block mb-2 text-sm font-medium text-gray-900">Judul Laporan</label>
+                                <input type="text" name="nama_barang" id="nama_barang" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div>
                                 <label for="tanggal" class="block mb-2 text-sm font-medium text-gray-900">Tanggal</label>
@@ -573,10 +574,6 @@
                             <div>
                                 <label for="lokasi" class="block mb-2 text-sm font-medium text-gray-900">Lokasi</label>
                                 <input type="text" name="lokasi" id="lokasi" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
-                            </div>
-                            <div>
-                                <label for="tanggal_kadaluwarsa" class="block mb-2 text-sm font-medium text-gray-900">tanggal kadaluwarsa</label>
-                                <input type="text" name="tanggal_kadaluwarsa" id="tanggal_kadaluwarsa" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="-" readonly>
                             </div>
                             <div class="sm:col-span-2">
                                 <label for="deskripsi" class="block mb-2 text-sm font-medium text-gray-900">Deskripsi</label>
@@ -613,16 +610,14 @@
             // Search Table
             const allUsers = <?php echo json_encode($allUsers); ?>;
 
-            function openEditPopup(id_kejadian, nama, judul, jenis_barang, tanggal, nama_status_kehilangan, lokasi, tanggal_kadaluwarsa, deskripsi, lampiran) {
+            function openEditPopup(id_kejadian, nama, judul, tanggal, nama_status_kehilangan, lokasi, deskripsi, lampiran) {
                 // Set each input field with the corresponding value
                 document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id_kejadian;
                 document.querySelector('#updateProductModal input[name="user"]').value = nama;
-                document.querySelector('#updateProductModal input[name="judul"]').value = judul;
-                document.querySelector('#updateProductModal input[name="jenis_barang"]').value = jenis_barang;
+                document.querySelector('#updateProductModal input[name="nama_barang"]').value = judul;
                 document.querySelector('#updateProductModal input[name="tanggal"]').value = tanggal;
                 document.querySelector('#updateProductModal input[name="status"]').value = nama_status_kehilangan;
                 document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
-                document.querySelector('#updateProductModal input[name="tanggal_kadaluwarsa"]').value = tanggal_kadaluwarsa;
                 const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
                 if (deskripsiField) deskripsiField.value = deskripsi;
 
@@ -762,7 +757,7 @@
                                 id="updateProductButton" 
                                 class="inline text-blue-600 hover:underline font-medium text-sm" 
                                 type="button"
-                                onclick="openEditPopup('${user.id_kejadian || ''}', '${user.nama || ''}', '${user.judul || ''}', '${user.jenis_barang || ''}', '${user.tanggal || ''}', '${user.nama_status_kehilangan || ''}', '${user.lokasi || ''}', '${user.tanggal_kadaluwarsa || ''}', '${user.deskripsi || ''}', '${user.lampiran || ''}')">
+                                onclick="openEditPopup('${user.id_kejadian || ''}', '${user.nama || ''}', '${user.judul || ''}', '${user.jenis_barang || ''}', '${user.tanggal || ''}', '${user.nama_status_kehilangan || ''}', '${user.lokasi || ''}', '${user.deskripsi || ''}', '${user.lampiran || ''}')">
                                 Detail
                             </button>
                         </td>
@@ -836,15 +831,45 @@
                         // Get all table rows
                         const rows = document.querySelectorAll('tbody tr');
 
+                        // Initialize a flag to track if there is visible data
+                        let hasVisibleData = false;
+
                         // Show/hide rows based on the selected status
                         rows.forEach(row => {
                             const rowStatus = row.getAttribute('data-status');
                             if (status === 'semua' || rowStatus === status) {
                                 row.style.display = '';
+                                hasVisibleData = true;
                             } else {
                                 row.style.display = 'none';
                             }
                         });
+
+                        // Handle the case when no data is visible
+                        const emptyMessageRow = document.querySelector('#empty-message-row');
+
+                        if (!hasVisibleData) {
+                            if (!emptyMessageRow) {
+                                // Create a new row for the empty message if it doesn't exist
+                                const tbody = document.querySelector('tbody');
+                                const tr = document.createElement('tr');
+                                tr.id = 'empty-message-row';
+                                tr.innerHTML = `
+                                    <td colspan="8" class="py-4">
+                                        <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                    </td>
+                                `;
+                                tbody.appendChild(tr);
+                            } else {
+                                // Show the existing empty message row
+                                emptyMessageRow.style.display = '';
+                            }
+                        } else {
+                            // Hide the empty message row if data is available
+                            if (emptyMessageRow) {
+                                emptyMessageRow.style.display = 'none';
+                            }
+                        }
 
                         // Update the active tab styling
                         tabs.forEach(t => {

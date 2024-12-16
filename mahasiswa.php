@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     // Get the current page number, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -40,7 +40,7 @@
     $lastUpdate = $row['last_update'];
     $totalMahasiswa = $row['total_mahasiswa'];
 
-    $allUsersQuery = "SELECT * FROM user WHERE role = 3";
+    $allUsersQuery = "SELECT * FROM user WHERE role = 3 ORDER BY updated_at DESC";
     $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
     $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>
@@ -374,7 +374,7 @@
 
             <!-- ATAS TABLE -->
             <p class="p-2 text-gray-500 text-sm">
-                Update terakhir: <?php echo date("j F Y (H:i T)", strtotime($lastUpdate)); ?>
+                Update terakhir: <?php echo isset($lastUpdate) && $lastUpdate ? date("j F Y (H:i T)", strtotime($lastUpdate)) : "Belum ada update"; ?>
             </p>
 
             <!-- BAGIAN TABEL -->
@@ -386,7 +386,7 @@
                         <p class="text-xs text-gray-500">Detail Mahasiswa</p>
                     </div>
                     <div class="ml-auto">
-                        <button onclick="togglePopup()" id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
+                        <button onclick="togglePopup()" id="openModalBtn" class="mb-3 text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
                     </div>
                     <!-- SEARCH -->
                     <form id="search-form" class="flex-grow max-w-sm">
@@ -453,31 +453,40 @@
                     </thead>
                     <tbody>
                     <?php 
-                    // Initialize the overall row index
-                    static $overallRowIndex = 0;
-                    $visibleRowIndex = 0; // Counter for visible rows
+                        if (empty($usersToShow)): // Jika tidak ada data yang ditampilkan
+                        ?>
+                            <tr>
+                                <td colspan="8" class="py-4">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                </td>
+                            </tr>
+                    <?php 
+                    else:
+                        // Initialize the overall row index
+                        static $overallRowIndex = 0;
+                        $visibleRowIndex = 0; // Counter for visible rows
 
-                    // Loop through the users to show
-                    foreach ($usersToShow as $x): 
-                        $imagePath = $x['image'];
+                        // Loop through the users to show
+                        foreach ($usersToShow as $x): 
+                            $imagePath = $x['profile'];
 
-                        // Increment the overall row index
-                        $overallRowIndex++;
-                        
-                        // Check if the row should be displayed
-                        $isVisible = true; // This should be dynamically set based on the search in JavaScript
-                        
-                        if ($isVisible) {
-                            // Increment the visible row index if the row is visible
-                            $visibleRowIndex++;
-                        }
+                            // Increment the overall row index
+                            $overallRowIndex++;
+                            
+                            // Check if the row should be displayed
+                            $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                            
+                            if ($isVisible) {
+                                // Increment the visible row index if the row is visible
+                                $visibleRowIndex++;
+                            }
                     ?>
                     <tr class="<?php echo $rowClass; ?> border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>">
                         <th class="text-center w-10">
                             <?php echo $no++;?>
                         </th>
                         <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
-                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : 'assets/user.png'; ?>">
                         </td>
                         <td class="px-4 py-2" style="height: 3rem;">
                             <span class="text-base font-semibold text-blue-950">
@@ -509,7 +518,8 @@
                             $overallRowIndex++;
                     ?>
                     <?php 
-                    endfor 
+                        endfor;
+                    endif; 
                     ?>
                     </tbody>
                 </table>

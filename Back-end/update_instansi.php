@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Cek apakah ada file gambar yang diupload
     if (isset($_FILES['image_instansi']) && $_FILES['image_instansi']['error'] == 0) {
         // Buat nama file unik
-        $image_name = time() . '_' . basename($_FILES['image_instansi']['name']);
+        $image_name = basename($_FILES['image_instansi']['name']);
         $target_file = $upload_dir . $image_name;
         
         // Pindahkan file ke server

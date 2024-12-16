@@ -24,7 +24,7 @@ if ($mysqli->connect_error) {
 
         function tampil_data()
         {
-            $data = mysqli_query($this->koneksi, "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
+            $data = mysqli_query($this->koneksi, "SELECT a.*,b.*,c.*,d.*,e.*,f.*,g.* FROM kejadian a
                                                                 LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
                                                                 LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
                                                                 INNER JOIN user c ON c.id_user = a.id_user
@@ -40,50 +40,49 @@ if ($mysqli->connect_error) {
 
         function tampil_data_kehilangan()
         {
-            $data = mysqli_query($this->koneksi, "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
+            $data = mysqli_query($this->koneksi, "SELECT a.*,b.*,c.*,d.*,e.*,f.*,g.* FROM kejadian a
                                                                 LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
                                                                 LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
                                                                 INNER JOIN user c ON c.id_user = a.id_user
                                                                 LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
                                                                 LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
                                                                 LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
-                                                                WHERE a.id_jenis_kejadian = 1");
-            while ($row = mysqli_fetch_array($data)){
+                                                                WHERE a.id_jenis_kejadian = 1
+                                                                ORDER BY a.tanggal DESC");
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
             
         }
 
         function tampil_data_pengaduan()
         {
-            $data = mysqli_query($this->koneksi, "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
-                                                                LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
-                                                                LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
-                                                                INNER JOIN user c ON c.id_user = a.id_user
-                                                                LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
-                                                                LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
-                                                                LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
-                                                                WHERE a.id_jenis_kejadian = 2");
-            while ($row = mysqli_fetch_array($data)){
+            $data = mysqli_query($this->koneksi, "SELECT a.*, b.*, c.*, d.*, e.*, f.*, g.* 
+                                                FROM kejadian a
+                                                LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+                                                LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
+                                                INNER JOIN user c ON c.id_user = a.id_user
+                                                LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
+                                                LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
+                                                LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
+                                                WHERE a.id_jenis_kejadian = 2
+                                                ORDER BY a.tanggal DESC");
+            
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
-            return $hasil;
             
+            return $hasil;
         }
 
         function tampil_data_pengaduan_filtered($id_instansi)
         {
             // Query untuk mengambil data pengaduan sesuai kriteria
-            $data = mysqli_query($this->koneksi, "
-                SELECT 
-                    a.*, 
-                    b.*, 
-                    c.*, 
-                    d.*, 
-                    e.*, 
-                    f.*, 
-                    g.* 
+            $data = mysqli_query($this->koneksi, "SELECT a.*, b.*, c.*, d.*, e.*, f.*, g.* 
                 FROM kejadian a
                 LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
                 LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
@@ -107,17 +106,20 @@ if ($mysqli->connect_error) {
 
         function tampil_data_ulasan()
         {
-            $data = mysqli_query($this->koneksi, "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
+            $data = mysqli_query($this->koneksi, "SELECT a.*,b.*,c.*,d.*,e.*,f.*,g.* FROM kejadian a
                                                                 LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
                                                                 LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
                                                                 INNER JOIN user c ON c.id_user = a.id_user
                                                                 LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
                                                                 LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
                                                                 LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
-                                                                WHERE a.id_jenis_kejadian = 3");
-            while ($row = mysqli_fetch_array($data)){
+                                                                WHERE a.id_jenis_kejadian = 3
+                                                                ORDER BY a.tanggal DESC");
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
             
         }
@@ -150,34 +152,40 @@ if ($mysqli->connect_error) {
 
         function tampil_jenis_pengaduan()
         {
-            $data = mysqli_query($this->koneksi, "select * from jenis_pengaduan");
-            while($row = mysqli_fetch_array($data)){
+            $data = mysqli_query($this->koneksi, "SELECT * FROM jenis_pengaduan ORDER BY id_jenis_pengaduan");
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
 
         function tampil_instansi()
         {
-            $data = mysqli_query($this->koneksi, "select * from instansi");
-            while($row = mysqli_fetch_array($data)){
+            $data = mysqli_query($this->koneksi, "SELECT * FROM instansi");
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
 
         function tampil_jenis_kejadian()
         {
-            $data = mysqli_query($this->koneksi, "select * from jenis_kejadian");
-            while($row = mysqli_fetch_array($data)){
+            $data = mysqli_query($this->koneksi, "SELECT * FROM jenis_kejadian");
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
 
         function tampil_audit_log()
         {
-            $data = mysqli_query($this->koneksi, "select * from audit_log");
+            $data = mysqli_query($this->koneksi, "SELECT * FROM audit_log");
             while($row = mysqli_fetch_array($data)){
                 $hasil[] = $row;
             }
@@ -186,7 +194,7 @@ if ($mysqli->connect_error) {
 
         function tampil_role()
         {
-            $data = mysqli_query($this->koneksi, "select * from role");
+            $data = mysqli_query($this->koneksi, "SELECT * FROM role");
             while($row = mysqli_fetch_array($data)){
                 $hasil[] = $row;
             }
@@ -195,7 +203,7 @@ if ($mysqli->connect_error) {
 
         function tampil_status_kehilangan()
         {
-            $data = mysqli_query($this->koneksi, "select * from status_kehilangan");
+            $data = mysqli_query($this->koneksi, "SELECT * FROM status_kehilangan");
             while($row = mysqli_fetch_array($data)){
                 $hasil[] = $row;
             }
@@ -204,17 +212,19 @@ if ($mysqli->connect_error) {
 
         function tampil_user()
         {
-            $data = mysqli_query($this->koneksi, "select a.*,b.* from user a INNER JOIN role b ON b.id_role = a.role");
-            while($row = mysqli_fetch_array($data)){
+            $data = mysqli_query($this->koneksi, "SELECT a.*,b.* FROM user a INNER JOIN role b ON b.id_role = a.role ORDER BY a.updated_at DESC");
+            $hasil = [];
+            while ($row = mysqli_fetch_array($data)) {
                 $hasil[] = $row;
             }
+            
             return $hasil;
         }
       
 
         function tampil_status_pengaduan()
         {
-            $data = mysqli_query($this->koneksi, "select * from status_pengaduan");
+            $data = mysqli_query($this->koneksi, "SELECT * FROM status_pengaduan");
             while($row = mysqli_fetch_array($data)){
                 $hasil[] = $row;
             }
@@ -269,10 +279,10 @@ if ($mysqli->connect_error) {
 
         
 //FORM KEHILANGAN
-        function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $jenis_barang, $status_kehilangan, $tanggal_kadaluwarsa, $status_notif)
+        function tambah_kejadian_kehilangan($id_jenis_kejadian,$id_user, $nama_barang, $deskripsi, $tanggal, $lokasi, $lampiran, $status_kehilangan, $status_notif)
         {
-            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, jenis_barang, status_kehilangan, tanggal_kadaluwarsa, status_notif) 
-                VALUES ('$id_jenis_kejadian', '$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$jenis_barang', '$status_kehilangan', '$tanggal_kadaluwarsa', 0)";
+            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, nama_barang, deskripsi, tanggal, lokasi, lampiran, status_kehilangan, flag_notifikasi) 
+                VALUES ('$id_jenis_kejadian', '$id_user', '$nama_barang', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$status_kehilangan', 0)";
             mysqli_query($this->koneksi, $query);
         }
 
@@ -287,7 +297,7 @@ if ($mysqli->connect_error) {
         }
 //FORM PENGADUAN
         function tambah_kejadian_pengaduan($id_jenis_kejadian, $id_user, $judul, $deskripsi, $tanggal, $lokasi, $lampiran, $id_jenis_pengaduan, $status_pengaduan, $id_instansi) {
-            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, id_jenis_pengaduan, status_pengaduan, id_instansi, status_notif) 
+            $query = "INSERT INTO kejadian (id_jenis_kejadian, id_user, judul, deskripsi, tanggal, lokasi, lampiran, id_jenis_pengaduan, status_pengaduan, id_instansi, flag_notifikasi) 
                     VALUES ('$id_jenis_kejadian', '$id_user', '$judul', '$deskripsi', '$tanggal', '$lokasi', '$lampiran', '$id_jenis_pengaduan', '$status_pengaduan', '$id_instansi', 0)";
             mysqli_query($this->koneksi, $query);
         }
@@ -346,10 +356,10 @@ if ($mysqli->connect_error) {
 
 
 //FORM USER
-        function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image, $id_instansi)
+        function tambah_user($nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image)
         { 
-            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, image, id_instansi) 
-            VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image', '$id_instansi')");
+            mysqli_query($this->koneksi,"INSERT INTO user (nama, nomor_induk, nomor_telepon, email, password, role, profile) 
+            VALUES ('$nama', '$nomor_induk', '$nomor_telepon', '$email', '$password', '$role', '$image')");
         }
         
         public function edit_user($id_user, $nama, $nomor_induk, $nomor_telepon) {
@@ -360,7 +370,7 @@ if ($mysqli->connect_error) {
         function edit_user_with_image($id_user, $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path) {
             if ($image_path) {
                 // Jika ada gambar baru yang diunggah, perbarui juga kolom 'image'
-                $stmt = $this->koneksi->prepare("UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, email=?, password=?, role=?, image=? WHERE id_user=?");
+                $stmt = $this->koneksi->prepare("UPDATE user SET nama=?, nomor_induk=?, nomor_telepon=?, email=?, password=?, role=?, profile=? WHERE id_user=?");
                 $stmt->bind_param("sssssssi", $nama, $nomor_induk, $nomor_telepon, $email, $password, $role, $image_path, $id_user);
             } else {
                 // Jika tidak ada gambar baru, update data kecuali kolom 'image'
@@ -379,21 +389,21 @@ if ($mysqli->connect_error) {
             $stmt->close();
         }
         public function get_user_image($id_user) {
-            $query = "SELECT image FROM user WHERE id_user = ?";
+            $query = "SELECT profile FROM user WHERE id_user = ?";
             $stmt = $this->koneksi->prepare($query);
             $stmt->bind_param("i", $id_user);
             $stmt->execute();
             $result = $stmt->get_result();
             $user = $result->fetch_assoc();
     
-            return $user ? $user['image'] : null;
+            return $user ? $user['profile'] : null;
         }
         
         
 
 //EDIT KEHILANGAN, PENGADUAN DAN ULASAN
         function kode_kejadian($id_kejadian){
-            $data = mysqli_query($this->koneksi,"select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
+            $data = mysqli_query($this->koneksi,"SELECT a.*,b.*,c.*,d.*,e.*,f.*,g.* FROM kejadian a
                                                                 LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
                                                                 LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
                                                                 INNER JOIN user c ON c.id_user = a.id_user
@@ -427,7 +437,7 @@ if ($mysqli->connect_error) {
 
         function hapus_data($id_kejadian)
         {
-            mysqli_query($this->koneksi,"DELETE from kejadian where id_kejadian = '$id_kejadian'");
+            mysqli_query($this->koneksi,"DELETE FROM kejadian where id_kejadian = '$id_kejadian'");
         }
         
         // CRUD untuk jenis_pengaduan
@@ -472,7 +482,7 @@ if ($mysqli->connect_error) {
         function edit_instansi_with_image($id_instansi, $nama_instansi, $email_pic, $password, $image_instansi) {
             if ($image_instansi) {
                 // Jika ada gambar baru yang diunggah, perbarui juga kolom 'image'
-                $stmt = $this->koneksi->prepare("UPDATE instansi SET nama_instansi=?, email_pic=?, password=?, image_instansi=? WHERE id_instansi=?");
+                $stmt = $this->koneksi->prepare("UPDATE instansi SET nama_instansi=?, email_pic=?, password=?, gambar_instansi=? WHERE id_instansi=?");
                 $stmt->bind_param("ssssi", $nama_instansi, $email_pic, $password, $image_instansi, $id_instansi);
             } else {
                 // Jika tidak ada gambar baru, update data kecuali kolom 'image'
@@ -491,14 +501,14 @@ if ($mysqli->connect_error) {
             $stmt->close();
         }
         public function get_instansi_image($id_instansi) {
-            $query = "SELECT image_instansi FROM instansi WHERE id_instansi = ?";
+            $query = "SELECT gambar_instansi FROM instansi WHERE id_instansi = ?";
             $stmt = $this->koneksi->prepare($query);
             $stmt->bind_param("i", $id_instansi);
             $stmt->execute();
             $result = $stmt->get_result();
             $instansi = $result->fetch_assoc();
     
-            return $instansi ? $instansi['image_instansi'] : null;
+            return $instansi ? $instansi['gambar_instansi'] : null;
         }
         
     }

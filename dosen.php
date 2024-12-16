@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     // Get the current page number, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -394,7 +394,7 @@
                         <p class="text-xs text-gray-500">Detail Dosen</p>
                     </div>
                     <div class="ml-auto">
-                        <button onclick="togglePopup()" id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
+                        <button onclick="togglePopup()" id="openModalBtn" class="mb-3 text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
                     </div>
                     <!-- SEARCH -->
                     <form id="search-form" class="flex-grow max-w-sm">
@@ -424,7 +424,7 @@
                                 <input type="text" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded" required>
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">NIM</label>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">NIP</label>
                                 <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
                             </div>
                             <div class="mb-4">
@@ -462,24 +462,33 @@
                     </thead>
                     <tbody>
                     <?php 
-                    // Initialize the overall row index
-                    static $overallRowIndex = 0;
-                    $visibleRowIndex = 0; // Counter for visible rows
+                        if (empty($usersToShow)): // Jika tidak ada data yang ditampilkan
+                        ?>
+                            <tr>
+                                <td colspan="8" class="py-4">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                </td>
+                            </tr>
+                    <?php 
+                    else:
+                        // Initialize the overall row index
+                        static $overallRowIndex = 0;
+                        $visibleRowIndex = 0; // Counter for visible rows
 
-                    // Loop through the users to show
-                    foreach ($usersToShow as $x): 
-                        $imagePath = $x['image'];
+                        // Loop through the users to show
+                        foreach ($usersToShow as $x): 
+                            $imagePath = $x['profile'];
 
-                        // Increment the overall row index
-                        $overallRowIndex++;
-                        
-                        // Check if the row should be displayed
-                        $isVisible = true; // This should be dynamically set based on the search in JavaScript
-                        
-                        if ($isVisible) {
-                            // Increment the visible row index if the row is visible
-                            $visibleRowIndex++;
-                        }
+                            // Increment the overall row index
+                            $overallRowIndex++;
+                            
+                            // Check if the row should be displayed
+                            $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                            
+                            if ($isVisible) {
+                                // Increment the visible row index if the row is visible
+                                $visibleRowIndex++;
+                            }
                     ?>
                     <tr class="<?php echo $rowClass; ?> border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>">
                         <th class="text-center w-10">
@@ -519,7 +528,8 @@
                             $rowClass = $overallRowIndex % 2 == 0 ? 'bg-white' : 'bg-gray-100'; // Maintain color pattern
                     ?>
                     <?php 
-                    endfor 
+                        endfor;
+                    endif; 
                     ?>
                     </tbody>
                 </table>
@@ -543,7 +553,7 @@
                             </div>
 
                             <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700">Nomor Induk</label>
+                                <label class="block text-sm font-medium text-gray-700">Nomor Induk Pegawai</label>
                                 <input type="text" name="nomor_induk" id="editNomorInduk" class="w-full border px-3 py-2 rounded" required>
                             </div>
 

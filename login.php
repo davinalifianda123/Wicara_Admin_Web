@@ -4,6 +4,10 @@
 
     // Tentukan apakah Remember Me harus ditampilkan
     $show_remember_me = empty($saved_email) && empty($saved_password);
+
+    if (isset($_SESSION["role"] )) {
+      header("Location: Dashboard.php");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -30,8 +34,8 @@
         <div class="bg-[#070D59] rounded-b-[50px] md:rounded-r-[50px] md:rounded-b-none relative overflow-clip">
           <img src="assets/Pattern-cover.png" alt="" class="hidden md:block absolute size-full">
           <div class="pt-12 pl-12 size-full">
-            <div class="bg-white w-44 h-12 rounded-full flex items-center justify-center">
-              <img src="assets/Polines.png" alt="" class="h-7 w-auto">
+            <div class="w-44 h-16 rounded-full flex items-center justify-center">
+              <img src="assets/Polines.png" alt="" class="h-full w-auto">
             </div>
             <div class="text-white mt-12">
               <p class="text-4xl font-bold hidden md:block">WICARA</p>
@@ -76,15 +80,6 @@
                   </svg>
                 </button>
               </div>
-              <!-- ini tombol remember -->
-              <?php if ($show_remember_me): ?>
-              <div class="flex items-start mb-5">
-                <div class="flex items-center h-5">
-                  <input id="remember" type="checkbox" value="" name="remember" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-[#070D59] text-[#070D59]" required />
-                </div>
-                <label for="remember" class="ms-2 text-sm font-medium text-gray-900">Remember me</label>
-              </div>
-              <?php endif; ?>
               <!-- ini tombol login -->
               <button type="submit" name="login" class="text-white bg-[#F7B633] hover:bg-[#070D59] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm w-full h-12 px-5 py-2.5 text-center">Login</button>
             </form>

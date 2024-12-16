@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'save') {
       if (isset($_POST['id_jenis_pengaduan']) && isset($_POST['nama_jenis_pengaduan'])) {
@@ -262,13 +262,13 @@
                         <span class="hidden font-semibold text-xl text-[#060A47] sm:inline-block">Pengaduan > Kategori Pengaduan</span>
                     </div>
                     <div class="flex items-center lg:order-2">
-                                                <!-- INII Notifications -->
-                                                <div class="relative">
+                        <!-- INII Notifications -->
+                        <div class="relative">
                             <button type="button" id="notificationButton" class="relative p-2 mr-2 text-gray-400 rounded-lg hover:text-yellow-400 hover:bg-gray-100">
                                 <span class="sr-only">View notifications</span>
                                 
                                 <!-- Red dot for notification count -->
-                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-fullhidden">
+                                <div class="absolute top-3 right-2 translate-x-1/2 -translate-y-1/2 flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full dark:border-gray-900 hidden">
                                     7
                                 </div>
                                 
@@ -485,7 +485,8 @@
                     <tbody class="text-center">
                         <?php
                         $no = 1 + $offset; 
-                        while ($x = mysqli_fetch_assoc($results)) {
+                        if (mysqli_num_rows($results) > 0) {
+                            while ($x = mysqli_fetch_assoc($results)) {
                         ?>
                         <tr class="bg-white border-b">
                             <th scope="row" class="px-6 py-2"><?php echo $no++; ?></th>
@@ -496,6 +497,17 @@
                                         data-id="<?php echo $x['id_jenis_pengaduan']; ?>" 
                                         data-nama="<?php echo $x['nama_jenis_pengaduan']; ?>" 
                                         onclick="openEditModal(this)">Detail</button>
+                            </td>
+                        </tr>
+                        <?php
+                            }
+                        } else {
+                        ?>
+                        <tr class="bg-white border-b">
+                            <td colspan="4" class="px-6 py-4">
+                                <div class="flex justify-center items-center">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="h-full">
+                                </div>
                             </td>
                         </tr>
                         <?php
@@ -572,7 +584,7 @@
                                 <input type="hidden" name="action" value="delete">
                                 <h3 id="confirm-text" class="mb-5 text-lg font-normal text-gray-500 "></h3>
                                 <button type="submit" class="text-white inline-flex items-center bg-[#F12626] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1">Hapus</button>
-                                <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 " onclick="closeConfirmModal()">Batal</button>
+                                <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 " onclick="closeConfirmModal()">Cancel</button>
                             </form>
                         </div>
                     </div>
@@ -709,7 +721,24 @@
                 }
                 reader.readAsDataURL(event.target.files[0]);
             }
-                        
+            
+            function openConfirmModal(button) {
+                const id = document.getElementById('modal-id').value;
+                const namaKategori = document.getElementById('modal-nama').value;
+                document.getElementById('confirm-text').textContent = 
+                    `Apakah yakin ingin menghapus kategori "${namaKategori}"?`;
+                document.getElementById('confirm-id').value = id; // Set ID ke input hidden
+                closeEditModal();
+                document.getElementById('confirm-delete-modal').classList.remove('hidden');
+                document.getElementById('confirm-delete-modal').classList.add('flex');
+            }
+
+
+              function closeConfirmModal() {
+                  document.getElementById('confirm-delete-modal').classList.remove('flex');
+                  document.getElementById('confirm-delete-modal').classList.add('hidden');
+              }
+
             function openEditModal(button) {
               const id = button.getAttribute('data-id');
               const nama = button.getAttribute('data-nama');
@@ -726,33 +755,19 @@
             function closeEditModal() {
               document.getElementById('crud-modal').classList.remove('flex');
               document.getElementById('crud-modal').classList.add('hidden');
-            }
 
-            function openConfirmModal(button) {
-                const id = document.getElementById('modal-id').value;
-                const namaKategori = document.getElementById('modal-nama').value;
-                document.getElementById('confirm-text').textContent = 
-                    `Apakah yakin ingin menghapus kategori "${namaKategori}"?`;
-                document.getElementById('confirm-id').value = id; // Set ID ke input hidden
-                closeEditModal();
-                document.getElementById('confirm-delete-modal').classList.remove('hidden');
-                document.getElementById('confirm-delete-modal').classList.add('flex');
-            }
-
-
-            function closeConfirmModal() {
-                document.getElementById('confirm-delete-modal').classList.remove('flex');
-                document.getElementById('confirm-delete-modal').classList.add('hidden');
             }
 
             function closeSuksesModal() {
               document.getElementById('successModal').classList.remove('flex');
               document.getElementById('successModal').classList.add('hidden');
+
             }
 
             function closeErrorModal() {
               document.getElementById('errorModal').classList.remove('flex');
               document.getElementById('errorModal').classList.add('hidden');
+
             }
 
             function openAddModal() {
@@ -763,6 +778,7 @@
             function closeAddModal() {
               document.getElementById('add-modal').classList.remove('flex');
               document.getElementById('add-modal').classList.add('hidden');
+
             }
 
             function closeModal(modalId) {

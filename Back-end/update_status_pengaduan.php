@@ -11,6 +11,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'tolak') {
         $statusPengaduan = 4; // ID status untuk "Ditolak"
     } elseif ($action === 'delete') {
+        $image = "SELECT lampiran FROM kejadian WHERE id_kejadian='$idKejadian'";
+        $result = mysqli_query($db->koneksi, $image);
+        
+        if ($result && mysqli_num_rows($result) > 0) {
+            $data = mysqli_fetch_assoc($result);
+            $imagePath = 'foto-pengaduan/'.$data['lampiran'];
+            
+            // Step 4: Delete the image file if it exists
+            if ($imagePath && file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
         $query = "DELETE FROM kejadian WHERE id_kejadian = '$idKejadian'";
         mysqli_query($db->koneksi, $query);
         echo json_encode(['status' => 'success', 'message' => 'Data berhasil dihapus']);
@@ -29,4 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Permintaan tidak valid']);
 }
+
+// Redirect dinamis ke halaman asal
+if (isset($_SERVER['HTTP_REFERER'])) {
+    $redirect_url = $_SERVER['HTTP_REFERER']; // URL halaman asal
+    header("Location: $redirect_url");
+}
+exit;
 ?>

@@ -10,7 +10,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : './assets/default-profile.png';
+    $user_image = $user['profile'] ? $user['profile'] : 'assets/user.png';
 
     // Get the selected status from the query parameter, default to 'semua'
     $statusFilter = isset($_GET['status']) ? $_GET['status'] : 'semua';
@@ -38,14 +38,16 @@
     // Start numbering from the current offset
     $no = $offset + 1;
 
-    $allUsersQuery = "select a.*,b.*,c.*,d.*,e.*,f.*,g.* from kejadian a
-                        LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
-                        LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
-                        INNER JOIN user c ON c.id_user = a.id_user
-                        LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
-                        LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
-                        LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
-                        WHERE a.id_jenis_kejadian = 2";
+    $allUsersQuery = "SELECT a.*, b.*, c.*, d.*, e.*, f.*, g.* 
+                                                FROM kejadian a
+                                                LEFT JOIN jenis_kejadian g ON g.id_jenis_kejadian = a.id_jenis_kejadian
+                                                LEFT JOIN jenis_pengaduan b ON b.id_jenis_pengaduan = a.id_jenis_pengaduan
+                                                INNER JOIN user c ON c.id_user = a.id_user
+                                                LEFT JOIN instansi d ON d.id_instansi = a.id_instansi
+                                                LEFT JOIN status_kehilangan e ON e.id_status_kehilangan = a.status_kehilangan
+                                                LEFT JOIN status_pengaduan f ON f.id_status_pengaduan = a.status_pengaduan
+                                                WHERE a.id_jenis_kejadian = 2
+                                                ORDER BY a.tanggal DESC";
     $allUsersResult = mysqli_query($db->koneksi, $allUsersQuery);
     $allUsers = mysqli_fetch_all($allUsersResult, MYSQLI_ASSOC);
 ?>
@@ -435,22 +437,31 @@
                     <!-- INII ISI KOLOM -->
                     <tbody class="text-center">
                         <?php 
-                        // Initialize the overall row index
-                        static $overallRowIndex = 0;
-                        $visibleRowIndex = 0; // Counter for visible rows
+                        if (empty($KejadianToShow)): // Jika tidak ada data yang ditampilkan
+                        ?>
+                            <tr>
+                                <td colspan="8" class="py-4">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                </td>
+                            </tr>
+                        <?php 
+                        else:
+                            // Initialize the overall row index
+                            static $overallRowIndex = 0;
+                            $visibleRowIndex = 0; // Counter for visible rows
 
-                        // Loop through the users to show
-                        foreach ($KejadianToShow as $x): 
-                            // Increment the overall row index
-                            $overallRowIndex++;
-                            
-                            // Check if the row should be displayed
-                            $isVisible = true; // This should be dynamically set based on the search in JavaScript
-                            
-                            if ($isVisible) {
-                                // Increment the visible row index if the row is visible
-                                $visibleRowIndex++;
-                            }
+                            // Loop through the users to show
+                            foreach ($KejadianToShow as $x): 
+                                // Increment the overall row index
+                                $overallRowIndex++;
+                                
+                                // Check if the row should be displayed
+                                $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                                
+                                if ($isVisible) {
+                                    // Increment the visible row index if the row is visible
+                                    $visibleRowIndex++;
+                                }
                         ?>
                             <tr class="bg-white border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>" data-status="<?php echo strtolower($x['nama_status_pengaduan']); ?>">
                                 <th scope="row" class="px-3 py-4">
@@ -502,7 +513,8 @@
                                 $overallRowIndex++;
                         ?>
                         <?php 
-                        endfor 
+                            endfor;
+                        endif;
                         ?>
                     </tbody>
                 </table>
@@ -536,10 +548,8 @@
                         <h3 class="text-lg font-semibold text-gray-900">
                             Detail Pengaduan
                         </h3>
-                        <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                            </svg>
+                        <button onclick="closePopup()" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" >
+                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                             <span class="sr-only">Close modal</span>
                         </button>
                     </div>
@@ -595,7 +605,7 @@
                             </button>
                             
                             <!-- Reject Button -->
-                            <button type="button" id="rejectButton" class="text-red-600 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden">
+                            <button type="submit" id="rejectButton" class="text-red-600 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hidden">
                                 Tolak
                             </button>
 
@@ -608,54 +618,6 @@
                 </div>
             </div>
         </div>
-
-        <!--MODAL Konfirmasi Hapus-->
-        <div id="confirm-delete-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 items-center justify-center bg-black bg-opacity-50">
-                <div class="relative p-4 w-full max-w-md max-h-full">
-                    <div class="relative bg-white rounded-lg shadow">
-                        </button>
-                        <div class="p-4 md:p-5 text-center">
-                            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                            </svg>
-                            <div id="confirm-delete-modal">
-                                <h3 id="confirm-delete-text" class="mb-5 text-lg font-normal text-gray-500 ">
-                                </h3>
-                            </div>
-                            <form method="POST" action="">
-                                <input type="hidden" name="id_jenis_pengaduan" id="confirm-id">
-                                <input type="hidden" name="action" value="delete">
-                                <h3 id="confirm-text" class="mb-5 text-lg font-normal text-gray-500 "></h3>
-                                <button id="confirm-delete-button" type="submit" class="text-white inline-flex items-center bg-[#F12626] hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-1">Hapus</button>
-                                <button type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 " onclick="closeConfirmModal()">Batal</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- MODAL Sukses Hapus -->
-            <div id="successModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-                <div class="relative p-4 w-full max-w-md h-auto">
-                    <!-- Modal content -->
-                    <div class="relative p-4 text-center bg-white rounded-lg shadow ">
-                        <button type="button" class="absolute top-2.5 right-2.5 text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 " data-modal-toggle="successModal" onclick="closeSuksesModal()">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
-                        <div class="w-12 h-12 rounded-full bg-green-200  p-2 flex items-center justify-center mx-auto mb-3.5">
-                            <svg aria-hidden="true" class="w-8 h-8 text-green-700 " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="sr-only">Success</span>
-                        </div>
-                        <p class="mb-1 text-lg font-semibold text-gray-900">Sukses</p>
-                        <p class="text-sm text-gray-900">Jenis Pengaduan Berhasil Dihapus</p>
-                    </div>
-                </div>
-            </div>
-
  
   
         <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
@@ -666,7 +628,6 @@
             // Search Table
             const allUsers = <?php echo json_encode($allUsers); ?>;
 
-            // Fungsi openEditPopup yang sudah ada
             function openEditPopup(id_kejadian, nama, judul, nama_jenis_pengaduan, tanggal, nama_status_pengaduan, lokasi, lampiran, deskripsi, nama_instansi) {
                 // Set each input field with the corresponding value
                 document.querySelector('#updateProductModal input[name="id_kejadian"]').value = id_kejadian;
@@ -677,8 +638,6 @@
                 document.querySelector('#updateProductModal input[name="status"]').value = nama_status_pengaduan;
                 document.querySelector('#updateProductModal input[name="lokasi"]').value = lokasi;
                 document.querySelector('#updateProductModal input[name="instansi"]').value = nama_instansi;
-                document.querySelector('#updateProductModal button[type="button"]').addEventListener('click', closePopup);
-
                 const deskripsiField = document.querySelector('#updateProductModal textarea[name="deskripsi"]');
                 if (deskripsiField) deskripsiField.value = deskripsi;
 
@@ -708,13 +667,13 @@
                 document.getElementById('updateProductModal').classList.remove('hidden');
                 document.getElementById('updateProductModal').classList.add('flex');
 
-                // Ambil id kejadian dari modal
+                
+                // Mengambil id kejadian dari modal
                 const getIdKejadian = () => document.querySelector('#updateProductModal input[name="id_kejadian"]').value;
 
                 // Fungsi AJAX untuk mengirim data
                 function sendAction(action) {
-                    const idKejadian = document.getElementById('id_kejadian').value;
-
+                    const idKejadian = getIdKejadian();
                     fetch('Back-end/update_status_pengaduan.php', {
                         method: 'POST',
                         headers: {
@@ -725,9 +684,8 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 'success') {
-                            closeConfirmModal();
-                            document.getElementById('successModal').classList.remove('hidden');
-                            document.getElementById('successModal').classList.add('flex');
+                            alert(data.message);
+                            setTimeout(() => location.reload(), 1000); // Tunggu 1 detik sebelum reload
                         } else {
                             alert(data.message);
                         }
@@ -735,13 +693,6 @@
                     .catch(error => console.error('Error:', error));
                 }
 
-                //Close Main Modal
-                function closePopup() {
-                document.getElementById('updateProductModal').classList.remove('flex');
-                document.getElementById('updateProductModal').classList.add('hidden');
-                }
-
-                // Replace buttons to reset events
                 acceptButton.replaceWith(acceptButton.cloneNode(true));
                 rejectButton.replaceWith(rejectButton.cloneNode(true));
                 deleteButton.replaceWith(deleteButton.cloneNode(true));
@@ -753,45 +704,17 @@
 
                 newAcceptButton.addEventListener('click', () => sendAction('terima'));
                 newRejectButton.addEventListener('click', () => sendAction('tolak'));
-
-                // Fungsi untuk membuka modal konfirmasi
-                function openConfirmModal(button) {
-                const id = document.getElementById('id_kejadian').value;
-                const judulPengaduan = document.getElementById('judul').value;
-                document.getElementById('confirm-text').textContent = 
-                    `Apakah yakin ingin menghapus engaduan "${judulPengaduan}"?`;
-                document.getElementById('confirm-id').value = id; // Set ID ke input hidden
-                closePopup();
-                document.getElementById('confirm-delete-modal').classList.remove('hidden');
-                document.getElementById('confirm-delete-modal').classList.add('flex');
-            }
-                
-
-                // Fungsi untuk menutup modal konfirmasi
-                function closeConfirmModal() {
-                    const confirmModal = document.getElementById('confirm-delete-modal');
-                    confirmModal.classList.remove('flex');
-                    confirmModal.classList.add('hidden');
-                }
-
-                // Event listener untuk tombol "Hapus"
                 newDeleteButton.addEventListener('click', () => {
-                    openConfirmModal();
-
-                    document.getElementById('confirm-delete-button').addEventListener('click', () => {
+                    if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                         sendAction('delete');
-                        closeConfirmModal();  // Menutup modal konfirmasi
-                    });
-
-                    document.getElementById('cancel-delete-button').addEventListener('click', () => {
-                        closeConfirmModal();  // Menutup modal konfirmasi tanpa melakukan penghapusan
-                    });
-                });
-            
-                function closeSuksesModal() {
-                    document.getElementById('successModal').classList.remove('flex');
-                    document.getElementById('successModal').classList.add('hidden');
                     }
+                });
+
+            }
+
+            function closePopup() {
+                document.getElementById('updateProductModal').classList.add('hidden');
+                document.getElementById('updateProductModal').classList.remove('flex');
             }
 
 
@@ -941,15 +864,45 @@
                         // Get all table rows
                         const rows = document.querySelectorAll('tbody tr');
 
+                        // Initialize a flag to track if there is visible data
+                        let hasVisibleData = false;
+
                         // Show/hide rows based on the selected status
                         rows.forEach(row => {
                             const rowStatus = row.getAttribute('data-status');
                             if (status === 'semua' || rowStatus === status) {
                                 row.style.display = '';
+                                hasVisibleData = true; // Mark that there is at least one visible row
                             } else {
                                 row.style.display = 'none';
                             }
                         });
+
+                        // Handle the case when no data is visible
+                        const emptyMessageRow = document.querySelector('#empty-message-row');
+
+                        if (!hasVisibleData) {
+                            if (!emptyMessageRow) {
+                                // Create a new row for the empty message if it doesn't exist
+                                const tbody = document.querySelector('tbody');
+                                const tr = document.createElement('tr');
+                                tr.id = 'empty-message-row';
+                                tr.innerHTML = `
+                                    <td colspan="8" class="py-4">
+                                        <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                    </td>
+                                `;
+                                tbody.appendChild(tr);
+                            } else {
+                                // Show the existing empty message row
+                                emptyMessageRow.style.display = '';
+                            }
+                        } else {
+                            // Hide the empty message row if data is available
+                            if (emptyMessageRow) {
+                                emptyMessageRow.style.display = 'none';
+                            }
+                        }
 
                         // Update the active tab styling
                         tabs.forEach(t => {
@@ -963,6 +916,7 @@
                     });
                 });
             });
+
         </script>
         <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
 

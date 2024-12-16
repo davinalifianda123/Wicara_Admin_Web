@@ -39,8 +39,8 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 </td> 
             </tr>
             <tr>
-                <td>Judul</td>
-                <td><textarea name="judul" cols="25" rows="5"></textarea></td>
+                <td>Nama Barang</td>
+                <td><textarea name="nama_barang" cols="25" rows="5"></textarea></td>
             </tr>
             <tr>
                 <td>Deskripsi</td>
@@ -61,10 +61,6 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 <td><input type="file" name="lampiran" id="lampiran" accept="image/png, image/jpeg, image/jpg"></td>
             </tr>
             <tr>
-                <td>Jenis Barang</td>
-                <td><input type="text" name="jenis_barang"></td>
-            </tr>
-            <tr>
                 <td>Status Kehilangan</td>
                 <td>
                     <select name="status_kehilangan" >
@@ -81,12 +77,12 @@ $kejadian = isset($kejadian) ? $kejadian : [];
                 </td>
             </tr>
 
-            <tr>
+            <!-- <tr>
                 <td>
                     <label for="tanggal_kadaluwarsa">Tanggal Kadaluwarsa</label>
                 </td>
                 <td><input type="date" id="tanggal_kadaluwarsa" name="tanggal_kadaluwarsa" readonly></td>
-            </tr>
+            </tr> -->
             <tr>
                 <td></td>
                 <td><input type="submit" value="Simpan"></td>
@@ -94,17 +90,17 @@ $kejadian = isset($kejadian) ? $kejadian : [];
         </table>
     </form>
     <script>
-    function setTanggalKadaluwarsa() {
-        const tanggal = new Date(document.getElementById("tanggal").value);
-        if (!isNaN(tanggal)) {
-            // Tambahkan 7 hari (1 minggu)
-            tanggal.setDate(tanggal.getDate() + 7);
+    // function setTanggalKadaluwarsa() {
+    //     const tanggal = new Date(document.getElementById("tanggal").value);
+    //     if (!isNaN(tanggal)) {
+    //         // Tambahkan 7 hari (1 minggu)
+    //         tanggal.setDate(tanggal.getDate() + 7);
             
-            // Format ke input date
-            const tanggalKadaluwarsa = tanggal.toISOString().split('T')[0];
-            document.getElementById("tanggal_kadaluwarsa").value = tanggalKadaluwarsa;
-        }
-    }
+    //         // Format ke input date
+    //         const tanggalKadaluwarsa = tanggal.toISOString().split('T')[0];
+    //         document.getElementById("tanggal_kadaluwarsa").value = tanggalKadaluwarsa;
+    //     }
+    // }
     </script>
 </body>
 </html>
