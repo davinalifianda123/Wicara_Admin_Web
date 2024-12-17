@@ -549,8 +549,8 @@
                         <form class="p-4 md:p-5" action="" method="POST">
                             <div class="grid gap-4 mb-4 grid-cols-2">                         
                                 <div class="col-span-2">
-                                    <label name="id_jenis_pengaduan" for="modal-id" class="block mb-2 text-sm font-medium text-gray-900">ID</label>
-                                    <input type="text" id="modal-id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" readonly>
+                                    <label for="modal-id" class="block mb-2 text-sm font-medium text-gray-900">ID</label>
+                                    <input name="id_jenis_pengaduan" type="text" id="modal-id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" readonly>
                                 </div>
                                 <div class="col-span-2">
                                     <label for="modal-nama" class="block mb-2 text-sm font-medium text-gray-900">Nama Kategori</label>
