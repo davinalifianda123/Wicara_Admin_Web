@@ -495,7 +495,7 @@
                             <?php echo $no++;?>
                         </th>
                         <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
-                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? $imagePath : "./assets/user.png"; ?>">
                         </td>
                         <td class="px-4 py-2" style="height: 3rem;">
                             <span class="text-base font-semibold text-blue-950">
@@ -503,7 +503,7 @@
                             </span>
                             <br>
                             <span class="text-sm text-gray-800 font-medium">
-                                <?php echo 'ID: ', $x['nomor_induk']; ?>
+                                <?php echo 'NIP: ', $x['nomor_induk']; ?>
                             </span>
                             <br>
                             <span class="text-sm text-gray-600">

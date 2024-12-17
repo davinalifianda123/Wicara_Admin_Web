@@ -26,12 +26,14 @@ function countFilteredData($db, $id_jenis_kejadian, $status_column = null, $stat
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Mendapatkan jumlah data dengan filter untuk setiap kategori
     $pengaduan = countFilteredData($db, 2, 'status_pengaduan', 1);
+    $pengaduanInstansi = countFilteredData($db, 2, 'status_pengaduan', 3);
     $kehilangan = countFilteredData($db, 1, 'status_kehilangan', 4);
     $rating = countFilteredData($db, 3);
 
     // Mengembalikan data dalam format JSON
     echo json_encode([
         "pengaduan" => $pengaduan,
+        "pengaduanInstansi" => $pengaduanInstansi,
         "kehilangan" => $kehilangan,
         "rating" => $rating
     ]);

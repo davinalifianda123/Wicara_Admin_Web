@@ -46,6 +46,18 @@ function updateUnitLayanan($db, $unit_id, $nama_instansi = null, $email_pic = nu
     }
 }
 
+// Fungsi untuk menghapus dosen
+function deleteData($db, $unit_id) {
+    // Pastikan id_dosen valid
+    $query = "DELETE FROM instansi WHERE id_instansi = '$unit_id'";
+
+    if (mysqli_query($db->koneksi, $query)) {
+        return ["success" => true, "message" => "Instansi berhasil dihapus."];
+    } else {
+        return ["success" => false, "message" => "Gagal menghapus Instansi."];
+    }
+}
+
 // Menangani request GET dan POST
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $data = getUnitLayanan($db);
@@ -54,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
 
-    if (isset($data['unit_id'])) {
+    if (isset($data['unit_id']) && isset($data['action']) && $data['action'] == 'edit') {
         // Memperbarui data unit layanan
         $response = updateUnitLayanan(
             $db,
@@ -65,8 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         );
         echo json_encode($response);
 
+    } elseif (isset($data['unit_id']) && isset($data['action']) && $data['action'] == 'delete') {
+        // Menghapus data unit layanan
+        $response = deleteData($db, $data['unit_id']);
+        echo json_encode($response);
     } else {
-        echo json_encode(["success" => false, "message" => "Parameter unit_id tidak ditemukan."]);
+        echo json_encode(["success" => false, "message" => "Invalid request."]);
     }
 } else {
     echo json_encode(["success" => false, "message" => "Invalid request method"]);

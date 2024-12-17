@@ -342,7 +342,7 @@ if ($mysqli->connect_error) {
             }
 
             // Jika tidak ada ulasan dalam 7 hari terakhir, tambahkan rating baru
-            $query_insert = "INSERT INTO kejadian (id_jenis_kejadian, id_user, id_instansi, isi_komentar, tanggal, skala_bintang, status_notif) 
+            $query_insert = "INSERT INTO kejadian (id_jenis_kejadian, id_user, id_instansi, isi_komentar, tanggal, skala_bintang, flag_notifikasi) 
                             VALUES ('$id_jenis_kejadian', '$id_user', '$id_instansi', '$isi_komentar', '$tanggal', '$skala_bintang', 0)";
             
             if (mysqli_query($koneksi, $query_insert)) {

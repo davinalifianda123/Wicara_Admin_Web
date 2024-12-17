@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $statusPengaduan = 3; // ID status for "Diproses"
     } elseif ($action === 'tolak') {
         $statusPengaduan = 4; // ID status for "Ditolak"
+    } elseif ($action === 'selesai') {
+        $statusPengaduan = 5; // ID status for "Selesai"
     } elseif ($action === 'delete') {
         // Delete the data and its related image
         $query = "SELECT lampiran FROM kejadian WHERE id_kejadian = '$idKejadian'";

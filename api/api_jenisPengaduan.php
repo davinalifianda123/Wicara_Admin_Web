@@ -31,6 +31,18 @@ function editJenisPengaduan($db, $id_jenis_pengaduan, $nama_jenis_pengaduan) {
     }
 }
 
+// Fungsi untuk menghapus dosen
+function deleteData($db, $id_jenis_pengaduan) {
+    // Pastikan id_dosen valid
+    $query = "DELETE FROM jenis_pengaduan WHERE id_jenis_pengaduan = '$id_jenis_pengaduan'";
+
+    if (mysqli_query($db->koneksi, $query)) {
+        return ["success" => true, "message" => "jenis Pengaduan berhasil dihapus."];
+    } else {
+        return ["success" => false, "message" => "Gagal menghapus jenis pengaduan."];
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $jenisPengaduan = getJenisPengaduan($db);
     echo json_encode($jenisPengaduan);
@@ -38,11 +50,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ambil data dari JSON yang dikirimkan
     $data = json_decode(file_get_contents("php://input"), true);
-    if (isset($data['id_jenis_pengaduan']) && isset($data['nama_jenis_pengaduan'])) {
+    if (isset($data['id_jenis_pengaduan']) && isset($data['nama_jenis_pengaduan']) && isset($data['action']) && $data['action'] == 'edit') {
         $result = editJenisPengaduan($db, $data['id_jenis_pengaduan'], $data['nama_jenis_pengaduan']);
         echo json_encode($result);
+    } elseif (isset($data['id_jenis_pengaduan']) && isset($data['action']) && $data['action'] == 'delete') {
+        // Menghapus data unit layanan
+        $response = deleteData($db, $data['id_jenis_pengaduan']);
+        echo json_encode($response);
+    } elseif (isset($data['nama_jenis_pengaduan']) && isset($data['action']) && $data['action'] == 'add') {
+        $query = "INSERT INTO jenis_pengaduan (nama_jenis_pengaduan) VALUES ('" . $data['nama_jenis_pengaduan'] . "')";
+        if (mysqli_query($db->koneksi, $query)) {
+            echo json_encode(["success" => true, "message" => "Jenis Pengaduan berhasil ditambahkan."]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Gagal menambahkan jenis pengaduan."]);
+        }
     } else {
-        echo json_encode(["success" => false, "message" => "ID jenis pengaduan tidak ditemukan."]);
+        echo json_encode(["error" => "Invalid request"]);
     }
 
 } else {

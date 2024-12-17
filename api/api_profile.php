@@ -12,7 +12,7 @@ function editProfile($db, $id_user, $nama, $email, $password) {
     $email = mysqli_real_escape_string($db->koneksi, $email);
     $passwordQuery = "";
 
-    if (!empty($password)) { // Hash password
+    if (!empty($password)) {
         $passwordQuery = ", password = '$password'";
     }
 
