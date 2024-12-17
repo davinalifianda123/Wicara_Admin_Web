@@ -27,46 +27,17 @@
     
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'delete') {
         $id_jenis_pengaduan = $_POST['id_jenis_pengaduan'];
-        
-        // Check if the ID is provided
-        if (!$id_jenis_pengaduan) {
-            echo "<script>
-                window.onload = function() {
-                    document.getElementById('errorModal').classList.remove('hidden');
-                    document.getElementById('errorModalMessage').innerText = 'ID tidak ditemukan!';
-                }
-            </script>";
-            exit;
-        }
-    
         try {
-            $result = $db->hapus_jenis_pengaduan($id_jenis_pengaduan);
-    
-            if ($result) {
-                // Modal success
-                echo "<script>
-                    window.onload = function() {
-                        document.getElementById('successModal').classList.remove('hidden');
-                    }
-                </script>";
-            } else {
-                // Modal error for failed deletion
-                echo "<script>
-                    window.onload = function() {
-                        document.getElementById('errorModal').classList.remove('hidden');
-                        document.getElementById('errorModalMessage').innerText = 'Kategori tidak dapat dihapus.';
-                    }
-                </script>";
-            }
-        } catch (Exception $e) {
-            // Modal error for exception
-            echo "<script>
-                window.onload = function() {
-                    document.getElementById('errorModal').classList.remove('hidden');
-                    document.getElementById('errorModalMessage').innerText = 'Kategori tidak dapat dihapus karena masih digunakan.';
-                }
-            </script>";
+        $result = $db->hapus_jenis_pengaduan($id_jenis_pengaduan);
+        if ($result) {
+            header("Location: kategori_pengaduan.php?delete=success");
+        } else {
+            header("Location: kategori_pengaduan.php?delete=failed");
         }
+    } catch (Exception $e) {
+        // Abaikan error dan arahkan ke halaman dengan GET parameter failed
+        header("Location: kategori_pengaduan.php?delete=failed");
+    }
     }
     
 
@@ -591,8 +562,9 @@
                 </div>
             </div>
 
-            <!-- MODAL Sukses Hapus -->
-            <div id="successModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+            <?php if(isset($_GET['delete']) && $_GET['delete']=='success') { ?>
+                <!-- MODAL Sukses Hapus -->
+            <div id="successModal" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
                 <div class="relative p-4 w-full max-w-md h-auto">
                     <!-- Modal content -->
                     <div class="relative p-4 text-center bg-white rounded-lg shadow ">
@@ -612,10 +584,12 @@
                     </div>
                 </div>
             </div>
-
+            <?php } ?>
 
             <!-- MODAL Sukses Hapus -->
-            <div id="errorModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+            <?php if(isset($_GET['delete']) && $_GET['delete']=='failed') { ?>
+
+            <div id="errorModal" tabindex="-1" aria-hidden="true" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
                 <div class="relative p-4 w-full max-w-md h-auto">
                     <!-- Modal content -->
                     <div class="relative p-4 text-center bg-white rounded-lg shadow">
@@ -635,6 +609,9 @@
                     </div>
                 </div>
             </div>
+
+            <?php } ?>
+
 
 
             <!-- MODAL Tambah Kategori Baru -->
@@ -761,12 +738,16 @@
             function closeSuksesModal() {
               document.getElementById('successModal').classList.remove('flex');
               document.getElementById('successModal').classList.add('hidden');
+                window.location.href = "kategori_pengaduan.php";
+
 
             }
 
             function closeErrorModal() {
               document.getElementById('errorModal').classList.remove('flex');
               document.getElementById('errorModal').classList.add('hidden');
+                window.location.href = "kategori_pengaduan.php";
+
 
             }
 

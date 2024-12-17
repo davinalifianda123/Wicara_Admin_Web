@@ -534,7 +534,7 @@
                     </tbody>
                 </table>
                 <!-- Popup Form untuk Edit User -->
-                <div id="editPopup" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                <div id="editPopup" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex items-center justify-center">
                     <div class="bg-white p-6 rounded-lg w-96">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-lg font-semibold">Edit User</h2>

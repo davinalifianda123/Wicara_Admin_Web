@@ -534,7 +534,7 @@
 
 
         <!-- Main modal -->
-        <div id="updateProductModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:min-h-screen">
+        <div id="updateProductModal" class="hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:min-h-screen bg-black bg-opacity-50">
             <div class="relative p-4 mx-4 w-full max-w-2xl h-auto md:min-h-screen">
                 <!-- Modal content -->
                 <div class="relative p-4 bg-white rounded-lg overflow-y-auto max-h-screen shadow sm:p-5">
