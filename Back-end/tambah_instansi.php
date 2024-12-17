@@ -27,7 +27,7 @@ function generatePoster($unit_id, $nama_instansi, $qr_path) {
     }
 
     // Path file poster
-    $poster_file = $poster_dir . "poster_unit_" . $unit_id . ".pdf";
+    $poster_file = "poster_" . $nama_instansi . ".pdf";
 
     // Konten HTML untuk PDF
     $html = '
@@ -120,11 +120,11 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
 
     // Proses upload gambar jika ada
     if ($image_instansi && isset($image_instansi['tmp_name']) && $image_instansi['tmp_name']) {
-        $target_dir = "./foto-instansi/";
+        $target_dir = '../../Wicara_User_Web/assets/images/instansi/';
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0755, true);
         }
-        $target_file = $target_dir . basename($image_instansi['name']);
+        $target_file = basename($image_instansi['name']);
         
         if (move_uploaded_file($image_instansi['tmp_name'], $target_file)) {
             $image_path = $target_file;
@@ -147,7 +147,7 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
         $namaQR = $unit_id . "-" . $nama_instansi_formatted . "-polines";
 
         // Generate QR Code dan simpan path-nya
-        $qr_path = generateQRCode($unit_id);
+        $qr_path = '../qrcodes/'.generateQRCode($unit_id);
 
         // Generate poster dengan QR Code
         $poster_path = generatePoster($unit_id, $nama_instansi, $qr_path);

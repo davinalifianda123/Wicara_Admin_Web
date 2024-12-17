@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
 
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $posterPath = $row['poster_url'];
+        $posterPath = '../posters/'.$row['poster_url'];
 
         // Cek apakah file ada
         if (file_exists($posterPath)) {

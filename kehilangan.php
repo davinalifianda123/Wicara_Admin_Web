@@ -379,19 +379,10 @@
                                 <a href="?status=semua" class="status-tab inline-block p-4 text-yellow-400 border-b-2 border-yellow-400 rounded-t-lg active" data-status="semua">Semua</a>
                             </li>
                             <li class="me-2">
-                                <a href="?status=diajukan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="diajukan">Diajukan</a>
-                            </li>
-                            <li class="me-2">
                                 <a href="?status=belum ditemukan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="belum ditemukan">Belum Ditemukan</a>
                             </li>
                             <li class="me-2">
                                 <a href="?status=ditemukan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="ditemukan">Ditemukan</a>
-                            </li>
-                            <li class="me-2">
-                                <a href="?status=hilang" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="hilang">Hilang</a>
-                            </li>
-                            <li class="me-2">
-                                <a href="?status=dibatalkan" class="status-tab inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300" data-status="dibatalkan">Dibatalkan</a>
                             </li>
                             <form id="search-form" class="flex-grow mx-auto">
                                 <div class="relative top-2">
@@ -623,7 +614,7 @@
 
                 const lampiranField = document.querySelector('#updateProductModal img[id="lampiran"]');
                 if (lampiranField) {
-                    lampiranField.src = lampiran ? `./Back-end/foto-kehilangan/${lampiran}` : "./assets/default-image.png";
+                    lampiranField.src = lampiran ? `../Wicara_User_Web/backend/kehilangan/${lampiran}` : "./assets/default-image.png";
                 }
 
                 // Show or hide buttons based on the status

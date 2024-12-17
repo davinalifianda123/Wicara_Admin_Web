@@ -1,9 +1,16 @@
 <?php
-    // Hapus cookie email dan password dengan mengatur waktu kedaluwarsa ke masa lalu
-    setcookie("email", "", time() - 3600, "/");
-    setcookie("password", "", time() - 3600, "/");
+session_start();
 
-    // Redirect ke halaman login setelah cookie dihapus
-    header("Location: ../login.php");
-    exit();
+// Hapus semua data session
+session_unset();
+
+// Hancurkan session
+session_destroy();
+
+// Regenerasi ID session untuk keamanan tambahan
+session_regenerate_id(true);
+
+// Redirect ke halaman login
+header("Location: ../../Wicara_User_Web/index.php");
+exit();
 ?>

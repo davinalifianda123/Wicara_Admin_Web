@@ -9,7 +9,7 @@
     $id_user = $_SESSION['id_instansi'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM instansi WHERE id_instansi = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['gambar_instansi'] ? "Back-end".$user['gambar_instansi'] : './assets/laptop.jpg';
+    $user_image = $user['gambar_instansi'] ? "../Wicara_User_Web/assets/images/instansi/".$user['gambar_instansi'] : './assets/laptop.jpg';
 
     // Get the current page number, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -414,7 +414,7 @@
                             <?php echo $no++;?>
                         </th>
                         <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
-                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "assets/user.png"; ?>">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "../Wicara_User_Web/backend/profile/". $imagePath : "assets/user.png"; ?>">
                         </td>
                         <td class="px-4 py-2" style="height: 3rem;">
                             <span class="text-base font-semibold text-blue-950">

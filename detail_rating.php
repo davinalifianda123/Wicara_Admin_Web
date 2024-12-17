@@ -9,7 +9,7 @@
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM user WHERE id_user = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image'] ? $user['image'] : 'assets/user.png';
+    $user_image = $user['profile'] ? 'Wicara_Admin_Web/'.$user['profile'] : 'assets/user.png';
 
     // Ambil id_instansi dari URL
     $id_instansi = $_GET['id'];
@@ -388,7 +388,7 @@
                               <figure class="relative max-w-full">
                               <a href="#">
                                 <div class="relative w-full h-0 pb-[20%] overflow-hidden">
-                                  <img class="absolute bottom-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$data_instansi['image_instansi'] != null ? "Back-end".$data_instansi['image_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
+                                  <img class="absolute bottom-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$data_instansi['gambar_instansi'] != null ? "../Wicara_User_Web/assets/images/instansi/".$data_instansi['gambar_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                 </div>
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>
@@ -454,7 +454,7 @@
                           <article>
                             <div class="flex justify-between items-start mb-4">
                               <div class="flex items-start">
-                                <img class="w-10 h-10 me-4 rounded-full" src="<?=$x['image'] == null ? "./Back-end/foto-profile/default-profile.png" : $x['image'];?>" alt="">
+                                <img class="w-10 h-10 me-4 rounded-full" src="<?=$x['profile'] == null ? "assets/user.png" : '../Wicara_User_Web/backend/profile/'.$x['profile'];?>" alt="">
                                 <div class="text-start">
                                   <p class="user-reivew text-md font-semibold text-gray-500"><?php echo $x['nama']; ?></p>
                                   <time datetime="2024-08-20 19:00" class="block font-light text-[10px] text-gray-500"><?php echo $x['tanggal']; ?></time>

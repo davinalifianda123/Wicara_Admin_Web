@@ -4,7 +4,7 @@
     session_start();
 
     if (!isset($_SESSION['id_user'])) {
-        header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
+        header("Location: ../Wicara_User_Web/index.php"); // Jika belum login, redirect ke halaman login
     }
 
     $id_user = $_SESSION['id_user'];
@@ -700,7 +700,7 @@
 
                 const lampiranField = document.querySelector('#updateProductModal img[id="lampiran"]');
                 if (lampiranField) {
-                    lampiranField.src = lampiran ? `./Back-end/foto-pengaduan/${lampiran}` : "./assets/default-image.png";
+                    lampiranField.src = lampiran ? `../Wicara_User_Web/backend/aduan/${lampiran}` : "./assets/default-image.png";
                 }
 
                 // Show or hide buttons based on the status

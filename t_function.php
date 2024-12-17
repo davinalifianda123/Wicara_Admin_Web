@@ -30,7 +30,7 @@
     $kehilanganQuery = "
         SELECT 
             kejadian.id_kejadian, 
-            kejadian.judul, 
+            kejadian.nama_barang, 
             kejadian.tanggal, 
             kejadian.flag_notifikasi AS status_notif,
             user.profile AS user_image
@@ -44,11 +44,11 @@
     while ($row = mysqli_fetch_assoc($kehilanganResult)) {
         $kehilanganNotifications[] = [
             'type' => 'kehilangan',
-            'title' => $row['judul'],
+            'title' => $row['nama_barang'],
             'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
             'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
             'id' => $row['id_kejadian'],
-            'image' => $row['user_image'] ? 'Wicara_Admin_Web/' . $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
+            'image' => $row['user_image'] ? '../Wicara_User_Web/backend/profile/'. $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
             'status_notif' => $row['status_notif'], // Tambahkan status_notif
         ];
     }
@@ -80,7 +80,7 @@
             'id' => $row['id_kejadian'],
             'id_instansi' => $row['id_instansi'], // Tambahkan id_instansi untuk URL
             'rating' => (int)$row['skala_bintang'], // Ambil nilai bintang sebagai integer
-            'image' => $row['user_image'] ? 'Wicara_Admin_Web/' . $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
+            'image' => $row['user_image'] ? '../Wicara_User_Web/backend/profile/'. $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
             'status_notif' => $row['status_notif'], // Tambahkan status_notif
         ];
     }
@@ -107,7 +107,7 @@
             'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
             'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
             'id' => $row['id_kejadian'],
-            'image' => $row['user_image'] ? 'Wicara_Admin_Web/' . $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
+            'image' => $row['user_image'] ? '../Wicara_User_Web/backend/profile/'. $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
             'status_notif' => $row['status_notif'], // Tambahkan status_notif
         ];
     }

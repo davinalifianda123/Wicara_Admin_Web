@@ -9,7 +9,7 @@
     $id_user = $_SESSION['id_instansi'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM instansi WHERE id_instansi = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['gambar_instansi'] ? "Back-end".$user['gambar_instansi'] : './assets/laptop.jpg';
+    $user_image = $user['gambar_instansi'] ? "../Wicara_User_Web/assets/images/instansi/".$user['gambar_instansi'] : './assets/laptop.jpg';
 
     // Ambil id_instansi dari URL
     $id_instansi = $_GET['id'];
@@ -330,7 +330,7 @@
                               <figure class="relative max-w-full">
                               <a href="#">
                                 <div class="relative w-full h-0 pb-[20%] overflow-hidden">
-                                  <img class="absolute bottom-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$data_instansi['gambar_instansi'] != null ? "Back-end".$data_instansi['gambar_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
+                                  <img class="absolute bottom-0 left-0 w-full h-full object-cover rounded-lg" src="<?=$data_instansi['gambar_instansi'] != null ? "../Wicara_User_Web/assets/images/instansi/".$data_instansi['gambar_instansi'] : 'assets/laptop.jpg'; ?>" alt="image description">
                                 </div>
                               </a>
                               <div class="absolute inset-0 bg-gradient-to-t from-[#070D59] to-transparent"></div>

@@ -2,6 +2,11 @@
 include 'config.php';
 $db = new database();
 
+//timezone
+date_default_timezone_set('Asia/Jakarta');
+//datenow
+$date = date('Y-m-d H:i:s');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idKejadian = $_POST['id_kejadian'];
     $action = $_POST['action'];
@@ -16,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($result && mysqli_num_rows($result) > 0) {
             $data = mysqli_fetch_assoc($result);
-            $imagePath = 'foto-pengaduan/'.$data['lampiran'];
+            $imagePath = '../../Wicara_User_Web/backend/aduan/'.$data['lampiran'];
             
             // Step 4: Delete the image file if it exists
             if ($imagePath && file_exists($imagePath)) {
@@ -33,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($statusPengaduan)) {
-        $query = "UPDATE kejadian SET status_pengaduan = '$statusPengaduan' WHERE id_kejadian = '$idKejadian'";
+        $query = "UPDATE kejadian SET status_pengaduan = '$statusPengaduan', waktu_ubah_status = '$date', flag_notifikasi = 0 WHERE id_kejadian = '$idKejadian'";
         mysqli_query($db->koneksi, $query);
         echo json_encode(['status' => 'success', 'message' => 'Status berhasil diperbarui']);
     } else {

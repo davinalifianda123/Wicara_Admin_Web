@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $result = mysqli_query($db->koneksi, $query);
     if ($result && mysqli_num_rows($result) > 0) {
         $data = mysqli_fetch_assoc($result);
-        $imagePath = $data['gambar_instansi'];
+        $imagePath = '../../Wicara_User_Web/assets/images/instansi/'.$data['gambar_instansi'];
         if ($imagePath && file_exists($imagePath)) {
             unlink($imagePath);
         }
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $result2 = mysqli_query($db->koneksi, $query2);
     if ($result2 && mysqli_num_rows($result2) > 0) {
         $data2 = mysqli_fetch_assoc($result2);
-        $imagePath2 = $data2['qr_code_url'];
+        $imagePath2 = '../qrcodes/'.$data2['qr_code_url'];
         if ($imagePath2 && file_exists($imagePath2)) {
             unlink($imagePath2);
         }
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $result3 = mysqli_query($db->koneksi, $query3);
     if ($result3 && mysqli_num_rows($result3) > 0) {
         $data3 = mysqli_fetch_assoc($result3);
-        $imagePath3 = $data3['poster_url'];
+        $imagePath3 = '../posters'.$data3['poster_url'];
         if ($imagePath3 && file_exists($imagePath3)) {
             unlink($imagePath3);
         }
