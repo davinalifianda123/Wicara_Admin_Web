@@ -539,8 +539,8 @@
             </div>
 
             <!-- Modal: Edit Form -->
-            <div id="editModal" class="hidden fixed z-50 px-4 items-center justify-center w-full inset-0">
-                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative overflow-y-auto md:mih-h-screen">
+            <div id="editModal" class="hidden fixed z-50 px-4 items-center justify-center w-full inset-0 bg-black bg-opacity-50">
+                <div class="bg-white rounded-lg p-4 w-full max-w-4xl h-auto relative overflow-y-auto md:mih-h-screen ">
                     <div class="flex justify-between items-center mb-4">
                         <div>
                             <h2 class="text-2xl font-semibold">Form Unit Layanan</h2>

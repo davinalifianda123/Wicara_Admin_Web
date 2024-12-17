@@ -420,7 +420,7 @@
                                 <input type="text" name="nomor_induk" class="w-full px-3 py-2 border border-gray-300 rounded" required>
                             </div>
                             <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Nomer Telepon</label>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Nomor Telepon</label>
                                 <input type="text" name="nomor_telepon" class="w-full px-3 py-2 border border-gray-300 rounded" required>
                             </div>
                             <div class="mb-4">
@@ -524,7 +524,7 @@
                     </tbody>
                 </table>
                 <!-- Popup Form untuk Edit User -->
-                <div id="editPopup" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                <div id="editPopup" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50bg-black bg-opacity-50 flex items-center justify-center">
                     <div class="bg-white p-6 rounded-lg w-96">
                         <div class="flex justify-between items-center mb-4">
                             <h2 class="text-lg font-semibold">Edit User</h2>
