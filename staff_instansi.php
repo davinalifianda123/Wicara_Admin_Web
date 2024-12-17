@@ -9,7 +9,7 @@
     $id_user = $_SESSION['id_instansi'];
     $user_data = mysqli_query($db->koneksi, "SELECT * FROM instansi WHERE id_instansi = '$id_user'");
     $user = mysqli_fetch_assoc($user_data);
-    $user_image = $user['image_instansi'] ? "Back-end".$user['image_instansi'] : './assets/laptop.jpg';
+    $user_image = $user['gambar_instansi'] ? "Back-end".$user['gambar_instansi'] : './assets/laptop.jpg';
 
     // Get the current page number, default to 1 if not set
     $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -314,7 +314,7 @@
                         <p class="text-xs text-gray-500">Detail Staff</p>
                     </div>
                     <div class="ml-auto">
-                        <button onclick="togglePopup()" id="openModalBtn" class="text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
+                        <button onclick="togglePopup()" id="openModalBtn" class="mb-3 text-sm text-gray-600 mr-4 hover:text-blue-600 hover:underline"><span class="text-blue-600 font-semibold">+ </span>Tambah</button>
                     </div>
                     <!-- SEARCH -->
                     <form id="search-form" class="flex-grow max-w-sm">
@@ -373,7 +373,7 @@
                                 Profile
                             </th>
                             <th scope="col" class="px-4 text-left font-light">
-                                Informasi Mahasiswa
+                                Informasi Staff
                             </th>
                             <th scope="col" class="px-6 text-right font-light">
                             </th>
@@ -381,31 +381,40 @@
                     </thead>
                     <tbody>
                     <?php 
-                    // Initialize the overall row index
-                    static $overallRowIndex = 0;
-                    $visibleRowIndex = 0; // Counter for visible rows
+                        if (empty($usersToShow)): // Jika tidak ada data yang ditampilkan
+                        ?>
+                            <tr>
+                                <td colspan="8" class="py-4">
+                                    <img src="assets/Belum_ada_data.png" alt="Belum ada data" class="mx-auto">
+                                </td>
+                            </tr>
+                    <?php
+                    else:
+                        // Initialize the overall row index
+                        static $overallRowIndex = 0;
+                        $visibleRowIndex = 0; // Counter for visible rows
 
-                    // Loop through the users to show
-                    foreach ($usersToShow as $x): 
-                        $imagePath = $x['image'];
+                        // Loop through the users to show
+                        foreach ($usersToShow as $x): 
+                            $imagePath = $x['profile'];
 
-                        // Increment the overall row index
-                        $overallRowIndex++;
-                        
-                        // Check if the row should be displayed
-                        $isVisible = true; // This should be dynamically set based on the search in JavaScript
-                        
-                        if ($isVisible) {
-                            // Increment the visible row index if the row is visible
-                            $visibleRowIndex++;
-                        }
+                            // Increment the overall row index
+                            $overallRowIndex++;
+                            
+                            // Check if the row should be displayed
+                            $isVisible = true; // This should be dynamically set based on the search in JavaScript
+                            
+                            if ($isVisible) {
+                                // Increment the visible row index if the row is visible
+                                $visibleRowIndex++;
+                            }
                     ?>
                     <tr class="<?php echo $rowClass; ?> border-b" style="<?php echo $isVisible ? '' : 'display: none;'; ?>">
                         <th class="text-center w-10">
                             <?php echo $no++;?>
                         </th>
                         <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
-                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "./Back-end/foto-profile/default-profile.png"; ?>">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="<?php echo isset($imagePath) && !empty($imagePath) ? "./Back-end" . $imagePath : "assets/user.png"; ?>">
                         </td>
                         <td class="px-4 py-2" style="height: 3rem;">
                             <span class="text-base font-semibold text-blue-950">
@@ -413,7 +422,7 @@
                             </span>
                             <br>
                             <span class="text-sm text-gray-800 font-medium">
-                                <?php echo 'NIM: ', $x['nomor_induk']; ?>
+                                <?php echo 'NIP: ', $x['nomor_induk']; ?>
                             </span>
                             <br>
                             <span class="text-sm text-gray-600">
@@ -437,7 +446,8 @@
                             $overallRowIndex++;
                     ?>
                     <?php 
-                    endfor 
+                        endfor;
+                    endif;
                     ?>
                     </tbody>
                 </table>

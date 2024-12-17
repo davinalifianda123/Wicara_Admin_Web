@@ -37,10 +37,16 @@ function populateNotifications(type) {
         }
 
         notificationElement.innerHTML = `
-            <img src="${notification.image || './Back-end/foto-profile/default-profile.png'}" alt="User avatar" class="rounded-full mr-4" width="40" height="40">
+            <img src="${notification.image}" 
+                alt="User avatar" 
+                class="rounded-full mr-4" 
+                width="40" 
+                height="40">
             <div class="flex-1">
                 <h2 class="font-bold">${notification.title}</h2>
-                <p class="text-gray-500 text-sm">${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}</p>
+                <p class="text-gray-500 text-sm">
+                    ${notification.time} · ${notification.type.charAt(0).toUpperCase() + notification.type.slice(1)}
+                </p>
                 ${
                     notification.type === 'rating'
                     ? `<div class="text-yellow-500">
@@ -51,6 +57,7 @@ function populateNotifications(type) {
                 }
             </div>
         `;
+
 
         notificationElement.addEventListener('click', () => {
             if (notification.type === 'pengaduan') {

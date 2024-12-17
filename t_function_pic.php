@@ -42,7 +42,7 @@ $ratingQuery = "
         kejadian.skala_bintang, 
         instansi.nama_instansi, 
         kejadian.flag_notifikasi AS status_notif,
-        user.image AS user_image
+        user.profile AS user_image
     FROM kejadian
     JOIN instansi ON kejadian.id_instansi = instansi.id_instansi
     JOIN user ON kejadian.id_user = user.id_user
@@ -59,7 +59,7 @@ while ($row = mysqli_fetch_assoc($ratingResult)) {
         'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
         'id' => $row['id_kejadian'],
         'rating' => (int)$row['skala_bintang'], // Ambil nilai bintang sebagai integer
-        'image' => $row['user_image'], // Tambahkan gambar pengguna
+        'image' => $row['user_image'] ? 'Wicara_Admin_Web/' . $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
         'status_notif' => $row['status_notif'], // Tambahkan status_notif
     ];
 }
@@ -70,7 +70,7 @@ $pengaduanQuery = "
         kejadian.id_kejadian, 
         kejadian.judul, 
         kejadian.tanggal, 
-        user.image AS user_image,
+        user.profile AS user_image,
         kejadian.flag_notifikasi AS status_notif
     FROM kejadian
     JOIN user ON kejadian.id_user = user.id_user
@@ -86,7 +86,7 @@ while ($row = mysqli_fetch_assoc($pengaduanResult)) {
         'time' => timeAgo($row['tanggal']), // Hitung waktu relatif
         'raw_time' => $row['tanggal'], // Kirim waktu asli untuk sorting
         'id' => $row['id_kejadian'],
-        'image' => $row['user_image'], // Tambahkan gambar pengguna
+        'image' => $row['user_image'] ? 'Wicara_Admin_Web/' . $row['user_image'] : 'assets/user.png', // Tambahkan gambar pengguna
         'status_notif' => $row['status_notif'], // Tambahkan status_notif
     ];
 }

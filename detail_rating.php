@@ -443,8 +443,12 @@
                         
                         <!-- Review -->
                         <?php
-                        foreach ($db->tampil_data_ulasan() as $x) {
-                          if ($x['id_instansi'] == $id_instansi) {
+                        $data_ulasan = $db->tampil_data_ulasan();
+                        $ada_ulasan = false; // Flag untuk menandai apakah ada ulasan
+                       
+                        foreach ($data_ulasan as $x) {
+                            if ($x['id_instansi'] == $id_instansi) {
+                                $ada_ulasan = true; // Set flag menjadi true jika ada ulasan
                         ?>
                         <div class="card #fbbf24w-full mx-auto bg-white border border-gray-200 rounded-lg shadow items-start p-5 mt-3">
                           <article>
@@ -486,9 +490,18 @@
                           </div>
                         </div>
                         <?php
-                          }
                             }
-                          ?>
+                        }
+
+                        // Tampilkan gambar jika tidak ada ulasan
+                        if (!$ada_ulasan) {
+                        ?>
+                            <div class="w-full flex justify-center mt-5">
+                            <img src="assets/Belum_ada_data.png" alt="Belum ada data ulasan" class="mx-auto">
+                            </div>
+                        <?php
+                        }
+                        ?>
                       </div>
                       <?php
                         }
