@@ -31,7 +31,7 @@ while ($x = mysqli_fetch_assoc($results)) {
         'id_instansi' => $x['id_instansi'],
         'nama_instansi' => $x['nama_instansi'],
         'email_pic' => $x['email_pic'] ?? '-',
-        'image_instansi' => $x['gambar_instansi'] != null ? "Back-end".$x['gambar_instansi'] : 'assets/laptop.jpg',
+        'image_instansi' => $x['gambar_instansi'] != null ? "../Wicara_User_Web/assets/images/instansi/".$x['gambar_instansi'] : 'assets/laptop.jpg',
         'qr_code_url' => $x['qr_code_url'],
         'average_rating' => $rata_review,
         'review_count' => $review_count,

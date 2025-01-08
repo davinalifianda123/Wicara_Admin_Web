@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         
         // Delete the file from server
         if ($row) {
-            $imagePath = "../Back-end/foto-pengaduan/".$row['lampiran'];
+            $imagePath = "../../Wicara_User_Web/backend/aduan/".$row['lampiran'];
             if (file_exists($imagePath)) {
                 unlink($imagePath); // Delete the image from the folder
             }

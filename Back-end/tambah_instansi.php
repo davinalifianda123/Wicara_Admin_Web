@@ -6,16 +6,23 @@ require_once __DIR__ . '/../mpdf/vendor/autoload.php';
 $db = new database();
 
 // Fungsi untuk menghasilkan QR Code
-function generateQRCode($unit_id) {
-    // URL yang akan dimasukkan dalam QR Code
-    $url = "https://9210-103-214-229-136.ngrok-free.app/Wicara_Admin_Web/Back-end/tambah_kejadian_ulasan.php?unit_id=" . $unit_id;
-    $file_path = "../qrcodes/unit_" . $unit_id . ".png";
+function generateQRCode($namaQR) {
     
+    // Bersihkan nama file
+    $qr_file = $namaQR . ".png";
+    $file_path = "../qrcodes/" . $qr_file;
+
+    // Pastikan folder penyimpanan ada
+    if (!is_dir("../qrcodes")) {
+        mkdir("../qrcodes", 0755, true);
+    }
+
     // Membuat QR Code
-    QRcode::png($url, $file_path, QR_ECLEVEL_L, 10);
-    
-    return $file_path;
+    QRcode::png($namaQR, $file_path, QR_ECLEVEL_L, 10);
+
+    return $qr_file; // Kembalikan hanya nama file QR Code
 }
+
 
 // Fungsi untuk membuat poster menggunakan MPDF
 function generatePoster($unit_id, $nama_instansi, $qr_path) {
@@ -28,6 +35,7 @@ function generatePoster($unit_id, $nama_instansi, $qr_path) {
 
     // Path file poster
     $poster_file = "poster_" . $nama_instansi . ".pdf";
+    $poster_path = $poster_dir . $poster_file;
 
     // Konten HTML untuk PDF
     $html = '
@@ -85,7 +93,7 @@ function generatePoster($unit_id, $nama_instansi, $qr_path) {
                 <h1>' . htmlspecialchars($nama_instansi) . '</h1>
                 <h2>SCAN HERE TO RATE</h2>
             </div>
-            <img class="qr-code" width="320" src="' . htmlspecialchars($qr_path) . '" alt="QR Code">
+            <img class="qr-code" width="320" src="' . htmlspecialchars("../qrcodes/".$qr_path) . '" alt="QR Code">
             <img class="instructions" width="75%" src="../assets/instructions.png" alt="Instructions">
             <div class="footer">
                 <p>Powered by</p>
@@ -107,7 +115,7 @@ function generatePoster($unit_id, $nama_instansi, $qr_path) {
         'margin_footer' => 10
     ]);
     $mpdf->WriteHTML($html);
-    $mpdf->Output($poster_file, \Mpdf\Output\Destination::FILE);
+    $mpdf->Output($poster_path, \Mpdf\Output\Destination::FILE);
 
     // Kembalikan path file PDF
     return $poster_file;
@@ -147,7 +155,7 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
         $namaQR = $unit_id . "-" . $nama_instansi_formatted . "-polines";
 
         // Generate QR Code dan simpan path-nya
-        $qr_path = '../qrcodes/'.generateQRCode($unit_id);
+        $qr_path = generateQRCode($namaQR);
 
         // Generate poster dengan QR Code
         $poster_path = generatePoster($unit_id, $nama_instansi, $qr_path);

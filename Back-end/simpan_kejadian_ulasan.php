@@ -12,6 +12,7 @@ $pesan = $koneksi->tambah_kejadian_ulasan(
     $_POST['id_instansi'],
     $_POST['isi_komentar'],
     $tanggal,
+    $tanggal,
     $_POST['skala_bintang']
 );
 

@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $result3 = mysqli_query($db->koneksi, $query3);
     if ($result3 && mysqli_num_rows($result3) > 0) {
         $data3 = mysqli_fetch_assoc($result3);
-        $imagePath3 = '../posters'.$data3['poster_url'];
+        $imagePath3 = '../posters/'.$data3['poster_url'];
         if ($imagePath3 && file_exists($imagePath3)) {
             unlink($imagePath3);
         }

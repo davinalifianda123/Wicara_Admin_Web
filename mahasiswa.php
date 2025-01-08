@@ -686,7 +686,7 @@
                     <tr class="border-b">
                         <th class="text-center w-10">${index + 1}</th>
                         <td class="w-10 h-10 px-0.5 py-0.5 text-center align-middle">
-                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="./Back-end${user.image || '/foto-profile/default-profile.png'}">
+                            <img alt="Profile Image" class="w-10 rounded-full mx-auto" src="../Wicara_User_Web/backend/profile/${user.profile || 'user.png'}">
                         </td>
                         <td class="px-4 py-2" style="height: 3rem;">
                             <span class="text-base font-semibold text-blue-950">${user.nama}</span><br>

@@ -36,8 +36,10 @@ try {
             LEFT JOIN status_pengaduan e ON e.id_status_pengaduan = a.status_pengaduan
             LEFT JOIN jenis_pengaduan f ON f.id_jenis_pengaduan = a.id_jenis_pengaduan
             LEFT JOIN instansi h ON h.id_instansi = a.id_instansi
+            WHERE g.nama_kejadian IN ('Kehilangan', 'Laporan Pengaduan', 'Ulasan')
             ORDER BY a.tanggal DESC
         ");
+
 
         $notifications = [];
 
@@ -59,14 +61,14 @@ try {
 
         foreach ($data as $row) {
             $notifications[] = [
-                'id' => (int)$row['id_kejadian'],
-                'title' => $row['judul'],
-                'category' => $row['nama_kejadian'],
-                'time' => timeAgo($row['tanggal']),
-                'tanggal' => $row['tanggal'],
-                'description' => $row['deskripsi'],
+                'id' => (int)$row['id_kejadian'] ?? 0,
+                'title' => $row['judul'] ?? 'Tidak ada judul',
+                'category' => $row['nama_kejadian'] ?? 'Tidak ada kategori',
+                'time' => timeAgo($row['tanggal'] ?? date('Y-m-d H:i:s')),
+                'tanggal' => $row['tanggal'] ?? date('Y-m-d H:i:s'),
+                'description' => $row['deskripsi'] ?? 'Tidak ada deskripsi',
                 'rating' => (int)$row['skala_bintang'] ?? 0,
-                'status_notif' => (int)$row['flag_notifikasi'],
+                'status_notif' => (int)$row['flag_notifikasi'] ?? 0,
                 'nama_user' => $row['nama_user'] ?? 'Tidak ada nama pengguna',
                 'location' => $row['lokasi'] ?? 'Tidak ada lokasi',
                 'lampiran' => $row['lampiran'] ?? 'Tidak ada lampiran',

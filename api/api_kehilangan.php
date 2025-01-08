@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         
         // Delete the file from server
         if ($row) {
-            $imagePath = "../Back-end/foto-kehilangan/".$row['lampiran'];
+            $imagePath = "../../Wicara_User_Web/backend/kehilangan/".$row['lampiran'];
             if (file_exists($imagePath)) {
                 unlink($imagePath); // Delete the image from the folder
             }
