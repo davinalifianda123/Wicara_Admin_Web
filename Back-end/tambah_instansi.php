@@ -147,7 +147,7 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
     $nama_instansi_formatted = strtolower(str_replace(' ', '', $nama_instansi));
 
     // Simpan data ke database, hanya dengan nama file gambar (jika ada)
-    $query = "INSERT INTO instansi (nama_instansi, email_pic, password, gambar_instansi) VALUES ('$nama_instansi', '$email_pic', '$password', " . ($image_name ? "'$image_name'" : "NULL") . ")";
+    $query = "INSERT INTO instansi (nama_instansi, email_pic, password, deskripsi_instansi, gambar_instansi, website) VALUES ('$nama_instansi', '$email_pic', '$password', '-', " . ($image_name ? "'$image_name'" : "NULL") . ", '-')";
     
     if (mysqli_query($db->koneksi, $query)) {
         // Ambil ID dari instansi yang baru disimpan

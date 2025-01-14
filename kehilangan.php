@@ -5,7 +5,7 @@
     
 
     if (!isset($_SESSION['id_user'])) {
-        header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
+        header("Location: ../../Wicara_User_Web/index.php"); // Jika belum login, redirect ke halaman login
     }
 
     $id_user = $_SESSION['id_user'];
