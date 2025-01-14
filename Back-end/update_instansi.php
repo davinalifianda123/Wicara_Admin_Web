@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
 
     // Tentukan folder untuk menyimpan gambar
-    $upload_dir = './foto-instansi/';
+    $upload_dir = '../../Wicara_User_Web/assets/images/instansi/';
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
     }
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             // Update data user dengan gambar baru
-            $db->edit_instansi_with_image($id_instansi, $nama_instansi, $email_pic, $password, $target_file);
+            $db->edit_instansi_with_image($id_instansi, $nama_instansi, $email_pic, $password, $image_name);
         } else {
             echo json_encode(["error" => "Gagal mengunggah file."]);
             exit;

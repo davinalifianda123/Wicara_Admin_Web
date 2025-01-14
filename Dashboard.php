@@ -3,11 +3,6 @@
     // buat update profile
     session_start();
     include './Back-end/api_dashboard.php';
-    
-    
-    if (!isset($_SESSION['id_user'])) {
-        header("Location: ../login.php"); // Jika belum login, redirect ke halaman login
-    }
 
     $id_user = $_SESSION['id_user'];
     $user_data = mysqli_query($conn, "SELECT * FROM user WHERE id_user = '$id_user'");

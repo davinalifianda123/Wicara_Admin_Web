@@ -123,29 +123,31 @@ function generatePoster($unit_id, $nama_instansi, $qr_path) {
 
 
 function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_instansi = null) {
-    // Inisialisasi path gambar jika tidak ada gambar yang diunggah
-    $image_path = null;
+    // Inisialisasi nama file gambar jika tidak ada gambar yang diunggah
+    $image_name = null;
 
-    // Proses upload gambar jika ada
     if ($image_instansi && isset($image_instansi['tmp_name']) && $image_instansi['tmp_name']) {
         $target_dir = '../../Wicara_User_Web/assets/images/instansi/';
         if (!is_dir($target_dir)) {
             mkdir($target_dir, 0755, true);
         }
-        $target_file = basename($image_instansi['name']);
-        
-        if (move_uploaded_file($image_instansi['tmp_name'], $target_file)) {
-            $image_path = $target_file;
-        } else {
-            return ["success" => false, "message" => "Gagal mengupload gambar."];
+
+        // Gunakan basename untuk hanya mengambil nama file
+        $image_name = basename($image_instansi['name']);
+        $target_file = $target_dir . $image_name;
+
+        // Pindahkan file ke folder target
+        if (!move_uploaded_file($image_instansi['tmp_name'], $target_file)) {
+            echo json_encode(["success" => false, "message" => "Gagal mengunggah gambar. Path: $target_file"]);
+            exit();
         }
     }
 
     // Format nama instansi untuk namaQR
     $nama_instansi_formatted = strtolower(str_replace(' ', '', $nama_instansi));
 
-    // Simpan data ke database, termasuk gambar jika ada
-    $query = "INSERT INTO instansi (nama_instansi, email_pic, password, gambar_instansi) VALUES ('$nama_instansi', '$email_pic', '$password', " . ($image_path ? "'$image_path'" : "NULL") . ")";
+    // Simpan data ke database, hanya dengan nama file gambar (jika ada)
+    $query = "INSERT INTO instansi (nama_instansi, email_pic, password, gambar_instansi) VALUES ('$nama_instansi', '$email_pic', '$password', " . ($image_name ? "'$image_name'" : "NULL") . ")";
     
     if (mysqli_query($db->koneksi, $query)) {
         // Ambil ID dari instansi yang baru disimpan
@@ -160,6 +162,7 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
         // Generate poster dengan QR Code
         $poster_path = generatePoster($unit_id, $nama_instansi, $qr_path);
 
+        // Update database dengan QR Code dan poster
         $update_query = "UPDATE instansi SET qr_code_url = '$qr_path', poster_url = '$poster_path', namaQR = '$namaQR' WHERE id_instansi = '$unit_id'";
         if (mysqli_query($db->koneksi, $update_query)) {
             return ["success" => true, "message" => "Data unit layanan berhasil disimpan dan poster di-generate.", "poster_path" => $poster_path];
@@ -170,6 +173,7 @@ function saveUnitLayanan($db, $nama_instansi, $email_pic, $password, $image_inst
         return ["success" => false, "message" => "Gagal menyimpan data unit layanan."];
     }
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_instansi = $_POST['nama_instansi'];

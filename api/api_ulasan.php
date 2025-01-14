@@ -19,9 +19,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $action = isset($_GET['action']) ? $_GET['action'] : null;
 
     if ($action === 'delete' && $idKejadian) {
+        // Ambil nama file lampiran dari database
+        $queryGetLampiran = "SELECT lampiran FROM kejadian WHERE id_kejadian = '$idKejadian'";
+        $result = mysqli_query($db->koneksi, $queryGetLampiran);
+        $row = mysqli_fetch_assoc($result);
+
+        if ($row && !empty($row['lampiran'])) {
+            $filePath = "../../Wicara_User_Web/backend/rating/" . $row['lampiran'];
+            if (file_exists($filePath)) {
+                unlink($filePath); // Hapus file dari folder
+            }
+        }
+
+        // Hapus data dari database
         $query = "DELETE FROM kejadian WHERE id_kejadian = '$idKejadian'";
         mysqli_query($db->koneksi, $query);
-        echo json_encode(['status' => 'success', 'message' => 'Data berhasil dihapus']);
+
+        echo json_encode(['status' => 'success', 'message' => 'Data dan lampiran berhasil dihapus']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Aksi tidak valid atau id kejadian tidak ditemukan']);
     }

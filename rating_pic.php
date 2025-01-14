@@ -430,6 +430,13 @@
                               <button class="show-more text-blue-500" style="display: none;">Selengkapnya</button>
                             </p>
                           </div>
+
+                          <!-- Tampilkan gambar lampiran jika ada -->
+                          <?php if (!empty($x['lampiran'])) { ?>
+                                <div class="mt-3">
+                                <img class="w-50 h-auto rounded-lg" src="<?='../Wicara_User_Web/backend/rating/'.$x['lampiran'];?>" alt="Lampiran Ulasan">
+                                </div>
+                            <?php } ?>
                         </div>
                         <?php
                             }

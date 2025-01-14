@@ -33,12 +33,6 @@
   $display_review = $review_count > 0 ? $desimal_review . "/5" : "Belum ada review";
   $bulat_review = $review_count > 0 ? floor($total_rating / $review_count) : 0;
   $has_half_star = $desimal_review > $bulat_review;
-
-  /*$reviewsPerPage = 3;
-  $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-  $offset = ($currentPage - 1) * $reviewsPerPage;
-  $reviews = $db->tampil_data_ulasan($offset, $reviewsPerPage); 
-  $totalPages = ceil($review_count / $reviewsPerPage)*/
 ?>
 
 <!DOCTYPE html>
@@ -488,6 +482,13 @@
                               <button class="show-more text-blue-500" style="display: none;">Selengkapnya</button>
                             </p>
                           </div>
+
+                          <!-- Tampilkan gambar lampiran jika ada -->
+                            <?php if (!empty($x['lampiran'])) { ?>
+                                <div class="mt-3">
+                                <img class="w-50 h-auto rounded-lg" src="<?='../Wicara_User_Web/backend/rating/'.$x['lampiran'];?>" alt="Lampiran Ulasan">
+                                </div>
+                            <?php } ?>
                         </div>
                         <?php
                             }
